@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "build": "tsc",
-    "serve": "node dist/server.js"
+    "serve": "node dist/server.js",
+    "dev": "nodemon --watch src --exec ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,13 +14,17 @@
   "description": "",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "cros": "^1.0.1",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mongoose": "^8.8.1"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^22.9.0",
+    "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
