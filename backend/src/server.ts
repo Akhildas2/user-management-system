@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import mongoose from './config/dbConnection';  // Import the database connection
+import connectDB from './config/dbConnection';  // Import the database connection
 
 // Load environment variables from .env file
 dotenv.config();
-
+connectDB()
 const app = express();
 const PORT: number = parseInt(process.env.PORT || '3333', 10);
 
@@ -12,7 +12,7 @@ const PORT: number = parseInt(process.env.PORT || '3333', 10);
 app.use(express.json());
 
 // Import routes
-import users from './routes/users';
+import usersRoutes from './routes/userRoutes';
 
 // Route handler
 app.get('/', (req: Request, res: Response) => {
@@ -20,7 +20,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // User routes
-app.use('/api', users);
+app.use('/api', usersRoutes);
 
 // Start the server
 app.listen(PORT, () => {
