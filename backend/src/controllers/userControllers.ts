@@ -16,17 +16,16 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
         }
 
     } catch (error) {
-        console.error(error);
         // Handle errors message
+        console.error(error);
         res.status(500).json({ msg: 'Internal Server Error!' });
     }
 };
 
-
-// For getting the users
+// For creating users
 export const createUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { firstName, lastName, email, contactNumber, age, gender, skill } = req.body
+        const { firstName, lastName, email, contactNumber, age, gender, skill } = req.body;
         const newForm = new User({
             firstName,
             lastName,
@@ -35,14 +34,59 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
             age,
             gender,
             skill
-        })
-        await newForm.save();
-        console.log(req.body);
+        });
 
-        res.status(200).json({ msg: "New User Register Successfully!" })
+        await newForm.save();
+
+        // Use status 201 for successful creation
+        res.status(201).json({ msg: "New User Registered Successfully!" });
+    } catch (error) {
+        // Handle errors message
+        console.error(error);
+        res.status(500).json({ msg: 'Failed to create user' });
+    }
+};
+
+// For updating user
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id, firstName, lastName, email, contactNumber, age, gender, skill } = req.body;
+        const user = await User.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    firstName, lastName, email, contactNumber, age, gender, skill
+                }
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (!user) {
+            res.status(404).json({ msg: "User not found!" });
+        }
+
+        res.status(200).json({ msg: "User Updated Successfully!", user });
     } catch (error) {
         console.error(error);
         // Handle errors message
-        res.status(500).json({ msg: 'Internal Server Error!' });
+        res.status(500).json({ msg: 'Failed to update user' });
     }
-}
+};
+
+// For deleting user
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const deletedUser = await User.findByIdAndDelete(id);
+
+        if (deletedUser) {
+            res.status(200).json({ msg: 'User deleted successfully' });
+        } else {
+            res.status(404).json({ msg: 'User not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        // Handle errors message
+        res.status(500).json({ msg: 'Failed to delete user' });
+    }
+};
