@@ -56,7 +56,7 @@ A comprehensive User Management application built with **Angular** for the front
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-repo/user-management.git
+git clone https://github.com/Akhildas2/User_Management_Curd_App.git
 cd user-management
 ```
 
@@ -70,7 +70,6 @@ npm install
 3. Install dependencies for the backend:
 
 ```bash
-Copy code
 cd ../backend
 npm install
 ```
@@ -144,8 +143,6 @@ user-management/
 │   ├── package.json
 │   └── tsconfig.json
 └── README.md
-
-
 ---
 
 ```
@@ -187,4 +184,3 @@ git push origin feature-name
 
 5. Open a Pull Request.
 
----
