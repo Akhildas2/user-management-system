@@ -1,0 +1,14 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background-color: rgba(69, 110, 128, 255);
+    min-height: 100vh;
+}
