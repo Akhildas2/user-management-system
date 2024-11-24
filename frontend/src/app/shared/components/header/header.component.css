@@ -1,0 +1,26 @@
+.example-icon {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .section {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Wraps content on smaller screens */
+  }
+  
+  mat-toolbar button {
+    flex: 1 1 auto; /* Allows buttons to grow/shrink evenly */
+    min-width: 0; /* Prevents buttons from causing overflow */
+  }
+
+  
+
+  
