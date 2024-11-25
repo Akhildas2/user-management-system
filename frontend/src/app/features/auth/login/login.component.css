@@ -1,0 +1,77 @@
+/* Container for the whole login section, centers it on the page */
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f6f8;
+    /* Light background for the entire page */
+}
+
+/* Wrapper for the image and the login form */
+.login-card-wrapper {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.card-title {
+    text-align: center;
+}
+
+/* Left-side image container */
+.left-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e7ff;
+    /* Soft blue background */
+    padding: 16px;
+    width: 50%;
+    /* Take up 50% of the container width */
+}
+
+.login-image {
+    max-width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: 25px;
+}
+
+/* Right-side form container */
+.right-side {
+    width: 50%;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Style adjustments for the card */
+.login-card {
+    box-shadow: none;
+    width: 100%;
+}
+
+/* Form fields and buttons styling */
+.email-container mat-form-field,
+.password-container mat-form-field {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.login-button-row {
+    text-align: center;
+    margin-top: 24px;
+}
+
+/* Styling for social media buttons */
+.social-button-row {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+}
