@@ -1,77 +1,283 @@
-/* Container for the whole login section, centers it on the page */
+/* Container for the login component */
 .login-container {
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f4f6f8;
-    /* Light background for the entire page */
-}
-
-/* Wrapper for the image and the login form */
-.login-card-wrapper {
-    display: flex;
-    width: 100vw;
     height: 100vh;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+/* Wrapper for the image and form */
+.login-card-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
+    border-radius: 25px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 90%;
+    position: relative;
 }
 
-.card-title {
-    text-align: center;
-}
-
-/* Left-side image container */
+/* Left side with the image */
 .left-side {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #e0e7ff;
-    /* Soft blue background */
-    padding: 16px;
-    width: 50%;
-    /* Take up 50% of the container width */
+    background-color: #f0f0f0;
 }
 
+/* Image styling */
 .login-image {
     max-width: 100%;
-    height: 100%;
-    object-fit: fill;
-    border-radius: 25px;
+    height: auto;
+    object-fit: cover;
 }
 
-/* Right-side form container */
+/* Right side for the form */
 .right-side {
-    width: 50%;
-    padding: 40px 24px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-/* Style adjustments for the card */
+/* Divider between left and right sides */
+.login-card-wrapper::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background-color: #ddd;
+}
+
+/* Signup header */
+.signup-header {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: monospace;
+    margin-bottom: 20px;
+    text-align: end;
+}
+
+.signup-header a {
+    color: #00adbd;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.signup-header a:hover {
+    color: #004d63;
+}
+
+/* Card Styling */
 .login-card {
     box-shadow: none;
+}
+
+/* Card Title */
+.card-title {
+    font-size: xx-large;
+    font-family: monospace;
+}
+
+/* Input fields styling */
+.full-width {
     width: 100%;
 }
 
-/* Form fields and buttons styling */
-.email-container mat-form-field,
-.password-container mat-form-field {
-    width: 100%;
-    margin-top: 20px;
+.email-container,
+.password-container {
+    margin-bottom: 20px;
 }
 
+/* Login button row */
 .login-button-row {
-    text-align: center;
-    margin-top: 24px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
-/* Styling for social media buttons */
+/* Login button styling */
+.login-button {
+    background-color: #00adbd !important;
+    color: white;
+    height: 45px;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 18px;
+    width: 100%;
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+}
+
+/* Forgot Password Styling */
+.forgot-password {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 18px;
+    margin: 20px;
+    transition: color 0.5s ease;
+}
+
+.forgot-password:hover {
+    color: #00adbd;
+}
+
+/* Add a line divider with "or" text */
 .social-button-row {
     display: flex;
-    justify-content: space-around;
-    margin: 20px;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+}
+
+/* Social buttons */
+.social-button {
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    background-color: white;
+    color: #000;
+    border: 2px solid #000000;
+    transition: background-color 0.3s ease;
+    font-family: monospace;
+}
+
+/* Social buttons hover effect */
+.social-button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Social icon styling */
+mat-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Add a line divider with "or" text */
+.divider-text {
+    font-family: monospace;
+    font-size: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.divider-text hr {
+    flex-grow: 1;
+    border: none;
+    border-top: 2px solid #afafaf;
+    margin: 0 10px;
+}
+
+.divider-text span {
+    font-size: 16px;
+    font-weight: normal;
+    padding: 0 10px;
+}
+
+/* For mobile devices */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 10px;
+    }
+
+    .login-card-wrapper {
+        max-width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        width: 100%;
+    }
+
+    /* Left side with image */
+    .left-side {
+        width: 100%;
+        height: 200px;
+        padding: 0;
+    }
+
+    .login-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Right side for the form */
+    .right-side {
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .signup-header {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    .email-container,
+    .password-container {
+        margin-bottom: 15px;
+    }
+
+    .login-button {
+        font-size: 16px;
+        height: 40px;
+    }
+
+    .forgot-password {
+        font-size: 16px;
+        margin: 15px 0;
+    }
+
+    .social-button-row {
+        flex-direction: column;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .social-button {
+        height: 40px;
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    .divider-text {
+        font-size: 16px;
+    }
+
+    .divider-text hr {
+        margin: 0 5px;
+    }
+
+    /* Adjust the divider text */
+    .divider-text span {
+        font-size: 14px;
+        padding: 0 5px;
+    }
 }
