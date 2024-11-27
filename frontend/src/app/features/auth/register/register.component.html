@@ -1,1 +1,82 @@
-<p>register works!</p>
+<div class="register-container">
+    <div class="register-card-wrapper">
+        <!-- Left side with the image -->
+        <div class="left-side">
+            <img [src]="registerImage" alt="Register Illustration" class="register-image" />
+        </div>
+        <!-- Right side with the register form -->
+        <div class="right-side">
+            <h3 class="signin-header"> Already a User?<a routerLink="/login">Sign In</a></h3>
+            <mat-card class="register-card">
+                <mat-card-header>
+                    <mat-card-title class="card-title">Register to continue</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <!-- Name Field -->
+                    <div class="name-container">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Name</mat-label>
+                            <input matInput placeholder="Your Name" [formControl]="name" required />
+                            <mat-error *ngIf="email.invalid">{{ nameErrorMessage() }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- Email Field -->
+                    <div class="email-container">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Email Address</mat-label>
+                            <mat-icon aria-hidden="false" aria-label="Email Icon" matSuffix>email</mat-icon>
+                            <input matInput placeholder="abc@example.com" [formControl]="email"
+                                (blur)="updateErrorMessage()" required />
+                            <mat-error *ngIf="email.invalid">{{ emailErrorMessage() }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- Password Field -->
+                    <div class="password-container">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Password</mat-label>
+                            <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="password"
+                                (blur)="updateErrorMessage()" required />
+                            <button mat-icon-button matSuffix (click)="toggleVisibility($event)"
+                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide()">
+                                <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="password.invalid">{{ passwordErrorMessage() }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                   
+                    <!-- Register Button -->
+                    <div class="register-button-row">
+                        <button mat-flat-button class="full-width register-button">
+                            <mat-icon aria-hidden="false" aria-label="Register Icon">how_to_reg</mat-icon>
+                            Register
+                        </button>
+                    </div>
+                </mat-card-content>
+                <!-- Footer with Social Login Buttons -->
+                <mat-card-footer class="register-card-footer">
+                    <div class="social-button-row">
+                        <span class="divider-text">
+                            <hr />
+                            <span>or</span>
+                            <hr />
+                        </span>
+                        <!-- Google Button -->
+                        <button mat-flat-button class="social-button google-button">
+                            <mat-icon class="google-icon">
+                                <img src="assets/icons/google.png" alt="Google" />
+                            </mat-icon>
+                            Google
+                        </button>
+                        <!-- Facebook Button -->
+                        <button mat-flat-button class="social-button facebook-button">
+                            <mat-icon class="facebook-icon">
+                                <img src="assets/icons/facebook.png" alt="Facebook" />
+                            </mat-icon>
+                            Facebook
+                        </button>
+                    </div>
+                </mat-card-footer>
+            </mat-card>
+        </div>
+    </div>
+</div>

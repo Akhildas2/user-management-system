@@ -23,44 +23,36 @@ export class LoginComponent {
   errorMessageEmail = signal('');
   errorMessagePassword = signal('');
 
+  hide = signal(true);
+
   constructor() {
     merge(this.email.statusChanges, this.email.valueChanges, this.password.statusChanges, this.password.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
   }
 
+
   updateErrorMessage() {
-    // Check email validation errors
-    if (this.email.invalid && (this.email.dirty || this.email.touched)) {
+    // Update email error message
+    if (this.email.invalid && this.email.touched) {
       if (this.email.hasError('required')) {
-        this.errorMessageEmail.set('You must enter a value');
+        this.errorMessageEmail.set('Email is required.');
       } else if (this.email.hasError('email')) {
-        this.errorMessageEmail.set('Not a valid email');
-      } else {
-        this.errorMessageEmail.set('');
+        this.errorMessageEmail.set('Please enter a valid email address.');
       }
     } else {
       this.errorMessageEmail.set('');
     }
 
-    // Check password validation errors
-    if (this.password.invalid && (this.password.dirty || this.password.touched)) {
+    // Update password error message
+    if (this.password.invalid && this.password.touched) {
       if (this.password.hasError('required')) {
-        this.errorMessagePassword.set('Password is required');
-      } else if (this.password.errors && 'minlength' in this.password.errors) {
-        this.errorMessagePassword.set(
-          `Password should be at least ${this.password.errors['minlength'].requiredLength} characters`
-        );
-      } else {
-        this.errorMessagePassword.set('');
+        this.errorMessagePassword.set('Password is required.');
       }
     } else {
       this.errorMessagePassword.set('');
     }
   }
-
-
-  hide = signal(true);
 
   toggleVisibility(event: MouseEvent) {
     this.hide.set(!this.hide());
