@@ -33,13 +33,13 @@ export class RegisterComponent {
 
   readonly name = new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]);
   readonly email = new FormControl('', [Validators.required, Validators.email]);
+  readonly phone = new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^[0-9]{10}$/)]);
   readonly password = new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/)]);
-  readonly confirmPassword = new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/)]);
-  
+
   nameErrorMessage = signal('');
   emailErrorMessage = signal('');
+  phoneErrorMessage = signal('');
   passwordErrorMessage = signal('');
-  confirmPasswordErrorMessage = signal('');
   hide = signal(true);
 
   constructor() {
@@ -48,9 +48,11 @@ export class RegisterComponent {
       this.name.valueChanges,
       this.email.statusChanges,
       this.email.valueChanges,
+      this.phone.statusChanges,
+      this.phone.valueChanges,
       this.password.statusChanges,
       this.password.valueChanges,
-     
+
     )
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
@@ -87,6 +89,19 @@ export class RegisterComponent {
       this.emailErrorMessage.set('');
     }
 
+    // Phone field
+    if (this.phone.invalid && (this.phone.dirty || this.phone.touched)) {
+      if (this.phone.hasError('required')) {
+        this.phoneErrorMessage.set('phone is required');
+      } else if (this.phone.hasError('minlength') || this.phone.hasError('maxlength') ) {
+        this.phoneErrorMessage.set('Phone number must be exactly 10 digits');
+      } else {
+        this.phoneErrorMessage.set('');
+      }
+    } else {
+      this.phoneErrorMessage.set('');
+    }
+
     // Password field
     if (this.password.invalid && (this.password.dirty || this.password.touched)) {
       if (this.password.hasError('required')) {
@@ -102,7 +117,7 @@ export class RegisterComponent {
       this.passwordErrorMessage.set('');
     }
 
-   
+
   }
 
   toggleVisibility(event: MouseEvent) {

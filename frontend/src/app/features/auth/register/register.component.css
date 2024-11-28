@@ -37,7 +37,7 @@
 
 /* Right side for the form */
 .right-side {
-    padding: 40px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -81,6 +81,7 @@
 .card-title {
     font-size: xx-large;
     font-family: monospace;
+    margin-bottom: 20px;
 }
 
 /* Input fields styling */
@@ -88,14 +89,6 @@
     width: 100%;
 }
 
-.name-container,
-.email-container,
-.password-container,
-.confirm-password-container
-{
-margin-bottom: 20px;
-margin-top: 20px;
-}
 
 /* register button row */
 .register-button-row {
@@ -185,7 +178,7 @@ mat-icon img {
 /* For mobile devices */
 @media (max-width: 480px) {
     .register-container {
-        margin-top: 60px;
+        margin-top: 100px;
     }
 
     .register-card-wrapper {
@@ -194,7 +187,6 @@ mat-icon img {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 10px;
         width: 100%;
     }
 
@@ -228,12 +220,6 @@ mat-icon img {
 
     .card-title {
         font-size: 1.5rem;
-    }
-
-    .email-container,
-    .password-container {
-        margin-bottom: 10px;
-        margin-top: 10px;
     }
 
     .register-button {

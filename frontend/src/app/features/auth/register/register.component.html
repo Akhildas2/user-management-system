@@ -9,15 +9,17 @@
             <h3 class="signin-header"> Already a User?<a routerLink="/login">Sign In</a></h3>
             <mat-card class="register-card">
                 <mat-card-header>
-                    <mat-card-title class="card-title">Register to continue</mat-card-title>
+                    <mat-card-title class="card-title"><b>Register to continue</b></mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <!-- Name Field -->
                     <div class="name-container">
                         <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Name</mat-label>
-                            <input matInput placeholder="Your Name" [formControl]="name" required />
-                            <mat-error *ngIf="email.invalid">{{ nameErrorMessage() }}</mat-error>
+                            <input matInput placeholder="Your Name" [formControl]="name"
+                            (blur)="updateErrorMessage()" required />
+                            <mat-icon matSuffix>account_circle</mat-icon>
+                            <mat-error *ngIf="name.invalid">{{ nameErrorMessage() }}</mat-error>
                         </mat-form-field>
                     </div>
                     <!-- Email Field -->
@@ -30,6 +32,17 @@
                             <mat-error *ngIf="email.invalid">{{ emailErrorMessage() }}</mat-error>
                         </mat-form-field>
                     </div>
+                    <!-- phone number Field -->
+                    <form class="phone-form">
+                        <mat-form-field appearance="outline" class="full-width"  (blur)="updateErrorMessage()">
+                          <mat-label>Phone Number</mat-label>
+                          <span matTextPrefix>+91 &nbsp;</span>
+                          <input type="tel" matInput placeholder="123456789" [formControl]="phone"
+                          (blur)="updateErrorMessage()" required />
+                          <mat-icon matSuffix>phone</mat-icon>
+                          <mat-error *ngIf="phone.invalid">{{ phoneErrorMessage() }}</mat-error>
+                        </mat-form-field>
+                      </form>
                     <!-- Password Field -->
                     <div class="password-container">
                         <mat-form-field appearance="outline" class="full-width">
