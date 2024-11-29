@@ -178,16 +178,19 @@ mat-icon img {
 /* For mobile devices */
 @media (max-width: 480px) {
     .register-container {
-        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 10px;
     }
 
     .register-card-wrapper {
-        max-width: 100%;
-        height: auto;
         display: flex;
         flex-direction: column;
-        align-items: center;
         width: 100%;
+        height: auto;
+        border: 2px solid #ffffff;
+
     }
 
     /* Left side with image */
@@ -215,11 +218,15 @@ mat-icon img {
 
     .signin-header {
         font-size: 18px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 
     .card-title {
         font-size: 1.5rem;
+    }
+
+    .register-button-row {
+        margin-top: auto;
     }
 
     .register-button {
@@ -229,26 +236,44 @@ mat-icon img {
 
     .social-button-row {
         flex-direction: column;
-        padding: 10px;
+        padding: 20px;
         width: 100%;
     }
 
     .social-button {
         height: 40px;
         font-size: 16px;
-        margin: 5px 0;
+        background-color: white;
+        color: #000;
+        border: 2px solid #000000;
+        transition: background-color 0.3s ease;
+        font-family: monospace;
+    }
+
+    .social-button:hover {
+        background-color: #f0f0f0;
     }
 
     .divider-text {
+        font-family: monospace;
         font-size: 16px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
     }
 
     .divider-text hr {
-        margin: 0 5px;
+        flex-grow: 1;
+        border: none;
+        border-top: 2px solid #afafaf;
+        margin: 0 10px;
     }
 
     .divider-text span {
         font-size: 14px;
-        padding: 0 5px;
+        font-weight: normal;
+        padding: 0 10px;
     }
 }

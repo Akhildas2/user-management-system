@@ -195,22 +195,24 @@ mat-icon img {
 /* For mobile devices */
 @media (max-width: 480px) {
     .login-container {
-        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 10px;
     }
 
     .login-card-wrapper {
-        max-width: 100%;
-        height: auto;
         display: flex;
         flex-direction: column;
-        align-items: center;
         width: 100%;
+        height: auto;
+        border: 2px solid #ffffff;
     }
 
     /* Left side with image */
     .left-side {
         width: 100%;
-        height: 200px;
+        height: 100%;
         padding: 0;
     }
 
@@ -263,19 +265,37 @@ mat-icon img {
     .social-button {
         height: 40px;
         font-size: 16px;
-        margin: 5px 0;
+        background-color: white;
+        color: #000;
+        border: 2px solid #000000;
+        transition: background-color 0.3s ease;
+        font-family: monospace;
+    }
+
+    .social-button:hover {
+        background-color: #f0f0f0;
     }
 
     .divider-text {
+        font-family: monospace;
         font-size: 16px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
     }
 
     .divider-text hr {
-        margin: 0 5px;
+        flex-grow: 1;
+        border: none;
+        border-top: 2px solid #afafaf;
+        margin: 0 10px;
     }
 
     .divider-text span {
         font-size: 14px;
-        padding: 0 5px;
+        font-weight: normal;
+        padding: 0 10px;
     }
-}
+} 

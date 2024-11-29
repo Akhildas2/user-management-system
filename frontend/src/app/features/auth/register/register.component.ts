@@ -1,24 +1,11 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MaterialModule } from '../../../../Material.Module';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
-// Custom validator to check if passwords match
-function passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('password');
-  const confirmPassword = control.get('confirmPassword');
-
-  if (password && confirmPassword && password.value !== confirmPassword.value) {
-    confirmPassword.setErrors({ passwordMismatch: true });
-    return { passwordMismatch: true };
-  }
-
-  confirmPassword?.setErrors(null);
-  return null;
-}
 
 @Component({
   selector: 'app-register',
@@ -33,8 +20,19 @@ export class RegisterComponent {
 
   readonly name = new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]);
   readonly email = new FormControl('', [Validators.required, Validators.email]);
-  readonly phone = new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^[0-9]{10}$/)]);
-  readonly password = new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/)]);
+  readonly phone = new FormControl('', [Validators.required, Validators.pattern(/^\d{10}$/)]);
+  readonly password = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/),
+  ]);
+
+  fields = [
+    { name: 'name', label: 'Name', icon: 'account_circle', placeholder: 'Your Name', control: this.name, type: 'text', errorMessage: () => this.nameErrorMessage() },
+    { name: 'email', label: 'Email Address', icon: 'email', placeholder: 'abc@example.com', control: this.email, type: 'email', errorMessage: () => this.emailErrorMessage() },
+    { name: 'phone', label: 'Phone Number', icon: 'phone', placeholder: '123456789', control: this.phone, type: 'text', errorMessage: () => this.phoneErrorMessage() },
+    { name: 'password', label: 'Password', icon: 'lock', placeholder: 'Enter password', control: this.password, type: 'password', errorMessage: () => this.passwordErrorMessage() },
+  ];
 
   nameErrorMessage = signal('');
   emailErrorMessage = signal('');
@@ -62,66 +60,39 @@ export class RegisterComponent {
 
   updateErrorMessage() {
     // Name field
-    if (this.name.invalid && (this.name.dirty || this.name.touched)) {
-      if (this.name.hasError('required')) {
-        this.nameErrorMessage.set('Name is required');
-      } else if (this.name.hasError('minlength')) {
-        this.nameErrorMessage.set(`Name should be at least ${this.name.errors?.['minlength']?.requiredLength} characters`);
-      } else if (this.name.hasError('maxlength')) {
-        this.nameErrorMessage.set(`Name should not exceed ${this.name.errors?.['maxlength']?.requiredLength} characters`);
-      } else {
-        this.nameErrorMessage.set('');
-      }
-    } else {
-      this.nameErrorMessage.set('');
-    }
+    this.nameErrorMessage.set(
+      this.name.hasError('required') ? 'Name is required' :
+        this.name.hasError('minlength') ? `Name should be at least ${this.name.errors?.['minlength']?.requiredLength} characters` :
+          this.name.hasError('maxlength') ? `Name should not exceed ${this.name.errors?.['maxlength']?.requiredLength} characters` : ''
+    );
 
     // Email field
-    if (this.email.invalid && (this.email.dirty || this.email.touched)) {
-      if (this.email.hasError('required')) {
-        this.emailErrorMessage.set('Email is required');
-      } else if (this.email.hasError('email')) {
-        this.emailErrorMessage.set('Please enter a valid email address');
-      } else {
-        this.emailErrorMessage.set('');
-      }
-    } else {
-      this.emailErrorMessage.set('');
-    }
+    this.emailErrorMessage.set(
+      this.email.hasError('required') ? 'Email is required' :
+        this.email.hasError('email') ? 'Please enter a valid email address' : ''
+    );
 
     // Phone field
-    if (this.phone.invalid && (this.phone.dirty || this.phone.touched)) {
-      if (this.phone.hasError('required')) {
-        this.phoneErrorMessage.set('phone is required');
-      } else if (this.phone.hasError('minlength') || this.phone.hasError('maxlength') ) {
-        this.phoneErrorMessage.set('Phone number must be exactly 10 digits');
-      } else {
-        this.phoneErrorMessage.set('');
-      }
-    } else {
-      this.phoneErrorMessage.set('');
-    }
+    this.phoneErrorMessage.set(
+      this.phone.hasError('required') ? 'Phone is required' :
+        this.phone.hasError('pattern') ? 'Phone number must be exactly 10 digits' : ''
+    );
 
     // Password field
-    if (this.password.invalid && (this.password.dirty || this.password.touched)) {
-      if (this.password.hasError('required')) {
-        this.passwordErrorMessage.set('Password is required');
-      } else if (this.password.hasError('minlength')) {
-        this.passwordErrorMessage.set(`Password should be at least ${this.password.errors?.['minlength']?.requiredLength} characters`);
-      } else if (this.password.hasError('pattern')) {
-        this.passwordErrorMessage.set('Password should contain at least one letter and one number');
-      } else {
-        this.passwordErrorMessage.set('');
-      }
-    } else {
-      this.passwordErrorMessage.set('');
-    }
-
+    this.passwordErrorMessage.set(
+      this.password.hasError('required') ? 'Password is required' :
+        this.password.hasError('minlength') ? `Password should be at least ${this.password.errors?.['minlength']?.requiredLength} characters` :
+          this.password.hasError('pattern') ? 'Password should contain at least one letter and one number' : ''
+    );
 
   }
 
   toggleVisibility(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
+  }
+
+  isFormValid(): boolean {
+    return this.name.valid && this.email.valid && this.phone.valid && this.password.valid;
   }
 }
