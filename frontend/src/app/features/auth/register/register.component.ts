@@ -95,4 +95,8 @@ export class RegisterComponent {
   isFormValid(): boolean {
     return this.name.valid && this.email.valid && this.phone.valid && this.password.valid;
   }
+
+  proceedRegister(){
+  
+  }
 }

@@ -1,23 +1,19 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
-import connectDB from './config/dbConnection';  // Import the database connection
+import connectDB from './config/DB/dbConnection';  // Import the database connection
+import usersRoutes from './routes/userRoutes'; // Import routes
 
 // Load environment variables from .env file
 dotenv.config();
-connectDB()
+connectDB() // For DB connection
+
 const app = express();
 const PORT: number = parseInt(process.env.PORT || '3333', 10);
 
+
+
 // Middleware to parse JSON
 app.use(express.json());
-
-// Import routes
-import usersRoutes from './routes/userRoutes';
-
-// Route handler
-app.get('/', (req: Request, res: Response) => {
-    res.send('API is working');
-});
 
 // User routes
 app.use('/api', usersRoutes);

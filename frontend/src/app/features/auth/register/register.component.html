@@ -13,28 +13,33 @@
                 </mat-card-header>
                 <mat-card-content>
                     <!-- Field -->
-                    <div class="field-container" *ngFor="let field of fields">
-                        <mat-form-field appearance="outline" class="full-width" [ngClass]="{'input-success': field.control.valid}" id="{{field.name}}">
-                            <mat-label>{{field.label}}</mat-label>
-                            <mat-icon aria-hidden="false" aria-label="{field.label}" matPrefix>{{field.icon}}</mat-icon>
-                            <input matInput [type]="field.type" placeholder="{{field.placeholder}}"
-                                [formControl]="field.control"
-                                [type]="field.name === 'password' && hide() ? 'password' : 'text' "
-                                (blur)="updateErrorMessage()" required />
-                            <button mat-icon-button *ngIf="field.name ==='password'" (click)="toggleVisibility($event)"
-                                matSuffix><mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
-                            </button>
-                            <mat-error *ngIf="field.control.invalid">{{ field.errorMessage() }}</mat-error>
-                        </mat-form-field>                        
-                    </div>
+                    <form (ngSubmit)="proceedRegister()">
+                        <div class="field-container" *ngFor="let field of fields">
+                            <mat-form-field appearance="outline" class="full-width"
+                                [ngClass]="{'input-success': field.control.valid}" id="{{field.name}}">
+                                <mat-label>{{field.label}}</mat-label>
+                                <mat-icon [attr.aria-label]="field.label" matPrefix>{{ field.icon }}</mat-icon>
+                                <input matInput [type]="field.type" placeholder="{{field.placeholder}}"
+                                    [formControl]="field.control"
+                                    [type]="field.name === 'password' && hide() ? 'password' : 'text' "
+                                    (blur)="updateErrorMessage()" required />
+                                <button mat-icon-button *ngIf="field.name ==='password'"
+                                    (click)="toggleVisibility($event)" matSuffix><mat-icon>{{hide() ? 'visibility_off' :
+                                        'visibility'}}</mat-icon>
+                                </button>
+                                <mat-error *ngIf="field.control.invalid">{{ field.errorMessage() }}</mat-error>
+                            </mat-form-field>
+                        </div>
 
-                    <!-- Register Button -->
-                    <div class="register-button-row">
-                        <button mat-flat-button class="full-width register-button" [disabled]="!isFormValid()">
-                            <mat-icon aria-hidden="false" aria-label="Register Icon">how_to_reg</mat-icon>
-                            Register
-                        </button>
-                    </div>
+                        <!-- Register Button -->
+                        <div class="register-button-row">
+                            <button mat-flat-button class="full-width register-button" [disabled]="!isFormValid()">
+                                <mat-icon aria-hidden="false" aria-label="Register Icon">how_to_reg</mat-icon>
+                                Register
+                            </button>
+                        </div>
+                    </form>
+
                 </mat-card-content>
                 <!-- Footer with Social Login Buttons -->
                 <mat-card-footer class="register-card-footer">

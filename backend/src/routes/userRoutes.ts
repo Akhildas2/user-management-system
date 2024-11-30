@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { getUsers, createUser, updateUser, deleteUser } from '../controllers/userControllers';
+import { login,register } from '../controllers/authController';
+import { authenticateToken } from '../middlewares/authMiddleware';
 
 const jsonParser = bodyParser.json();
 const router = express.Router();
@@ -16,5 +18,11 @@ router.put('/user', jsonParser, updateUser);
 
 // DELETE API - DELETE: Delete a user by ID
 router.delete('/user/:id', deleteUser);
+
+// Create user
+router.post('/register', jsonParser, register)
+
+// Create user
+router.post('/login', login)
 
 export default router;

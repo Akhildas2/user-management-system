@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User from '../models/userModels';
+import User from '../config/models/userModels';
 
 // For getting the users
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
@@ -58,7 +58,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
                     firstName, lastName, email, contactNumber, age, gender, skill
                 }
             },
-            { new: true } // Return the updated document
+            { new: true } 
         );
 
         if (!user) {
