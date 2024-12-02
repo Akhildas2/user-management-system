@@ -58,7 +58,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
                     firstName, lastName, email, contactNumber, age, gender, skill
                 }
             },
-            { new: true } 
+            { new: true }
         );
 
         if (!user) {

@@ -1,27 +1,34 @@
-import { Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import AuthUserReq from "../interfaces/UserAuthRequest";
 
+// Ensure ACCESS_TOKEN_SECRET is defined
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
-// Ensure JWT_SECRET is defined
-const JWT_SECRET = process.env.JWT_SECRET;
-
-if (!JWT_SECRET) {
-    throw new Error("JWT_SECRET is not defined in the environment variables");
+if (!ACCESS_TOKEN_SECRET) {
+    throw new Error("ACCESS_TOKEN_SECRET is not defined in the environment variables");
 }
 
-export const authenticateToken = (req: AuthUserReq, res: Response, next: NextFunction) => {
-    const token = req.header("Authorization")?.split(" ")[1]; // Bearer <token>
+export const authenticateToken = (req: AuthUserReq, res: Response, next: NextFunction): void => {
+    const authHeader = req.header("Authorization");
+    if (!authHeader) {
+        res.status(401).json({ message: "Access denied. No token provided." });
+        return;
+    }
+
+    const token = authHeader.split(" ")[1];
     if (!token) {
-        return res.status(401).json({ message: "Access denied. No token provided." });
+        res.status(401).json({ message: "Access denied. No token provided." });
+        return;
     }
 
     try {
-        // Verify the token using the JWT_SECRET
-        const decoded = jwt.verify(token, JWT_SECRET);
-        req.user = decoded;
-        next();
+        // Verify the token
+        const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET) as jwt.JwtPayload;
+        req.user = decoded; // Attach decoded token payload to the request
+        next(); // Proceed to the next middleware or route handler
     } catch (err) {
-        res.status(403).json({ message: "Invalid token." });
+        console.error("Token verification failed:", err);
+        res.status(403).json({ message: "Invalid or expired token." });
     }
 };

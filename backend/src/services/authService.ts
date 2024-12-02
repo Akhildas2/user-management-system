@@ -4,13 +4,24 @@ import dotenv from "dotenv";
 
 // Load environment variables
 dotenv.config();
-// Ensure JWT_SECRET is defined
 
-const JWT_SECRET = process.env.JWT_SECRET ;
-console.log("jwt",JWT_SECRET);
-if (!JWT_SECRET) {
-    throw new Error("JWT_SECRET is not defined in the environment variables");
+// Ensure secrets are defined
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+
+if (!ACCESS_TOKEN_SECRET || !REFRESH_TOKEN_SECRET) {
+    throw new Error("JWT secrets are not defined in the environment variables");
 }
+
+// Function to generate an access token
+const generateAccessToken = (payload: object) => {
+    return jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: "10m" });
+};
+
+// Function to generate a refresh token
+const generateRefreshToken = (payload: object) => {
+    return jwt.sign(payload, REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+};
 
 // Validate the user credentials
 export const login = async (email: string, password: string) => {
@@ -18,25 +29,25 @@ export const login = async (email: string, password: string) => {
     if (!user || !(await user.comparePassword(password))) {
         return null;
     }
-    // Generate JWT
-    const token = jwt.sign(
-        { userId: user._id, email: user.email },
-        JWT_SECRET,
-        { expiresIn: "1h" }
-    );
-    return { token, user };
+    const payload = { userId: user._id, email: user.email };
+
+    // Generate tokens
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    return { accessToken, refreshToken, user };
 }
 
 // Create a new user
 export const register = async (name: string, email: string, phone: number, password: string) => {
     if (await User.findOne({ email })) return null;
-    const newUser = await User.create({ name, email, phone, password })
-    // Generate JWT for the new user
-    const token = jwt.sign(
-        { userId: newUser._id, email: newUser.email },
-        JWT_SECRET,
-        { expiresIn: "1h" }
-    );
 
-    return { token, user: newUser };
+    const newUser = await User.create({ name, email, phone, password })
+    const payload = { userId: newUser._id, email: newUser.email };
+
+    // Generate token
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    return { accessToken, refreshToken, user: newUser };
 };
