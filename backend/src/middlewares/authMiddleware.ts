@@ -10,13 +10,8 @@ if (!ACCESS_TOKEN_SECRET) {
 }
 
 export const authenticateToken = (req: AuthUserReq, res: Response, next: NextFunction): void => {
-    const authHeader = req.header("Authorization");
-    if (!authHeader) {
-        res.status(401).json({ message: "Access denied. No token provided." });
-        return;
-    }
 
-    const token = authHeader.split(" ")[1];
+    const token = req.header("Authorization")?.split(" ")[1];
     if (!token) {
         res.status(401).json({ message: "Access denied. No token provided." });
         return;

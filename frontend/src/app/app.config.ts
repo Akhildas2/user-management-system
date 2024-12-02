@@ -7,7 +7,8 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideRouterStore } from '@ngrx/router-store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideAnimationsAsync(), provideStore(), provideEffects(), provideRouterStore(), provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })]
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideAnimationsAsync(), provideStore(), provideEffects(), provideRouterStore(), provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),provideHttpClient()]
 };

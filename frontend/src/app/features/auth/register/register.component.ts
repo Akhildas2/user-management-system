@@ -4,8 +4,8 @@ import { MaterialModule } from '../../../../Material.Module';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -38,9 +38,10 @@ export class RegisterComponent {
   emailErrorMessage = signal('');
   phoneErrorMessage = signal('');
   passwordErrorMessage = signal('');
+  errorMessage = signal('');
   hide = signal(true);
 
-  constructor() {
+  constructor(private authService:AuthService,private router:Router) {
     merge(
       this.name.statusChanges,
       this.name.valueChanges,
@@ -50,7 +51,6 @@ export class RegisterComponent {
       this.phone.valueChanges,
       this.password.statusChanges,
       this.password.valueChanges,
-
     )
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
@@ -59,32 +59,27 @@ export class RegisterComponent {
   }
 
   updateErrorMessage() {
-    // Name field
     this.nameErrorMessage.set(
       this.name.hasError('required') ? 'Name is required' :
         this.name.hasError('minlength') ? `Name should be at least ${this.name.errors?.['minlength']?.requiredLength} characters` :
           this.name.hasError('maxlength') ? `Name should not exceed ${this.name.errors?.['maxlength']?.requiredLength} characters` : ''
     );
-
-    // Email field
+    
     this.emailErrorMessage.set(
       this.email.hasError('required') ? 'Email is required' :
         this.email.hasError('email') ? 'Please enter a valid email address' : ''
     );
-
-    // Phone field
+    
     this.phoneErrorMessage.set(
       this.phone.hasError('required') ? 'Phone is required' :
         this.phone.hasError('pattern') ? 'Phone number must be exactly 10 digits' : ''
     );
-
-    // Password field
+    
     this.passwordErrorMessage.set(
       this.password.hasError('required') ? 'Password is required' :
         this.password.hasError('minlength') ? `Password should be at least ${this.password.errors?.['minlength']?.requiredLength} characters` :
           this.password.hasError('pattern') ? 'Password should contain at least one letter and one number' : ''
     );
-
   }
 
   toggleVisibility(event: MouseEvent) {
@@ -96,7 +91,21 @@ export class RegisterComponent {
     return this.name.valid && this.email.valid && this.phone.valid && this.password.valid;
   }
 
-  proceedRegister(){
-  
+  proceedRegister() {
+    const name = String(this.name.value);
+    const email = String(this.email.value);
+    const phone = Number(this.phone.value);
+    const password = String(this.password.value);
+    
+
+    this.authService.register(name, email, phone, password).subscribe(
+      (response) => {
+        this.authService.setAccessToken(response.accessToken );
+        this.router.navigate(['/home']);
+      },
+      (error) => {
+        this.errorMessage.set('User already exists or there was an error. Please try again.');
+      }
+    );
   }
 }

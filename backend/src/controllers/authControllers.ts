@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as authService from "../services/authService";
+import * as authService from "../services/authServices";
 import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response): Promise<void> => {

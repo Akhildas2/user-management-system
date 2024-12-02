@@ -4,7 +4,8 @@ import { MaterialModule } from '../../../../Material.Module';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,10 +23,11 @@ export class LoginComponent {
 
   errorMessageEmail = signal('');
   errorMessagePassword = signal('');
+  errorMessage: string = ''; // To show login error from backend
 
   hide = signal(true);
 
-  constructor() {
+  constructor(private authService: AuthService, private route: Router) {
     merge(this.email.statusChanges, this.email.valueChanges, this.password.statusChanges, this.password.valueChanges)
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
@@ -33,7 +35,7 @@ export class LoginComponent {
 
 
   updateErrorMessage() {
-    // Update email error message
+    // email error message
     if (this.email.invalid && this.email.touched) {
       if (this.email.hasError('required')) {
         this.errorMessageEmail.set('Email is required.');
@@ -44,7 +46,7 @@ export class LoginComponent {
       this.errorMessageEmail.set('');
     }
 
-    // Update password error message
+    // password error message
     if (this.password.invalid && this.password.touched) {
       if (this.password.hasError('required')) {
         this.errorMessagePassword.set('Password is required.');
@@ -54,8 +56,29 @@ export class LoginComponent {
     }
   }
 
+  // Toggle password visibility
   toggleVisibility(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
+  }
+
+  // Handle login form submission
+  onLogin() {
+    if (this.email.invalid || this.password.invalid) {
+      this.updateErrorMessage();
+      return;
+    }
+    // Ensure email and password are strings 
+    const emailValue = this.email.value || '';
+    const passwordValue = this.password.value || '';
+    this.authService.login(emailValue, passwordValue).subscribe(
+      (response) => {
+        this.authService.setAccessToken(response.accessToken);
+        this.route.navigate(['/home'])
+      },
+      (error) => {
+        // Handle login error 
+        this.errorMessage = 'Invalid credentials. Please try again.';
+      });
   }
 }

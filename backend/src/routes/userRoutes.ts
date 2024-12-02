@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { getUsers, createUser, updateUser, deleteUser } from '../controllers/userControllers';
-import { login, register, refreshAccessToken } from '../controllers/authController';
+import { login, register, refreshAccessToken } from '../controllers/authControllers';
 import { authenticateToken } from '../middlewares/authMiddleware';
 
 const jsonParser = bodyParser.json();
