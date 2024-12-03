@@ -36,7 +36,7 @@
                     </div>
                     <div class="login-button-row">
                         <button mat-flat-button class="login-button " class="full-width login-button"
-                            (click)="onLogin()">
+                            (click)="onLogin()" [disabled]="!isFormValid()">
                             <mat-icon aria-hidden="false" aria-label="Example login icon">login</mat-icon> Login
                         </button>
                     </div>

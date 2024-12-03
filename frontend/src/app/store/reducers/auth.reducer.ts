@@ -1,25 +1,42 @@
-import { createReducer, on } from '@ngrx/store';
-import { login, loginSuccess, loginFailure } from '../actions/auth.actions';
+import { createFeature, createReducer, on } from '@ngrx/store';
+import { AuthActions } from '../actions/auth.actions';
 
 export interface AuthState {
     accessToken: string | null;
-    refreshToken: string | null;
+    user: any | null;
     error: string | null;
+    isLoading: boolean;
 }
 
 export const initialState: AuthState = {
     accessToken: null,
-    refreshToken: null,
+    user: null,
     error: null,
+    isLoading: false
 };
 
-export const authReducer = createReducer(
-    initialState,
-    on(login, state => ({ ...state, error: null })),
-    on(loginSuccess, (state, { accessToken, refreshToken }) => ({
-        ...state,
-        accessToken,
-        refreshToken,
-    })),
-    on(loginFailure, (state, { error }) => ({ ...state, error }))
-);
+export const authFeature = createFeature({
+    name: 'auth',
+    reducer: createReducer(
+        initialState,
+        on(AuthActions.login, state => ({
+            ...state,
+            isLoading: true,
+            error: null
+        })),
+        on(AuthActions.loginSuccess, (state, { accessToken, user }) => ({
+            ...state,
+            accessToken,
+            user,
+            isLoading: false,
+            error: null
+        })),
+        on(AuthActions.loginFailure, (state, { error }) => ({
+            ...state,
+            accessToken: null,
+            user: null,
+            isLoading: false,
+            error
+        }))
+    )
+});

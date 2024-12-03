@@ -5,14 +5,15 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { merge } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../core/services/auth/auth.service';
+import { Store } from '@ngrx/store';
+import { AuthActions } from '../../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [MaterialModule, CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'], // Corrected 'styleUrls'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
@@ -23,19 +24,24 @@ export class LoginComponent {
 
   errorMessageEmail = signal('');
   errorMessagePassword = signal('');
-  errorMessage: string = ''; // To show login error from backend
 
   hide = signal(true);
 
-  constructor(private authService: AuthService, private route: Router) {
-    merge(this.email.statusChanges, this.email.valueChanges, this.password.statusChanges, this.password.valueChanges)
+  constructor(
+    private store: Store,
+  ) {
+    merge(
+      this.email.statusChanges,
+      this.email.valueChanges,
+      this.password.statusChanges,
+      this.password.valueChanges
+    )
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
   }
 
-
   updateErrorMessage() {
-    // email error message
+    // Email error message
     if (this.email.invalid && this.email.touched) {
       if (this.email.hasError('required')) {
         this.errorMessageEmail.set('Email is required.');
@@ -46,10 +52,12 @@ export class LoginComponent {
       this.errorMessageEmail.set('');
     }
 
-    // password error message
+    // Password error message
     if (this.password.invalid && this.password.touched) {
       if (this.password.hasError('required')) {
         this.errorMessagePassword.set('Password is required.');
+      } else if (this.password.hasError('minlength')) {
+        this.errorMessagePassword.set('Password must be at least 6 characters long.');
       }
     } else {
       this.errorMessagePassword.set('');
@@ -62,23 +70,25 @@ export class LoginComponent {
     event.stopPropagation();
   }
 
-  // Handle login form submission
+  // 
+  isFormValid(): boolean {
+    return this.email.valid && this.password.valid;
+  }
+
+  // Handle login submission
   onLogin() {
     if (this.email.invalid || this.password.invalid) {
       this.updateErrorMessage();
       return;
     }
-    // Ensure email and password are strings 
+
     const emailValue = this.email.value || '';
     const passwordValue = this.password.value || '';
-    this.authService.login(emailValue, passwordValue).subscribe(
-      (response) => {
-        this.authService.setAccessToken(response.accessToken);
-        this.route.navigate(['/home'])
-      },
-      (error) => {
-        // Handle login error 
-        this.errorMessage = 'Invalid credentials. Please try again.';
-      });
+
+    // Dispatch login action
+    this.store.dispatch(AuthActions.login({
+      email: emailValue,
+      password: passwordValue
+    }));
   }
 }

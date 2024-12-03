@@ -33,9 +33,12 @@ export class AuthService {
   }
 
   // Check if user is logged in
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('accessToken');
-  }
+    isLoggedIn(): boolean {
+      const token = localStorage.getItem('accessToken');
+      console.log("local",localStorage);
+      return !!token;
+    }
+
 
   // Save access token to localStorage
   setAccessToken(accessToken: string): void {
@@ -58,6 +61,5 @@ export class AuthService {
   clearTokens(): void {
     localStorage.removeItem('accessToken');
   }
-
 
 }
