@@ -1,0 +1,67 @@
+<mat-toolbar class="navbar">
+    <button mat-icon-button aria-label="Menu" (click)="collapsed.set(!collapsed())">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <!-- Logo Section -->
+    <div class="logo">
+        <img src="assets/icons/logo.png" alt="CURD Logo" class="logo-img" />
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="center-buttons">
+        <button mat-button routerLink="/home" aria-label="Home Section">
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+        </button>
+        <button mat-button routerLink="/dashboard" aria-label="Dashboard">
+            <mat-icon>dashboard</mat-icon>
+            <span>Dashboard</span>
+        </button>
+        <button mat-button routerLink="/profile" aria-label="Profile">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+        </button>
+        <button mat-button routerLink="/settings" aria-label="Settings">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+        </button>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+        <!-- User Avatar Dropdown -->
+        <button mat-icon-button [matMenuTriggerFor]="avatarMenu" aria-label="User Menu">
+            <img src="assets/icons/profile-user.png" class="profile-pic" alt="User Avatar" />
+        </button>
+        <mat-menu #avatarMenu="matMenu">
+            <button mat-menu-item routerLink="/profile">
+                <mat-icon>person</mat-icon>
+                <span>My Profile</span>
+            </button>
+            <button mat-menu-item routerLink="/settings">
+                <mat-icon>settings</mat-icon>
+                <span>Settings</span>
+            </button>
+            <button mat-menu-item routerLink="/logout">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
+
+        <!-- Logout -->
+        <button mat-button routerLink="/logout" aria-label="Logout">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+        </button>
+    </div>
+</mat-toolbar>
+
+
+<mat-sidenav-container>
+    <mat-sidenav opened mode="side"  [style.width]="sidenavWidth()">
+        <app-sidenav [collapsed] = "collapsed()"></app-sidenav>
+     </mat-sidenav>
+    <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()">
+        hello
+    </mat-sidenav-content>
+</mat-sidenav-container>
