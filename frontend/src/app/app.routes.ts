@@ -12,5 +12,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/user/home/home.component').then(m => m.HomeComponent),
         canActivate: [authGuard],
     },
+    {
+        path: 'profile',
+        loadComponent: () => import('./features/user/profile/profile.component').then(m => m.ProfileComponent),
+        canActivate: [authGuard],
+    },
     { path: '**', redirectTo: '/login' },
+   
 ];

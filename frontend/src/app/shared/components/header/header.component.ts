@@ -1,15 +1,41 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MaterialModule } from '../../../../Material.Module';
 import { SidenavComponent } from '../sidenav/sidenav.component';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+
+export type MenuItem = {
+  icon: string;
+  label: string;
+  route: string;
+};
+
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MaterialModule,SidenavComponent],
+  imports: [MaterialModule, SidenavComponent, RouterModule, CommonModule,],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
- collapsed = signal(false);
- sidenavWidth = computed(()=> this.collapsed() ? '65px' : '250px' )
+
+  sidenavOpen = signal(false);
+
+  menuItems = signal<MenuItem[]>([
+    { icon: 'home', label: 'Home', route: '/home' },
+    { icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
+    { icon: 'person', label: 'Profile', route: '/profile' },
+    { icon: 'settings', label: 'Settings', route: '/settings' },
+  ]);
+
+  isMobile(): boolean {
+    return window.innerWidth < 480;
+  }
+
+  toggleSidenav(): void {
+    this.sidenavOpen.set(!this.sidenavOpen());
+  }
+
 }

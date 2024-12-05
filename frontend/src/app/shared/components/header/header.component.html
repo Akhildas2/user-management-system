@@ -1,35 +1,28 @@
 <mat-toolbar class="navbar">
-    <button mat-icon-button aria-label="Menu" (click)="collapsed.set(!collapsed())">
-        <mat-icon>menu</mat-icon>
-    </button>
     <!-- Logo Section -->
     <div class="logo">
         <img src="assets/icons/logo.png" alt="CURD Logo" class="logo-img" />
     </div>
 
-    <!-- Navigation Links -->
+    <!-- Mobile Menu Toggle Button -->
+    <button mat-icon-button aria-label="Menu" class="mobile-menu-toggle" (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <!-- Navigation Links (for larger screens) -->
     <div class="center-buttons">
-        <button mat-button routerLink="/home" aria-label="Home Section">
-            <mat-icon>home</mat-icon>
-            <span>Home</span>
-        </button>
-        <button mat-button routerLink="/dashboard" aria-label="Dashboard">
-            <mat-icon>dashboard</mat-icon>
-            <span>Dashboard</span>
-        </button>
-        <button mat-button routerLink="/profile" aria-label="Profile">
-            <mat-icon>person</mat-icon>
-            <span>Profile</span>
-        </button>
-        <button mat-button routerLink="/settings" aria-label="Settings">
-            <mat-icon>settings</mat-icon>
-            <span>Settings</span>
+        <button mat-button *ngFor="let item of menuItems()" [routerLink]="item.route"
+            aria-label="{ item.label } Section" routerLinkActive="selected-menu-item" #rla="routerLinkActive"
+            [class.activated]="rla.isActive">
+            <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">
+                {{ item.icon }}
+            </mat-icon>
+            <span>{{ item.label }}</span>
         </button>
     </div>
 
-    <!-- Right Section -->
+    <!-- Right Section (User Avatar Dropdown) -->
     <div class="right-section">
-        <!-- User Avatar Dropdown -->
         <button mat-icon-button [matMenuTriggerFor]="avatarMenu" aria-label="User Menu">
             <img src="assets/icons/profile-user.png" class="profile-pic" alt="User Avatar" />
         </button>
@@ -47,7 +40,6 @@
                 <span>Logout</span>
             </button>
         </mat-menu>
-
         <!-- Logout -->
         <button mat-button routerLink="/logout" aria-label="Logout">
             <mat-icon>logout</mat-icon>
@@ -56,12 +48,11 @@
     </div>
 </mat-toolbar>
 
-
-<mat-sidenav-container>
-    <mat-sidenav opened mode="side"  [style.width]="sidenavWidth()">
-        <app-sidenav [collapsed] = "collapsed()"></app-sidenav>
-     </mat-sidenav>
-    <mat-sidenav-content class="content" [style.margin-left]="sidenavWidth()">
-        hello
+<mat-sidenav-container *ngIf="isMobile()">
+    <!-- Sidenav -->
+    <mat-sidenav [(opened)]="sidenavOpen" mode="side" class="sidenav">
+        <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content class="content">
     </mat-sidenav-content>
 </mat-sidenav-container>
