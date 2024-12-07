@@ -2,10 +2,19 @@
     transition: all 500ms ease-in-out;
 }
 
-mat-sidenav {
+.sidenav {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: calc(100vh - 100px);
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+mat-sidenav {
+    display: flex;
     padding: 20px 0;
     background-color: #fff;
 }
@@ -37,7 +46,8 @@ mat-sidenav {
     gap: 16px;
 }
 
-button.menu-item {
+button.menu-item,
+.logout-button button {
     width: 100%;
     display: flex;
     align-items: center;
@@ -47,14 +57,11 @@ button.menu-item {
     font-weight: bold;
     color: #00adbd;
     border-left: 5px solid transparent;
-    transition: color 0.3s ease, background-color 0.3s ease, border-left-color 0.3s ease;
     text-align: left;
+    transition: color 0.3s ease, background-color 0.3s ease, border-left-color 0.3s ease;
 }
 
-button.menu-item:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    color: #004d63;
-}
+
 
 button.menu-item.selected-menu-item {
     border-left-color: #00adbd;
@@ -66,25 +73,5 @@ button.menu-item.selected-menu-item {
     display: flex;
     justify-content: flex-start;
     position: absolute;
-    bottom: 20px;
-    left: 10px;
-}
-
-.logout-button button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 10px 15px;
-    font-weight: bold;
-    color: #00adbd;
-    border-left: 5px solid transparent;
-    text-align: left;
-    transition: color 0.3s ease, background-color 0.3s ease, border-left-color 0.3s ease;
-}
-
-.logout-button button:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    color: #004d63;
+    bottom: 30px;
 }

@@ -4,44 +4,50 @@
         <div class="left-side">
             <img [src]="loginImage" alt="Login Illustration" class="login-image" />
         </div>
+
         <!-- Right side with the login form -->
         <div class="right-side">
-            <h3 class="signup-header">New User?<a routerLink="/register">Sign Up</a></h3>
+            <h3 class="signup-header">New User? <a routerLink="/register">Sign Up</a></h3>
             <mat-card class="login-card">
                 <mat-card-header>
                     <mat-card-title class="card-title"><b>Welcome Back!</b></mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <h4>Login to continue</h4>
-                    <div class="email-container">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Enter your email</mat-label>
-                            <mat-icon aria-hidden="false" aria-label="Example email icon" matSuffix>email</mat-icon>
-                            <input matInput placeholder="abc@example.com" [formControl]="email"
-                                (blur)="updateErrorMessage()" required />
-                            <mat-error *ngIf="email.invalid">{{errorMessageEmail()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="password-container">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Enter your password</mat-label>
-                            <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="password"
-                                (blur)="updateErrorMessage()" required />
-                            <button mat-icon-button matSuffix (click)="toggleVisibility($event)"
-                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide()">
-                                <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
-                            </button>
-                            <mat-error *ngIf="password.invalid">{{errorMessagePassword()}}</mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="login-button-row">
-                        <button mat-flat-button class="login-button " class="full-width login-button"
-                            (click)="onLogin()" [disabled]="!isFormValid()">
-                            <mat-icon aria-hidden="false" aria-label="Example login icon">login</mat-icon> Login
+
+                    <!-- Email Input -->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Enter your email</mat-label>
+                        <mat-icon matSuffix aria-label="Email icon">email</mat-icon>
+                        <input matInput placeholder="abc@example.com" [formControl]="email" />
+                        <mat-error *ngIf="email.invalid && email.touched">
+                            {{ errorMessageEmail() }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Password Input -->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Enter your password</mat-label>
+                        <input matInput [type]="hide() ? 'password' : 'text'" [formControl]="password" />
+                        <button mat-icon-button matSuffix aria-label="Toggle password visibility"
+                            [attr.aria-pressed]="hide()" (click)="toggleVisibility($event)">
+                            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
                         </button>
-                    </div>
+                        <mat-error *ngIf="password.invalid && password.touched">
+                            {{ errorMessagePassword() }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Login Button -->
+                    <button mat-flat-button class="login-button full-width" (click)="onLogin()"
+                        [disabled]="!email.valid || !password.valid">
+                        <mat-icon>login</mat-icon> Login
+                    </button>
                 </mat-card-content>
-                <span class="forgot-password">Forgot Password ?</span>
+
+                <!-- Forgot Password -->
+                <span class="forgot-password">Forgot Password?</span>
+
                 <mat-card-footer class="login-card-footer">
                     <div class="social-button-row">
                         <span class="divider-text">
@@ -66,8 +72,6 @@
                         </button>
                     </div>
                 </mat-card-footer>
-
-
             </mat-card>
         </div>
     </div>

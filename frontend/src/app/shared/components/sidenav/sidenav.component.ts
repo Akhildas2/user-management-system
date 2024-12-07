@@ -19,10 +19,11 @@ export type MenuItem = {
 export class SidenavComponent {
   sidenavOpen = signal(false);
 
+  // Static menuItems
   menuItems = signal<MenuItem[]>([
     { icon: 'home', label: 'Home', route: '/home' },
-    { icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
     { icon: 'person', label: 'Profile', route: '/profile' },
+    { icon: 'task', label: 'Task', route: '/task' },
     { icon: 'settings', label: 'Settings', route: '/settings' },
   ]);
 }

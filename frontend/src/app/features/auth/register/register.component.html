@@ -19,19 +19,18 @@
                                 [ngClass]="{'input-success': field.control.valid}" id="{{field.name}}">
                                 <mat-label>{{field.label}}</mat-label>
                                 <mat-icon [attr.aria-label]="field.label" matPrefix>{{ field.icon }}</mat-icon>
-                                <input matInput [type]="field.type" placeholder="{{field.placeholder}}"
-                                    [formControl]="field.control"
-                                    [type]="field.name === 'password' && hide() ? 'password' : 'text' "
+                                <input matInput [type]="field.name === 'password' && hide() ? 'password' : 'text'"
+                                    placeholder="{{field.placeholder}}" [formControl]="field.control"
                                     (blur)="updateErrorMessage()" required />
-                                <button mat-icon-button *ngIf="field.name ==='password'"
-                                    (click)="toggleVisibility($event)" matSuffix><mat-icon>{{hide() ? 'visibility_off' :
-                                        'visibility'}}</mat-icon>
+                                <button mat-icon-button *ngIf="field.name === 'password'"
+                                    (click)="toggleVisibility($event)" matSuffix required type="button">
+                                    <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
                                 </button>
+
                                 <mat-error *ngIf="field.control.invalid">{{ field.errorMessage() }}</mat-error>
                             </mat-form-field>
                         </div>
 
-                        <!-- Register Button -->
                         <div class="register-button-row">
                             <button mat-flat-button class="full-width register-button" [disabled]="!isFormValid()">
                                 <mat-icon aria-hidden="false" aria-label="Register Icon">how_to_reg</mat-icon>
@@ -39,6 +38,7 @@
                             </button>
                         </div>
                     </form>
+
 
                 </mat-card-content>
                 <!-- Footer with Social Login Buttons -->

@@ -1,23 +1,25 @@
-<div class="sidenav-header">
-  <img src="assets/icons/profile-user.png" alt="Profile Image" />
-  <div class="header-text">
-    <h2>Akhil Das</h2>
+<div class="sidenav">
+  <div class="sidenav-header">
+    <img src="assets/icons/profile-user.png" alt="Profile Image" />
+    <div class="header-text">
+      <h2>Akhil Das</h2>
+    </div>
   </div>
-</div>
 
-<div class="center-buttons">
-  <button mat-button class="menu-item" *ngFor="let item of menuItems()" [routerLink]="item.route"
-    routerLinkActive="selected-menu-item" #rla="routerLinkActive" [class.activated]="rla.isActive">
-    <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">
-      {{ item.icon }}
-    </mat-icon>
-    <span>{{ item.label }}</span>
-  </button>
-</div>
+  <div class="center-buttons">
+    <button mat-button class="menu-item" *ngFor="let item of menuItems()" [routerLink]="item.route"
+      routerLinkActive="selected-menu-item" #rla="routerLinkActive" [class.activated]="rla.isActive">
+      <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">
+        {{ item.icon }}
+      </mat-icon>
+      <span>{{ item.label }}</span>
+    </button>
+  </div>
 
-<div class="logout-button">
-  <button mat-button routerLink="/logout" aria-label="Logout">
-    <mat-icon>logout</mat-icon>
-    <span>Logout</span>
-  </button>
+  <div class="logout-button">
+    <button mat-button routerLink="/logout" aria-label="Logout">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </div>
 </div>

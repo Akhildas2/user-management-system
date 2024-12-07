@@ -50,9 +50,12 @@
 
 <mat-sidenav-container *ngIf="isMobile()">
     <!-- Sidenav -->
-    <mat-sidenav [(opened)]="sidenavOpen" mode="side" class="sidenav">
+    <mat-sidenav [(opened)]="sidenavOpen" [mode]="isMobile() ? 'over' : 'side'" class="sidenav">
+        <!-- Sidenav Content -->
         <app-sidenav></app-sidenav>
+        <router-outlet></router-outlet>
     </mat-sidenav>
-    <mat-sidenav-content class="content">
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>

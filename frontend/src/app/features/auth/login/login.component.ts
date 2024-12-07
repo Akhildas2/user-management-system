@@ -4,7 +4,7 @@ import { MaterialModule } from '../../../../Material.Module';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthActions } from '../../../store/actions/auth.actions';
 
@@ -13,82 +13,54 @@ import { AuthActions } from '../../../store/actions/auth.actions';
   standalone: true,
   imports: [MaterialModule, CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'], // Corrected 'styleUrls'
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './login.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-  loginImage: string = 'assets/pages/login-security.png';
-
-  readonly email = new FormControl('', [Validators.required, Validators.email]);
-  readonly password = new FormControl('', [Validators.required, Validators.minLength(6)]);
+  loginImage = 'assets/pages/login-security.png';
+  email = new FormControl('', [Validators.required, Validators.email]);
+  password = new FormControl('', [Validators.required]);
 
   errorMessageEmail = signal('');
   errorMessagePassword = signal('');
-
   hide = signal(true);
 
-  constructor(
-    private store: Store,
-  ) {
-    merge(
-      this.email.statusChanges,
-      this.email.valueChanges,
-      this.password.statusChanges,
-      this.password.valueChanges
-    )
+  constructor(private store: Store) {
+    merge(this.email.statusChanges, this.password.statusChanges)
       .pipe(takeUntilDestroyed())
-      .subscribe(() => this.updateErrorMessage());
+      .subscribe(() => this.updateErrorMessages());
   }
 
-  updateErrorMessage() {
-    // Email error message
-    if (this.email.invalid && this.email.touched) {
-      if (this.email.hasError('required')) {
-        this.errorMessageEmail.set('Email is required.');
-      } else if (this.email.hasError('email')) {
-        this.errorMessageEmail.set('Please enter a valid email address.');
-      }
-    } else {
-      this.errorMessageEmail.set('');
-    }
+  updateErrorMessages() {
+    this.errorMessageEmail.set(
+      this.email.touched && this.email.invalid
+        ? this.email.hasError('required')
+          ? 'Email is required.'
+          : 'Please enter a valid email address.'
+        : ''
+    );
 
-    // Password error message
-    if (this.password.invalid && this.password.touched) {
-      if (this.password.hasError('required')) {
-        this.errorMessagePassword.set('Password is required.');
-      } else if (this.password.hasError('minlength')) {
-        this.errorMessagePassword.set('Password must be at least 6 characters long.');
-      }
-    } else {
-      this.errorMessagePassword.set('');
-    }
+    this.errorMessagePassword.set(
+      this.password.touched && this.password.invalid
+        ? 'Password is required.'
+        : ''
+    );
   }
 
-  // Toggle password visibility
   toggleVisibility(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
   }
 
-  // 
-  isFormValid(): boolean {
-    return this.email.valid && this.password.valid;
-  }
-
-  // Handle login submission
   onLogin() {
     if (this.email.invalid || this.password.invalid) {
-      this.updateErrorMessage();
+      this.updateErrorMessages();
       return;
     }
-
-    const emailValue = this.email.value || '';
-    const passwordValue = this.password.value || '';
-
-    // Dispatch login action
-    this.store.dispatch(AuthActions.login({
-      email: emailValue,
-      password: passwordValue
-    }));
+    const { email, password } = {
+      email: this.email.value!,
+      password: this.password.value!,
+    };
+    this.store.dispatch(AuthActions.login({ email, password }));
   }
 }

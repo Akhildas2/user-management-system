@@ -41,7 +41,7 @@ export class RegisterComponent {
   errorMessage = signal('');
   hide = signal(true);
 
-  constructor(private authService:AuthService,private router:Router) {
+  constructor(private authService: AuthService, private router: Router) {
     merge(
       this.name.statusChanges,
       this.name.valueChanges,
@@ -64,17 +64,17 @@ export class RegisterComponent {
         this.name.hasError('minlength') ? `Name should be at least ${this.name.errors?.['minlength']?.requiredLength} characters` :
           this.name.hasError('maxlength') ? `Name should not exceed ${this.name.errors?.['maxlength']?.requiredLength} characters` : ''
     );
-    
+
     this.emailErrorMessage.set(
       this.email.hasError('required') ? 'Email is required' :
         this.email.hasError('email') ? 'Please enter a valid email address' : ''
     );
-    
+
     this.phoneErrorMessage.set(
       this.phone.hasError('required') ? 'Phone is required' :
         this.phone.hasError('pattern') ? 'Phone number must be exactly 10 digits' : ''
     );
-    
+
     this.passwordErrorMessage.set(
       this.password.hasError('required') ? 'Password is required' :
         this.password.hasError('minlength') ? `Password should be at least ${this.password.errors?.['minlength']?.requiredLength} characters` :
@@ -87,25 +87,25 @@ export class RegisterComponent {
     event.stopPropagation();
   }
 
-  isFormValid(): boolean {
-    return this.name.valid && this.email.valid && this.phone.valid && this.password.valid;
-  }
-
   proceedRegister() {
+    if (!this.isFormValid()) return;
     const name = String(this.name.value);
     const email = String(this.email.value);
     const phone = Number(this.phone.value);
     const password = String(this.password.value);
-    
 
     this.authService.register(name, email, phone, password).subscribe(
       (response) => {
-        this.authService.setAccessToken(response.accessToken );
+        this.authService.setAccessToken(response.accessToken);
         this.router.navigate(['/home']);
       },
       (error) => {
         this.errorMessage.set('User already exists or there was an error. Please try again.');
       }
     );
+  }
+
+  isFormValid(): boolean {
+    return this.name.valid && this.email.valid && this.phone.valid && this.password.valid;
   }
 }

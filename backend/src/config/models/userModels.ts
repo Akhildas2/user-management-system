@@ -7,6 +7,7 @@ interface IUser extends Document {
     email: string;
     phone: number;
     password: string;
+    isAdmin: boolean;
     comparePassword(password: string): Promise<boolean>;
     createdAt: Date;
 }
@@ -17,6 +18,7 @@ const UserSchema: Schema = new Schema<IUser>({
     email: { type: String, required: true, unique: true },
     phone: { type: Number, required: true },
     password: { type: String, required: true, minlength: 8 },
+    isAdmin: { type: Boolean, default: false },
     createdAt: {
         type: Date,
         default: Date.now,
