@@ -6,7 +6,7 @@ import { merge } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AuthActions } from '../../../store/actions/auth.actions';
+import * as AuthActions from '../../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -57,10 +57,8 @@ export class LoginComponent {
       this.updateErrorMessages();
       return;
     }
-    const { email, password } = {
-      email: this.email.value!,
-      password: this.password.value!,
-    };
-    this.store.dispatch(AuthActions.login({ email, password }));
+    this.store.dispatch(
+      AuthActions.login({ email: this.email.value!, password: this.password.value! })
+    );
   }
 }

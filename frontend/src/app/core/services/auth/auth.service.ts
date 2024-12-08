@@ -14,31 +14,29 @@ export class AuthService {
   // Login method
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password }, {
-      withCredentials: true, // Allow cookies to be sent/received
+      withCredentials: true, // Send cookies with the request if needed (e.g., session cookies)
     });
   }
 
   // Register method
   register(name: string, email: string, phone: number, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, { name, email, phone, password }, {
-      withCredentials: true, // Allow cookies to be sent/received
+      withCredentials: true, // Send cookies with the request if needed (e.g., session cookies)
     });
   }
 
   // Refresh the access token
   refreshAccessToken(): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/refresh-token`, {}, {
-      withCredentials: true, // Allow cookies to be sent/received
+      withCredentials: true, // Include cookies when refreshing token
     });
   }
 
   // Check if user is logged in
-    isLoggedIn(): boolean {
-      const token = localStorage.getItem('accessToken');
-      console.log("local",localStorage);
-      return !!token;
-    }
-
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('accessToken');
+    return !!token;
+  }
 
   // Save access token to localStorage
   setAccessToken(accessToken: string): void {
@@ -53,7 +51,7 @@ export class AuthService {
   // Logout method
   logout(): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/logout`, {}, {
-      withCredentials: true, // Send cookies to clear the refresh token server-side
+      withCredentials: true, // Include cookies when logging out, if the server clears the session cookies
     });
   }
 
@@ -61,5 +59,4 @@ export class AuthService {
   clearTokens(): void {
     localStorage.removeItem('accessToken');
   }
-
 }

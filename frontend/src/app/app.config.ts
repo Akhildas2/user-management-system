@@ -10,7 +10,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
 import { AuthEffects } from './store/effects/auth.effects';
-import { authFeature } from './store/reducers/auth.reducer';
+import { authFeature } from './store/reducers/auth.reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,9 +18,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(),
-    provideStore({[authFeature.name]: authFeature.reducer}),
+    provideStore({ [authFeature.name]: authFeature.reducer }),
     provideEffects([AuthEffects]),
     provideRouterStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    ]
+  ]
 };

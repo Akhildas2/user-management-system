@@ -1,9 +1,10 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { AuthActions } from '../actions/auth.actions';
+import * as AuthActions from '../actions/auth.actions';
+import { IUser } from '../../shared/models/userModel';
 
 export interface AuthState {
     accessToken: string | null;
-    user: any | null;
+    user: IUser | null;
     error: string | null;
     isLoading: boolean;
 }
@@ -35,6 +36,16 @@ export const authFeature = createFeature({
             ...state,
             accessToken: null,
             user: null,
+            isLoading: false,
+            error
+        })),
+        on(AuthActions.logout, state => ({
+            ...state,
+            isLoading: true
+        })),
+        on(AuthActions.logoutSuccess, () => initialState),
+        on(AuthActions.logoutFailure, (state, { error }) => ({
+            ...state,
             isLoading: false,
             error
         }))

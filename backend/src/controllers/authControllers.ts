@@ -100,3 +100,23 @@ export const refreshAccessToken = async (req: Request, res: Response): Promise<v
         }
     }
 };
+
+
+export const logout = async (req: Request, res: Response): Promise<void> => {
+    try {
+
+        // Clear the refresh token by setting an expired cookie
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true,
+            maxAge: 0,  // Immediately expire the cookie
+        });
+
+        // Optionally, send a response to the client to indicate successful logout
+        res.status(200).json({ message: "Logout successful" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Internal Server Error!' });
+    }
+}

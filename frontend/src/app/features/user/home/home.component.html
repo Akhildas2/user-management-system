@@ -7,7 +7,7 @@
         and settings.
     </p>
     <div class="cards-container">
-        <mat-card class="card" *ngFor="let card of cards" routerLink="/task">
+        <mat-card class="card" *ngFor="let card of cards" routerLink={{card.route}}>
             <mat-card-title>
                 <div class="card-title">
                     <mat-icon [fontSet]="'material-icons-outlined'"> {{card.icon}}</mat-icon>
