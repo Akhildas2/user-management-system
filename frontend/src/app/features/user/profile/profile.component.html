@@ -1,40 +1,50 @@
 <app-header></app-header>
-<!--<div class="profile-container">
-    <h1>User Profile</h1>
 
+<div class="profile-container" *ngIf="(isLoading$ | async) === false; else loading">
+  <h1>User Profile</h1>
+
+  <div *ngIf="user$ | async as user; else noUser">
     <div class="profile-picture">
-        <img [src]="user.profileImage || 'assets/icons/profile-user.png'" alt="Profile Image" id="profile-img" class="profile-img">
-        <input type="file" id="file-input" class="file-input">
+      <img
+        [src]="user.profileImage || 'assets/icons/profile-user.png'"
+        alt="Profile Image"
+        id="profile-img"
+        class="profile-img"
+      />
     </div>
-    <label for="file-input" class="file-upload-button">Upload Profile Picture</label>
-<div class="user-info">
-    
-    <h2 class="user-header">Personal Information</h2>
-        <mat-card class="user-info-card">
-            <mat-card-header><h3>{{editMode ? 'Edit Your Information' :'Your Information'}}</h3></mat-card-header>
-            <mat-card-content>
-                <form >
-                    <div class="field-container">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Name</mat-label>
-                            <input matInput [(ngModel)]="user.name" name="name" required />
-                        </mat-form-field>
-                    </div>
-                    <div class="field-container">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Name</mat-label>
-                            <input matInput [(ngModel)]="user.name" name="name" required />
-                        </mat-form-field>
-                    </div>
-                    <div class="field-container">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Email</mat-label>
-                            <input matInput [(ngModel)]="user.name" name="name" required />
-                        </mat-form-field>
-                    </div>
-                </form>
-            </mat-card-content>
-        </mat-card>
+
+    <div class="user-info">
+      <h2 class="user-header">Personal Information</h2>
+      <mat-card>
+        <mat-card-content>
+          <form>
+            <div class="field-container">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="user.name" name="name" disabled />
+              </mat-form-field>
+            </div>
+            <div class="field-container">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput [(ngModel)]="user.email" name="email" disabled />
+              </mat-form-field>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>
 
-</div> -->
+<!-- Loading State -->
+<ng-template #loading>
+  <div class="loading-spinner">
+    <!-- <mat-spinner></mat-spinner> -->
+  </div>
+</ng-template>
+
+<!-- No User Found -->
+<ng-template #noUser>
+  <p>No user data available.</p>
+</ng-template>

@@ -5,7 +5,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { merge } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../core/services/auth/auth.service';
+import { AuthServices } from '../../../core/services/auth/auth.services';
 
 @Component({
   selector: 'app-register',
@@ -41,7 +41,7 @@ export class RegisterComponent {
   errorMessage = signal('');
   hide = signal(true);
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthServices, private router: Router) {
     merge(
       this.name.statusChanges,
       this.name.valueChanges,

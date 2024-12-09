@@ -1,0 +1,59 @@
+.profile-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.profile-picture {
+    text-align: center;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-upload-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.file-upload-button:hover {
+    background-color: #45a049;
+}
+
+.user-info {
+    margin-top: 30px;
+}
+
+.user-info-card {
+    margin-top: 20px;
+}
+
+.field-container {
+    margin-bottom: 20px;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.user-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
