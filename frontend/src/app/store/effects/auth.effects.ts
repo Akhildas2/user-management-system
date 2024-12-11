@@ -16,7 +16,10 @@ export class AuthEffects {
         this.AuthServices.login(action.email, action.password).pipe(
           map(response => {
             this.AuthServices.setAccessToken(response.accessToken);
+            this.AuthServices.setUserId(response.user._id)
+            
             this.router.navigate(['/home']);
+            
             return AuthActions.loginSuccess({
               accessToken: response.accessToken,
               user: response.user

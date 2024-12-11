@@ -8,13 +8,13 @@ const jsonParser = bodyParser.json();
 const router = express.Router();
 
 // GET API - READ: Fetch all users
-router.get('/user/:id', authenticateToken, userControllers.getUsers);
+router.get('/user/:id', userControllers.getUsers);
 
 // PUT API - UPDATE: Update an existing user by ID
-router.put('/user', authenticateToken, jsonParser, userControllers.updateUser);
+router.put('/user', jsonParser, userControllers.updateUser);
 
 // DELETE API - DELETE: Delete a user by ID
-router.delete('/user/:id', authenticateToken, userControllers.deleteUser);
+router.delete('/user/:id', userControllers.deleteUser);
 
 // Create User
 router.post('/register', jsonParser, authControllers.register)

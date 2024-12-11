@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { IUser } from '../../shared/models/userModel';
 
 // Get User
-export const getProfile = createAction('[User] Get Profile', props<{ id: string }>());
+export const getProfile = createAction('[User] Get Profile');
 export const getProfileSuccess = createAction('[User] Get Profile Success', props<{ user: IUser }>());
 export const getProfileFailure = createAction('[User] Get Profile Failure', props<{ error: string }>());
 

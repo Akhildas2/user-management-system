@@ -1,33 +1,47 @@
 <app-header></app-header>
 
-<div class="profile-container" *ngIf="(isLoading$ | async) === false; else loading">
+<!-- Profile Container -->
+<div class="profile-container" *ngIf="(isLoading$ | async)  === false;else loading">
   <h1>User Profile</h1>
 
+  <!-- User Data -->
   <div *ngIf="user$ | async as user; else noUser">
     <div class="profile-picture">
       <img
         [src]="user.profileImage || 'assets/icons/profile-user.png'"
         alt="Profile Image"
-        id="profile-img"
         class="profile-img"
       />
     </div>
 
+    <!-- Personal Information -->
     <div class="user-info">
-      <h2 class="user-header">Personal Information</h2>
+     <mat-slide-toggle>edit</mat-slide-toggle>
+      <h2>Personal Information</h2>
       <mat-card>
         <mat-card-content>
           <form>
+            <!-- Name -->
             <div class="field-container">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Name</mat-label>
-                <input matInput [(ngModel)]="user.name" name="name" disabled />
+                <input matInput [(ngModel)]="user.name" name="name"  />
               </mat-form-field>
             </div>
+
+            <!-- Email -->
             <div class="field-container">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Email</mat-label>
                 <input matInput [(ngModel)]="user.email" name="email" disabled />
+              </mat-form-field>
+            </div>
+
+            <!-- Phone -->
+            <div class="field-container">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Phone</mat-label>
+                <input matInput [(ngModel)]="user.phone" name="phone"  />
               </mat-form-field>
             </div>
           </form>
@@ -39,9 +53,7 @@
 
 <!-- Loading State -->
 <ng-template #loading>
-  <div class="loading-spinner">
-    <!-- <mat-spinner></mat-spinner> -->
-  </div>
+  <mat-spinner></mat-spinner>
 </ng-template>
 
 <!-- No User Found -->

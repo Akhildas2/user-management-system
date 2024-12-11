@@ -48,12 +48,23 @@ export class AuthServices {
     return localStorage.getItem('accessToken');
   }
 
+  // Save id to localStorage
+  setUserId(userId: string): void {
+    localStorage.setItem('userId', userId);
+  }
+
+  // Retrieve id from localStorage
+  getUserId(): string | null {
+     return localStorage.getItem('userId');
+  }
+
   // Logout method
   logout(): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/logout`, {}, {
       withCredentials: true, // Include cookies when logging out, if the server clears the session cookies
     });
   }
+
 
   // Clear tokens locally after logout
   clearTokens(): void {

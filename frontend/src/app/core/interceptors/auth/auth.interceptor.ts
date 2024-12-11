@@ -1,9 +1,9 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.services';
+import { AuthServices } from '../../services/auth/auth.services';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
+  const authService = inject(AuthServices);
   const token = authService.getAccessToken();
 
   // Clone the request and set the Authorization header if a token is available

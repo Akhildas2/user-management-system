@@ -20,7 +20,9 @@ export const authReducer = createReducer(
         isLoading: true,
         error: null
     })),
-    on(AuthActions.loginSuccess, (state, { accessToken, user }) => ({
+    on(AuthActions.loginSuccess, (state, { accessToken, user }) => (
+        console.log("Login successful, setting user:", user),
+        {
         ...state,
         accessToken,
         user,
