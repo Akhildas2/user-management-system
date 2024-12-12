@@ -6,5 +6,5 @@ export const selectAuthState = createFeatureSelector<AuthState>('Auth');
 export const selectAccessToken = createSelector(selectAuthState, state => state.accessToken);
 export const selectAuthError = createSelector(selectAuthState, state => state.error);
 export const selectIsLoading = createSelector(selectAuthState, state => state.isLoading);
-export const selectCurrentUser = createSelector(selectAuthState, (state) => { console.log("User in the auth state:", state.user); return state.user; });
+export const selectCurrentUser = createSelector(selectAuthState, (state) => state.user);
 export const selectCurrentUserId = createSelector(selectCurrentUser, (user) => user ? user.id : undefined);

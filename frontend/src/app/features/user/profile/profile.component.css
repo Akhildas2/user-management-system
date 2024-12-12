@@ -1,59 +1,155 @@
 .profile-container {
-    padding: 20px;
-    max-width: 600px;
+    padding: 30px;
+    max-width: 800px;
     margin: auto;
-}
-
-.profile-picture {
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-title {
     text-align: center;
-}
-
-.profile-img {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .upload-photo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .profile-img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-}
-
-.file-input {
-    display: none;
-}
-
-.file-upload-button {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 20px;
+    border: 2px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .upload-photo-btn {
     background-color: #4CAF50;
     color: white;
     border-radius: 5px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
     cursor: pointer;
-}
-
-.file-upload-button:hover {
+  }
+  
+  .upload-photo-btn:hover {
     background-color: #45a049;
-}
-
-.user-info {
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .user-info {
     margin-top: 30px;
-}
-
-.user-info-card {
+  }
+  
+  .info-card {
     margin-top: 20px;
-}
-
-.field-container {
-    margin-bottom: 20px;
-}
-
-.mat-form-field {
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .personal-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .field-container {
+    margin-bottom: 15px;
+  }
+  
+  .mat-form-field {
     width: 100%;
-}
-
-.full-width {
+  }
+  
+  .full-width {
     width: 100%;
-}
-
-.user-header {
+  }
+  
+  .update-profile-button-row {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .update-btn {
+    width: 50%;
+    padding: 10px;
+  }
+  
+  .add-details {
+    margin-top: 40px;
+  }
+  
+  .details-card {
+    flex-direction: column;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-details-button-row {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .submit-btn {
+    width: 50%;
+    padding: 10px;
+  }
+  
+  .delete-account-btn {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    background-color: #f44336;
+    color: white;
     text-align: center;
-    margin-bottom: 20px;
-}
+    border-radius: 5px;
+  }
+  
+  .delete-account-btn:hover {
+    background-color: #e53935;
+  }
+  
+  .mat-form-field .mat-label {
+    font-weight: bold;
+  }
+  
+  .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: #4CAF50;
+  }
+  
+  .gender-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+  
+  .gender-label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  

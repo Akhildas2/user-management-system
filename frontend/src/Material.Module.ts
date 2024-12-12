@@ -10,7 +10,11 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner"
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
     imports: [
@@ -25,7 +29,11 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
         MatSidenavModule,
         MatListModule,
         MatProgressSpinnerModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatExpansionModule,
+        MatDatepickerModule
     ],
     exports: [
         MatCardModule,
@@ -39,7 +47,11 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
         MatSidenavModule,
         MatListModule,
         MatProgressSpinnerModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatExpansionModule,
+        MatDatepickerModule
     ]
 })
 export class MaterialModule { }

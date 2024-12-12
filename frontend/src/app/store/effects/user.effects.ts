@@ -15,8 +15,6 @@ export class UserEffects {
             ofType(UserActions.getProfile),
             mergeMap(() => {
                 const userId = this.authService.getUserId();
-                console.log("userid from user effect", userId);
-
                 if (userId) {
                     return this.userService.getUserById(userId).pipe(
                         map(user => UserActions.getProfileSuccess({ user })),

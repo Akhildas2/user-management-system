@@ -5,17 +5,17 @@ import User from '../config/models/userModels';
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try {
         console.log("enerted");
-        
+
         const { id } = req.params;
-        console.log("req.params",req.params);
+        console.log("req.params", req.params);
 
         // Find user from the database
         const result = await User.findOne({ _id: id });
-        console.log("result",result);
+        console.log("result", result);
 
         if (result) {
             // If user are found, return them in the response
-            res.status(200).json( result );
+            res.status(200).json(result);
         } else {
             // If no user are found
             res.status(404).json({ msg: 'Records Not Found!' });
@@ -31,12 +31,12 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 // For updating user
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id, name, email, phone, age, gender, skill, position } = req.body;
+        const { id, name, email, phone, dob, gender, skill, position } = req.body;
         const user = await User.findByIdAndUpdate(
             id,
             {
                 $set: {
-                    name, email, phone, age, gender, skill, position
+                    name, email, phone, dob, gender, skill, position
                 }
             },
             { new: true }

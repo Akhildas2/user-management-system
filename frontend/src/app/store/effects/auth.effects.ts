@@ -7,7 +7,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 
 @Injectable()
 export class AuthEffects {
-  
+
   // Login Effect
   login$ = createEffect(() => {
     return this.actions$.pipe(
@@ -17,9 +17,9 @@ export class AuthEffects {
           map(response => {
             this.AuthServices.setAccessToken(response.accessToken);
             this.AuthServices.setUserId(response.user._id)
-            
+
             this.router.navigate(['/home']);
-            
+
             return AuthActions.loginSuccess({
               accessToken: response.accessToken,
               user: response.user
