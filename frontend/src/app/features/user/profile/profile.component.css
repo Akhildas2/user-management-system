@@ -1,155 +1,235 @@
+/* Profile Container */
 .profile-container {
-    padding: 30px;
-    max-width: 800px;
-    margin: auto;
-    border-radius: 10px;
-    background-color: #f5f5f5;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
+  padding: 30px;
+  max-width: 1000px;
+  margin: auto;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title */
+.profile-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #00adbd;
+}
+
+/* Profile Header */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Upload Button */
+.upload-photo-container {
+  margin-top: 10px;
+}
+
+.upload-photo-btn {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #00adbd !important;
+  border: 1px solid #00adbd;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.upload-photo-btn:hover {
+  color: #004d63 !important;
+}
+
+.file-input {
+  display: none;
+}
+
+/* User Information */
+.user-info {
+  margin-top: 30px;
+}
+
+.info-card {
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.personal-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.personal-info-header h2,
+mat-icon {
+  color: #00adbd;
+}
+
+.field-container {
+  margin-bottom: 15px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.full-width {
+  font: bolder;
+  width: 100%;
+}
+
+.update-profile-button-row {
+  display: flex;
+  justify-content: center;
+}
+
+.update-btn {
+  color: #00adbd !important;
+  border: 1px solid #00adbd;
+  border-radius: 25px;
+  width: 50%;
+  cursor: pointer;
+}
+
+.update-btn:hover {
+  color: #004d63 !important;
+}
+
+/* Add Details Section */
+.add-details {
+  margin-top: 40px;
+
+}
+
+.add-details-title {
+  font-size: 1.5em;
+  color: #00adbd;
+}
+
+mat-panel-description {
+  font-size: 1rem;
+  gap: 10px;
+}
+
+.details-card {
+  flex-direction: column;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Add Details Button */
+.add-details-button-row {
+  display: flex;
+  justify-content: center;
+}
+
+.add-btn {
+  color: #00adbd !important;
+  border: 1px solid #00adbd;
+  border-radius: 25px;
+  width: 50%;
+  cursor: pointer;
+}
+
+.add-btn button :hover{
+  background-color: red;
+
+}
+
+/* Gender Container */
+.gender-container {
+  margin-top: -20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.gender-label {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.gender-label mat-icon {
+  margin-right: 5px;
+}
+
+/* Delete Account Button */
+.delete-account-btn {
+  display: block;
+  width: 50%;
+  margin: 20px auto;
+  text-align: center;
+  color: #00adbd !important;
+  border: 1px solid #00adbd;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.delete-account-btn:hover {
+  color: #004d63 !important;
+  background-color: red;
+}
+
+
+@media (max-width: 480px) {
   .profile-title {
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
+    font-size: 18px;
   }
-  
-  .profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .upload-photo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
+
   .profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ddd;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100px;
+    height: 100px;
   }
-  
-  .upload-photo-btn {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 5px;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .upload-photo-btn:hover {
-    background-color: #45a049;
-  }
-  
-  .file-input {
-    display: none;
-  }
-  
-  .user-info {
-    margin-top: 30px;
-  }
-  
-  .info-card {
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .personal-info-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .field-container {
-    margin-bottom: 15px;
-  }
-  
-  .mat-form-field {
-    width: 100%;
-  }
-  
-  .full-width {
-    width: 100%;
-  }
-  
-  .update-profile-button-row {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .update-btn {
-    width: 50%;
-    padding: 10px;
-  }
-  
-  .add-details {
-    margin-top: 40px;
-  }
-  
-  .details-card {
-    flex-direction: column;
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .add-details-button-row {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .submit-btn {
-    width: 50%;
-    padding: 10px;
-  }
-  
+
+  .update-btn,
+  .add-btn,
   .delete-account-btn {
-    display: block;
     width: 100%;
-    margin-top: 20px;
-    background-color: #f44336;
-    color: white;
-    text-align: center;
-    border-radius: 5px;
   }
-  
-  .delete-account-btn:hover {
-    background-color: #e53935;
+
+  .add-details-title {
+    font-size: 1em;
+    color: #00adbd;
   }
-  
-  .mat-form-field .mat-label {
-    font-weight: bold;
-  }
-  
-  .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-    background-color: #4CAF50;
-  }
-  
-  .gender-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+
+  mat-panel-description {
+    font-size: 14px;
     gap: 10px;
   }
-  
-  .gender-label {
-    font-weight: bold;
-    margin-right: 10px;
+
+  /* Gender container */
+  .gender-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18px;
+    gap: 10px;
   }
-  
+
+  mat-radio-group {
+    display: flex;
+    gap: 15px;
+  }
+
+  mat-radio-button {
+    font-size: 18px;
+  }
+}

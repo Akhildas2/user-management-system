@@ -22,7 +22,8 @@ export class ProfileComponent implements OnInit {
   isLoading$: Observable<boolean>;
   editMode: boolean = false;
   detailsForm: FormGroup;
-  selectedGender: string = 'Male';
+  personalInfoForm: FormGroup;
+  editableUser: Partial<IUser> = {};
 
   positions: { position: string, icon: string }[] = [
     { position: 'Developer', icon: 'code' },
@@ -35,33 +36,54 @@ export class ProfileComponent implements OnInit {
     this.user$ = this.store.select(selectUserProfile);
     this.isLoading$ = this.store.select(selectUserLoading);
 
+    // Form group for personal information
+    this.personalInfoForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+    });
 
+
+    // Form group for additional details
     this.detailsForm = this.fb.group({
-      name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
       dob: ['', [Validators.required]],
       gender: ['Male', [Validators.required]],
       skills: ['', [Validators.required]],
       position: ['', [Validators.required]],
     });
-
   }
 
   ngOnInit(): void {
     this.store.dispatch(UserActions.getProfile());
+
+    this.user$.subscribe((user) => {
+      if (user) {
+        this.personalInfoForm.patchValue({
+          name: user.name,
+          phone: user.phone
+        });
+        this.editableUser = { ...user };
+      }
+    })
   }
 
   toggleEditMode(): void {
     this.editMode = !this.editMode;
   }
 
-  addDeatils(): void {
+  updatePersonalInfo(): void {
+    if (this.personalInfoForm.valid) {
+      const updatedData = this.personalInfoForm.value;
+      console.log('Updated Personal Info:', updatedData);
+    }
+  }
+
+  addDetails(): void {
     if (this.detailsForm.valid) {
       const formData = this.detailsForm.value;
       console.log('Submitted Form Data:', formData);
     }
   }
+
 
 
 }
