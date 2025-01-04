@@ -13,6 +13,7 @@ import { AuthEffects } from './store/effects/auth.effects';
 import { authReducer } from './store/reducers/auth.reducers';
 import { UserEffects } from './store/effects/user.effects';
 import { userReducer } from './store/reducers/user.reducers';
+import { DatePipe } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,5 +25,6 @@ export const appConfig: ApplicationConfig = {
     provideEffects([AuthEffects, UserEffects]),
     provideStore({ 'Auth': authReducer, 'User': userReducer }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    DatePipe
   ]
 };

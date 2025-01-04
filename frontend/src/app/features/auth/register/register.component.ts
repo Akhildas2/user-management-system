@@ -4,8 +4,9 @@ import { MaterialModule } from '../../../../Material.Module';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { AuthServices } from '../../../core/services/auth/auth.services';
+import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as AuthActions from '../../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -41,7 +42,7 @@ export class RegisterComponent {
   errorMessage = signal('');
   hide = signal(true);
 
-  constructor(private authService: AuthServices, private router: Router) {
+  constructor(private store: Store) {
     merge(
       this.name.statusChanges,
       this.name.valueChanges,
@@ -93,16 +94,7 @@ export class RegisterComponent {
     const email = String(this.email.value);
     const phone = Number(this.phone.value);
     const password = String(this.password.value);
-
-    this.authService.register(name, email, phone, password).subscribe(
-      (response) => {
-        this.authService.setAccessToken(response.accessToken);
-        this.router.navigate(['/home']);
-      },
-      (error) => {
-        this.errorMessage.set('User already exists or there was an error. Please try again.');
-      }
-    );
+    this.store.dispatch(AuthActions.register({ name, email, phone, password }))
   }
 
   isFormValid(): boolean {

@@ -4,15 +4,9 @@ import User from '../config/models/userModels';
 // For getting the user
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
     try {
-        console.log("enerted");
-
         const { id } = req.params;
-        console.log("req.params", req.params);
-
         // Find user from the database
         const result = await User.findOne({ _id: id });
-        console.log("result", result);
-
         if (result) {
             // If user are found, return them in the response
             res.status(200).json(result);
@@ -31,12 +25,13 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 // For updating user
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id, name, email, phone, dob, gender, skill, position } = req.body;
+        const { id, name, email, phone, dob, gender, skills, position } = req.body;
+
         const user = await User.findByIdAndUpdate(
             id,
             {
                 $set: {
-                    name, email, phone, dob, gender, skill, position
+                    name, email, phone, dob, gender, skills, position
                 }
             },
             { new: true }
@@ -44,6 +39,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
 
         if (!user) {
             res.status(404).json({ msg: "User not found!" });
+            return;
         }
 
         res.status(200).json({ msg: "User Updated Successfully!", user });
@@ -65,6 +61,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
         } else {
             res.status(404).json({ msg: 'User not found' });
         }
+
     } catch (error) {
         console.error(error);
         // Handle errors message

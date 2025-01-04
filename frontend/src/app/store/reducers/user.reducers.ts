@@ -13,16 +13,16 @@ export const userReducer = createReducer(
 
   // Get Profile
   on(UserActions.getProfile, state => ({ ...state, loading: true, error: null })),
-  on(UserActions.getProfileSuccess, (state, { user }) => ({ ...state, profile: user, loading: false })),
+  on(UserActions.getProfileSuccess, (state, { user }) => ({ ...state, profile: user, loading: false, error: null })),
   on(UserActions.getProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
   // Edit Profile
-  on(UserActions.editProfile, state => ({ ...state, loading: true })),
-  on(UserActions.editProfileSuccess, (state, { user }) => ({ ...state, profile: user, loading: false })),
+  on(UserActions.editProfile, state => ({ ...state, loading: true, error: null })),
+  on(UserActions.editProfileSuccess, (state, { user }) => ({ ...state, profile: { ...state.profile, ...user }, loading: false, error: null })),
   on(UserActions.editProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
   // Delete Profile
-  on(UserActions.deleteProfile, state => ({ ...state, loading: true })),
+  on(UserActions.deleteProfile, state => ({ ...state, loading: true, error: null })),
   on(UserActions.deleteProfileSuccess, () => ({ ...initialState })),
   on(UserActions.deleteProfileFailure, (state, { error }) => ({ ...state, loading: false, error }))
 );

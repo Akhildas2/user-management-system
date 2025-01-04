@@ -11,7 +11,7 @@ interface IUser extends Document {
     dob: Date;
     gender: string;
     position: string;
-    skill: string;
+    skills: string;
     isAdmin: boolean;
     comparePassword(password: string): Promise<boolean>;
     createdAt: Date;
@@ -27,7 +27,7 @@ const UserSchema: Schema = new Schema<IUser>({
     dob: { type: Date },
     gender: { type: String },
     position: { type: String },
-    skill: { type: String },
+    skills: { type: String },
     isAdmin: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now }
 });

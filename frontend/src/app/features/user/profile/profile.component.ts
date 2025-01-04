@@ -1,29 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../../Material.Module';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { Store } from '@ngrx/store';
 import { IUser } from '../../../shared/models/userModel';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { selectUserLoading, selectUserProfile } from '../../../store/selectors/user.selectors';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { selectUserError, selectUserLoading, selectUserProfile } from '../../../store/selectors/user.selectors';
 import * as UserActions from '../../../store/actions/user.actions'
 import { MatNativeDateModule } from '@angular/material/core';
+import { Router } from '@angular/router';
+import { minimumAgeValidator } from '../../../shared/utilitys/dob.validators';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [HeaderComponent, MaterialModule, CommonModule, FormsModule, ReactiveFormsModule, MatNativeDateModule],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrl: './profile.component.css',
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   user$: Observable<IUser | null>;
   isLoading$: Observable<boolean>;
+  error$: Observable<string | null>;
   editMode: boolean = false;
+  editAdditionalDetails: boolean = false;
   detailsForm: FormGroup;
   personalInfoForm: FormGroup;
   editableUser: Partial<IUser> = {};
+  additionalDetailsAvailable = false;
+  private destroy$ = new Subject<void>();
 
   positions: { position: string, icon: string }[] = [
     { position: 'Developer', icon: 'code' },
@@ -32,9 +40,10 @@ export class ProfileComponent implements OnInit {
     { position: 'QA Tester', icon: 'check_circle' }
   ];
 
-  constructor(private store: Store, private fb: FormBuilder) {
+  constructor(private store: Store, private fb: FormBuilder, private router: Router, private dialog: MatDialog) {
     this.user$ = this.store.select(selectUserProfile);
     this.isLoading$ = this.store.select(selectUserLoading);
+    this.error$ = this.store.select(selectUserError);
 
     // Form group for personal information
     this.personalInfoForm = this.fb.group({
@@ -45,7 +54,7 @@ export class ProfileComponent implements OnInit {
 
     // Form group for additional details
     this.detailsForm = this.fb.group({
-      dob: ['', [Validators.required]],
+      dob: ['', [Validators.required, minimumAgeValidator(18)]],
       gender: ['Male', [Validators.required]],
       skills: ['', [Validators.required]],
       position: ['', [Validators.required]],
@@ -55,35 +64,117 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(UserActions.getProfile());
 
-    this.user$.subscribe((user) => {
+    this.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       if (user) {
         this.personalInfoForm.patchValue({
           name: user.name,
           phone: user.phone
         });
+
+        this.detailsForm.patchValue({
+          dob: user.dob,
+          gender: user.gender || 'Male',
+          skills: user.skills,
+          position: user.position
+        });
+
         this.editableUser = { ...user };
+        this.additionalDetailsAvailable = !!user.dob;
       }
-    })
+    });
+
+
   }
 
   toggleEditMode(): void {
     this.editMode = !this.editMode;
+    if (!this.editMode) {
+      this.personalInfoForm.patchValue({
+        name: this.editableUser.name,
+        phone: this.editableUser.phone
+      });
+    }
+  }
+
+
+  toggleEditAdditionalDetails(): void {
+    this.editAdditionalDetails = !this.editAdditionalDetails;
+    if (!this.editAdditionalDetails) {
+      this.detailsForm.patchValue({
+        dob: this.editableUser.dob,
+        gender: this.editableUser.gender,
+        skills: this.editableUser.skills,
+        position: this.editableUser.position
+      });
+    }
   }
 
   updatePersonalInfo(): void {
     if (this.personalInfoForm.valid) {
-      const updatedData = this.personalInfoForm.value;
-      console.log('Updated Personal Info:', updatedData);
+      const updatedData = {
+        ...this.editableUser,
+        ...this.personalInfoForm.value
+      };
+      this.store.dispatch(UserActions.editProfile({ user: updatedData }));
+      this.store.dispatch(UserActions.getProfile());
+
+      // Subscribe to the store to get updated data
+      this.user$.pipe(take(1), takeUntil(this.destroy$)).subscribe(currentUser => {
+
+        if (currentUser) {
+          this.editableUser = currentUser;
+          this.editMode = false;
+        }
+      });
     }
   }
 
   addDetails(): void {
     if (this.detailsForm.valid) {
-      const formData = this.detailsForm.value;
-      console.log('Submitted Form Data:', formData);
+      const updatedData = {
+        ...this.editableUser,
+        ...this.detailsForm.value
+      };
+      this.store.dispatch(UserActions.editProfile({ user: updatedData }))
+      this.store.dispatch(UserActions.getProfile());
+
+      // Subscribe to the store to get updated data
+      this.user$.pipe(take(1), takeUntil(this.destroy$)).subscribe(currentUser => {
+        if (currentUser) {
+          this.editableUser = currentUser;
+          this.additionalDetailsAvailable = true;
+          this.editAdditionalDetails = false;
+
+        }
+      });
     }
   }
 
+  deleteAccount(): void {
+    this.user$.pipe(take(1)).subscribe(user => {
+      if (user?._id) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent,{
+          data: {
+            icon: 'warning', 
+            title: 'Confirm Delete',
+            message: 'Are you sure you want to delete your account? This action cannot be undone.'
+          }
+          
+        });
+        dialogRef.afterClosed().subscribe(result =>{
+          if(result){
+            this.store.dispatch(UserActions.deleteProfile({ id: user._id! }));
+            this.router.navigate(['/login']);
+          }
+        })
+       
+      }
+    })
+  }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
 }

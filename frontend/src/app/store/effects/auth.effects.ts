@@ -4,6 +4,7 @@ import { AuthServices } from '../../core/services/auth/auth.services';
 import * as AuthActions from '../actions/auth.actions';
 import { Router } from '@angular/router';
 import { catchError, map, mergeMap, of } from 'rxjs';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Injectable()
 export class AuthEffects {
@@ -16,8 +17,8 @@ export class AuthEffects {
         this.AuthServices.login(action.email, action.password).pipe(
           map(response => {
             this.AuthServices.setAccessToken(response.accessToken);
-            this.AuthServices.setUserId(response.user._id)
-
+            this.AuthServices.setUserId(response.user._id);
+            this.notificationService.showNotification('Login successful! Welcome back.', 'success');
             this.router.navigate(['/home']);
 
             return AuthActions.loginSuccess({
@@ -25,9 +26,12 @@ export class AuthEffects {
               user: response.user
             });
           }),
-          catchError(error => of(AuthActions.loginFailure({
-            error: error.message || 'Login failed'
-          })))
+          catchError(error => {
+            this.notificationService.showNotification('Login failed. Please check your credentials.', 'error');
+            return of(AuthActions.loginFailure({
+              error: error.message || 'Login failed'
+            }));
+          })
         )
       )
     );
@@ -41,12 +45,18 @@ export class AuthEffects {
         this.AuthServices.logout().pipe(
           map(() => {
             this.AuthServices.clearTokens();
+            this.AuthServices.setUserId('');
+            this.notificationService.showNotification('Logout successful. See you soon!', 'success');
             this.router.navigate(['/login']);
+            
             return AuthActions.logoutSuccess();
           }),
-          catchError(error => of(AuthActions.logoutFailure({
-            error: error.message || 'Logout failed'
-          })))
+          catchError((error) => {
+            this.notificationService.showNotification('Logout failed. Please try again.', 'error');
+            return of(AuthActions.logoutFailure({
+              error: error.message || 'Logout failed'
+            }));
+          })
         )
       )
     );
@@ -60,15 +70,21 @@ export class AuthEffects {
         this.AuthServices.register(action.name, action.email, action.phone, action.password).pipe(
           map((response) => {
             this.AuthServices.setAccessToken(response.accessToken);
+            this.AuthServices.setUserId(response.user._id)
+            this.notificationService.showNotification('Registration successful! Welcome to our platform!', 'success');
             this.router.navigate(['/home']);
+
             return AuthActions.registerSuccess({
               accessToken: response.accessToken,
               user: response.user
             });
           }),
-          catchError(error => of(AuthActions.registerFailure({
-            error: error.message || 'Registration  failed'
-          })))
+          catchError((error) => {
+            this.notificationService.showNotification('Registration failed. Please try again.', 'error');
+            return of(AuthActions.registerFailure({
+              error: error.message || 'Registration failed'
+            }));
+          })
         )
       )
     );
@@ -77,6 +93,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private AuthServices: AuthServices,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 }

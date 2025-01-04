@@ -1,13 +1,13 @@
 export interface IUser {
-    id?:string,
+    _id?: string,
     name: string,
     email: string,
     phone: string,
     password: string,
     photo?: String,
-    age?: Number,
+    dob?: Date,
     gender?: string,
-    skill?: String,
+    skills?: String,
     position?: string,
-    profileImage?:string
+    profileImage?: string
 }

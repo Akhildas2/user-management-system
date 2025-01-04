@@ -19,7 +19,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             httpOnly: true,
             sameSite: 'none',
             secure: true,
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            maxAge: 1 * 24 * 60 * 60 * 1000, // 1 days
         });
 
         // Send access token in the response body
@@ -53,7 +53,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
             httpOnly: true,
             sameSite: 'none',
             secure: true,
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            maxAge: 1 * 24 * 60 * 60 * 1000, // 1 days
         });
 
         // Send access token in the response body

@@ -1,0 +1,68 @@
+/* General dialog styles */
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 16px 0;
+    color: #004d63;
+}
+
+.icon {
+    font-size: 1.5rem;
+    color: #f44336;
+}
+
+.title-text {
+    font-weight: bold;
+}
+
+/* Styling for the message */
+.message {
+    text-align: start;
+    font-size: 1rem;
+    color: #000000;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    margin-left: 20px;
+}
+
+/* Action button styles */
+.actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin-bottom:16px ;
+}
+
+.cancel-btn {
+    color: #00adbd ;
+    border: 1px solid #00adbd;
+    border-radius: 25px;
+    cursor: pointer;
+    color: #004d63;
+    font-weight: bold;
+    width:20%;
+
+  
+}
+
+.cancel-btn:hover {
+    background-color: #e0f7fa;
+}
+
+.confirm-btn {
+    font-weight: bold;
+    background-color: #f44336;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    width:20%;
+
+}
+
+.confirm-btn:hover {
+    background-color: #d32f2f;
+}

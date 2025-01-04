@@ -62,7 +62,7 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Name</mat-label>
                 <mat-icon matPrefix>account_circle</mat-icon>
-                <input matInput formControlName="name" placeholder="Your Name" [(ngModel)]="editableUser.name" />
+                <input matInput formControlName="name" placeholder="Your Name" />
                 <mat-error *ngIf="personalInfoForm.get('name')?.hasError('required')">Name is required.</mat-error>
                 <mat-error *ngIf="personalInfoForm.get('name')?.hasError('minlength')">Name must be at least 2
                   characters long.</mat-error>
@@ -74,15 +74,14 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Phone</mat-label>
                 <mat-icon matPrefix>phone</mat-icon>
-                <input matInput formControlName="phone" placeholder="1234567890" [(ngModel)]="editableUser.phone" />
+                <input matInput formControlName="phone" placeholder="1234567890" />
                 <mat-error *ngIf="personalInfoForm.get('phone')?.hasError('required')">Phone number is
                   required.</mat-error>
                 <mat-error *ngIf="personalInfoForm.get('phone')?.hasError('pattern')">Please enter a valid 10-digit
                   phone number.</mat-error>
               </mat-form-field>
-
               <div class="update-profile-button-row">
-                <button mat-button class="update-btn" [disabled]="!personalInfoForm.valid">
+                <button mat-button type="submit" class="update-btn" [disabled]="!personalInfoForm.valid ">
                   <mat-icon>edit</mat-icon> Update Profile
                 </button>
               </div>
@@ -93,42 +92,36 @@
       </mat-card>
     </div>
 
-  </div>
 
-  <!-- Add Details Form -->
-  <div class="add-details">
-    <mat-accordion class="example-headers-align" multi>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title class="add-details-title"> Add Details </mat-panel-title>
-          <mat-panel-description>
-            Enter additional details <mat-icon> account_circle</mat-icon>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+    <!-- Add Details Form -->
+    <div class="add-details">
+      <mat-card class="info-deatils-card" *ngIf="additionalDetailsAvailable">
         <mat-card-content>
-          <h2>Details</h2>
-          <form [formGroup]="detailsForm" (ngSubmit)="addDetails()">
-            <!-- DOB -->
+          <div class="personal-info-header">
+            <h2>Additional Details</h2>
+            <mat-slide-toggle (change)="toggleEditAdditionalDetails()">Edit Additional Details</mat-slide-toggle>
+          </div>
+          <div *ngIf="!editAdditionalDetails">
+            <!-- dob -->
             <div class="field-container">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Choose a date</mat-label>
                 <mat-icon matPrefix>calendar_today</mat-icon>
-                <input matInput [matDatepicker]="picker" formControlName="dob" placeholder="Enter your Date of Birth" />
+                <input matInput [matDatepicker]="picker" [(ngModel)]="user.dob" name="dob"
+                  [disabled]="!editAdditionalDetails" />
+                <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="detailsForm.get('dob')?.invalid">Please select your date of birth.</mat-error>
               </mat-form-field>
             </div>
 
             <!-- Gender -->
-            <div class="field-container gender-container">
-              <label class="gender-label"><mat-icon>wc</mat-icon> Gender :</label>
-              <mat-radio-group formControlName="gender">
-                <mat-radio-button value="Male">Male</mat-radio-button>
-                <mat-radio-button value="Female">Female</mat-radio-button>
-                <mat-radio-button value="Other">Other</mat-radio-button>
-              </mat-radio-group>
-              <mat-error *ngIf="detailsForm.get('gender')?.invalid">Please select your gender.</mat-error>
+            <div class="field-container">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Gender</mat-label>
+                <mat-icon matPrefix>wc</mat-icon>
+                <input matInput [(ngModel)]="user.gender" name="gender" [disabled]="!editAdditionalDetails" />
+              </mat-form-field>
             </div>
 
             <!-- Skills -->
@@ -136,8 +129,7 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Skills</mat-label>
                 <mat-icon matPrefix>build</mat-icon>
-                <input matInput formControlName="skills" placeholder="Enter your skills" />
-                <mat-error *ngIf="detailsForm.get('skills')?.invalid">Skills are required.</mat-error>
+                <input matInput [(ngModel)]="user.skills" name="skills" [disabled]="!editAdditionalDetails" />
               </mat-form-field>
             </div>
 
@@ -146,28 +138,158 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Position</mat-label>
                 <mat-icon matPrefix>work</mat-icon>
-                <mat-select formControlName="position" placeholder="Select your position">
-                  <mat-option *ngFor="let option of positions" [value]="option.position">
-                    <mat-icon>{{ option.icon }}</mat-icon> {{ option.position }}
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="detailsForm.get('position')?.invalid">Position is required.</mat-error>
+                <input matInput [(ngModel)]="user.position" name="position" [disabled]="!editAdditionalDetails" />
               </mat-form-field>
             </div>
+          </div>
 
-            <!-- Submit -->
-            <div class="add-details-button-row">
-              <button mat-button type="submit" class="add-btn" [disabled]="!detailsForm.valid">
-                <mat-icon>add</mat-icon> Add Details
-              </button>
-            </div>
-          </form>
+          <div *ngIf="editAdditionalDetails">
+            <form [formGroup]="detailsForm" (ngSubmit)="addDetails()">
+              <!-- DOB -->
+              <div class="field-container">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Choose a date</mat-label>
+                  <mat-icon matPrefix>calendar_today</mat-icon>
+                  <input matInput [matDatepicker]="picker" formControlName="dob"
+                    placeholder="Enter your Date of Birth" />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #picker></mat-datepicker>
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-error *ngIf="detailsForm.get('dob')?.hasError('required')">
+                    Date of birth is required.
+                  </mat-error>
+                  <mat-error *ngIf="detailsForm.get('dob')?.hasError('minAge')">
+                    You must be at least 18 years old.
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Gender -->
+              <div class="field-container gender-container">
+                <label class="gender-label"><mat-icon>wc</mat-icon> Gender :</label>
+                <mat-radio-group formControlName="gender">
+                  <mat-radio-button value="Male">Male</mat-radio-button>
+                  <mat-radio-button value="Female">Female</mat-radio-button>
+                  <mat-radio-button value="Other">Other</mat-radio-button>
+                  <mat-error *ngIf="detailsForm.get('gender')?.invalid">Please select your gender.</mat-error>
+                </mat-radio-group>
+              </div>
+
+              <!-- Skills -->
+              <div class="field-container">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Skills</mat-label>
+                  <mat-icon matPrefix>build</mat-icon>
+                  <input matInput formControlName="skills" placeholder="Enter your skills" />
+                  <mat-error *ngIf="detailsForm.get('skills')?.invalid">Skills are required.</mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Position -->
+              <div class="field-container">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Position</mat-label>
+                  <mat-icon matPrefix>work</mat-icon>
+                  <mat-select formControlName="position" placeholder="Select your position">
+                    <mat-option *ngFor="let option of positions" [value]="option.position">
+                      <mat-icon>{{ option.icon }}</mat-icon> {{ option.position }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="detailsForm.get('position')?.invalid">Position is required.</mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Submit -->
+              <div class="add-details-button-row">
+                <button mat-button type="submit" class="add-btn" [disabled]="!detailsForm.valid">
+                  <mat-icon>add</mat-icon> Add Details
+                </button>
+              </div>
+            </form>
+
+          </div>
         </mat-card-content>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+      </mat-card>
+      <mat-accordion class="example-headers-align" multi *ngIf="!additionalDetailsAvailable">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title class="add-details-title"> Add Details </mat-panel-title>
+            <mat-panel-description>
+              Enter additional details <mat-icon> account_circle</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-card-content>
+            <h2>Details</h2>
+            <form [formGroup]="detailsForm" (ngSubmit)="addDetails()">
+              <!-- DOB -->
+              <div class="field-container">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Choose a date</mat-label>
+                  <mat-icon matPrefix>calendar_today</mat-icon>
+                  <input matInput [matDatepicker]="picker" formControlName="dob"
+                    placeholder="Enter your Date of Birth" />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #picker></mat-datepicker>
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-error *ngIf="detailsForm.get('dob')?.hasError('required')">
+                    Date of birth is required.
+                  </mat-error>
+                  <mat-error *ngIf="detailsForm.get('dob')?.hasError('minAge')">
+                    You must be at least 18 years old.
+                  </mat-error>
+                </mat-form-field>
+              </div>
 
-  <button mat-button class="delete-account-btn"><mat-icon>delete</mat-icon> Delete Account</button>
+              <!-- Gender -->
+              <div class="field-container gender-container">
+                <label class="gender-label"><mat-icon>wc</mat-icon> Gender :</label>
+                <mat-radio-group formControlName="gender">
+                  <mat-radio-button value="Male">Male</mat-radio-button>
+                  <mat-radio-button value="Female">Female</mat-radio-button>
+                  <mat-radio-button value="Other">Other</mat-radio-button>
+                </mat-radio-group>
+                <mat-error *ngIf="detailsForm.get('gender')?.invalid">Please select your gender.</mat-error>
+              </div>
+
+              <!-- Skills -->
+              <div class="field-container">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Skills</mat-label>
+                  <mat-icon matPrefix>build</mat-icon>
+                  <input matInput formControlName="skills" placeholder="Enter your skills" />
+                  <mat-error *ngIf="detailsForm.get('skills')?.invalid">Skills are required.</mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Position -->
+              <div class="field-container">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Position</mat-label>
+                  <mat-icon matPrefix>work</mat-icon>
+                  <mat-select formControlName="position" placeholder="Select your position">
+                    <mat-option *ngFor="let option of positions" [value]="option.position">
+                      <mat-icon>{{ option.icon }}</mat-icon> {{ option.position }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="detailsForm.get('position')?.invalid">Position is required.</mat-error>
+                </mat-form-field>
+              </div>
+
+              <!-- Submit -->
+              <div class="add-details-button-row">
+                <button mat-button type="submit" class="add-btn" [disabled]="!detailsForm.valid">
+                  <mat-icon>add</mat-icon> Add Details
+                </button>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+    <button mat-button class="delete-account-btn" (click)="deleteAccount()"><mat-icon>delete</mat-icon> Delete
+      Account</button>
+  </div>
 </div>
 
 <!-- Loading State -->

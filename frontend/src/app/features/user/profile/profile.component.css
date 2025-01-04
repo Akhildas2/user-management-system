@@ -1,19 +1,18 @@
 /* Profile Container */
 .profile-container {
-  padding: 30px;
+  padding: 20px;
   max-width: 1000px;
   margin: auto;
   border-radius: 10px;
-  background-color: #f5f5f5;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Title */
 .profile-title {
   text-align: center;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: bold;
-  color: #00adbd;
+  color: #004d63;
 }
 
 /* Profile Header */
@@ -22,27 +21,27 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .profile-img {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #fff;
+  border: 3px solid #00adbd;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Upload Button */
 .upload-photo-container {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .upload-photo-btn {
   display: flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 14px;
   color: #00adbd !important;
   border: 1px solid #00adbd;
   border-radius: 25px;
@@ -59,11 +58,11 @@
 
 /* User Information */
 .user-info {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .info-card {
-  margin-top: 20px;
+  margin-top: 15px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -72,16 +71,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .personal-info-header h2,
 mat-icon {
-  color: #00adbd;
+  color: #004d63;
 }
 
 .field-container {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .mat-form-field {
@@ -89,10 +88,11 @@ mat-icon {
 }
 
 .full-width {
-  font: bolder;
+  font-weight: bolder;
   width: 100%;
 }
 
+/* update profile Button */
 .update-profile-button-row {
   display: flex;
   justify-content: center;
@@ -112,18 +112,17 @@ mat-icon {
 
 /* Add Details Section */
 .add-details {
-  margin-top: 40px;
-
+  margin-top: 30px;
 }
 
 .add-details-title {
   font-size: 1.5em;
-  color: #00adbd;
+  color: #004d63;
 }
 
 mat-panel-description {
   font-size: 1rem;
-  gap: 10px;
+  gap: 8px;
 }
 
 .details-card {
@@ -146,36 +145,35 @@ mat-panel-description {
   cursor: pointer;
 }
 
-.add-btn button :hover{
-  background-color: red;
-
+.add-btn:hover {
+  color: #004d63 !important;
 }
 
 /* Gender Container */
 .gender-container {
-  margin-top: -20px;
+  margin-top: -10px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
-  margin-left: 10px;
+  gap: 8px;
+  margin-left: 0px;
 }
 
 .gender-label {
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  margin-right: 8px;
 }
 
 .gender-label mat-icon {
-  margin-right: 5px;
+  margin-right: 4px;
 }
 
 /* Delete Account Button */
 .delete-account-btn {
   display: block;
-  width: 50%;
-  margin: 20px auto;
+  width: 45%;
+  margin: 15px auto;
   text-align: center;
   color: #00adbd !important;
   border: 1px solid #00adbd;
@@ -183,13 +181,18 @@ mat-panel-description {
   cursor: pointer;
 }
 
-.delete-account-btn:hover {
-  color: #004d63 !important;
-  background-color: red;
+.delete-account-btn:hover,
+.delete-account-btn:hover mat-icon {
+  color: red !important;
 }
 
 
+/* Responsive for Small Devices */
 @media (max-width: 480px) {
+  .profile-container {
+    padding: 10px;
+  }
+
   .profile-title {
     font-size: 18px;
   }
@@ -199,37 +202,56 @@ mat-panel-description {
     height: 100px;
   }
 
+  .upload-photo-btn {
+    z-index: 0;
+  }
+
   .update-btn,
   .add-btn,
   .delete-account-btn {
     width: 100%;
+    margin-top: 10px;
+    z-index: 0;
+  }
+
+  .add-details {
+    margin-top: 10px;
+    padding: 0;
   }
 
   .add-details-title {
-    font-size: 1em;
-    color: #00adbd;
+    font-size: 1rem;
+    text-align: center;
   }
 
   mat-panel-description {
-    font-size: 14px;
-    gap: 10px;
+    font-size: 0.75rem;
   }
 
-  /* Gender container */
   .gender-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    font-size: 18px;
-    gap: 10px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .gender-label {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: bold;
   }
 
   mat-radio-group {
     display: flex;
-    gap: 15px;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 0px;
   }
 
   mat-radio-button {
-    font-size: 18px;
+    font-size: 10px;
+    flex: 0 0 auto;
   }
 }
