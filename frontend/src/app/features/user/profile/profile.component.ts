@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { minimumAgeValidator } from '../../../shared/utilitys/dob.validators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { UserService } from '../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -32,6 +33,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   editableUser: Partial<IUser> = {};
   additionalDetailsAvailable = false;
   private destroy$ = new Subject<void>();
+  previewImage: string | ArrayBuffer | null | undefined = null;
+  selectedFile: File | null = null;
+
 
   positions: { position: string, icon: string }[] = [
     { position: 'Developer', icon: 'code' },
@@ -40,7 +44,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     { position: 'QA Tester', icon: 'check_circle' }
   ];
 
-  constructor(private store: Store, private fb: FormBuilder, private router: Router, private dialog: MatDialog) {
+  constructor(private store: Store, private fb: FormBuilder, private router: Router, private dialog: MatDialog,private userService:UserService) {
     this.user$ = this.store.select(selectUserProfile);
     this.isLoading$ = this.store.select(selectUserLoading);
     this.error$ = this.store.select(selectUserError);
@@ -116,7 +120,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         ...this.personalInfoForm.value
       };
       this.store.dispatch(UserActions.editProfile({ user: updatedData }));
-      this.store.dispatch(UserActions.getProfile());
 
       // Subscribe to the store to get updated data
       this.user$.pipe(take(1), takeUntil(this.destroy$)).subscribe(currentUser => {
@@ -136,7 +139,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         ...this.detailsForm.value
       };
       this.store.dispatch(UserActions.editProfile({ user: updatedData }))
-      this.store.dispatch(UserActions.getProfile());
 
       // Subscribe to the store to get updated data
       this.user$.pipe(take(1), takeUntil(this.destroy$)).subscribe(currentUser => {
@@ -153,28 +155,59 @@ export class ProfileComponent implements OnInit, OnDestroy {
   deleteAccount(): void {
     this.user$.pipe(take(1)).subscribe(user => {
       if (user?._id) {
-        const dialogRef = this.dialog.open(ConfirmDialogComponent,{
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
           data: {
-            icon: 'warning', 
+            icon: 'warning',
             title: 'Confirm Delete',
             message: 'Are you sure you want to delete your account? This action cannot be undone.'
           }
-          
+
         });
-        dialogRef.afterClosed().subscribe(result =>{
-          if(result){
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
             this.store.dispatch(UserActions.deleteProfile({ id: user._id! }));
             this.router.navigate(['/login']);
           }
         })
-       
+
       }
     })
   }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+
+      // Preview the selected image
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.previewImage = e.target?.result || null;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  uploadPhoto(): void {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('profileImage', this.selectedFile);
+
+      this.user$.pipe(take(1)).subscribe(user => {
+        if (user?._id) {
+          formData.append('id', user._id);
+          this.store.dispatch(UserActions.updateProfileImage({ formData }));
+          this.previewImage = null;
+          this.selectedFile = null;
+        }
+      })
+    }
+  }
+ 
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
+    
 }

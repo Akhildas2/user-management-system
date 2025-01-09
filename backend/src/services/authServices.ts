@@ -40,7 +40,7 @@ export const login = async (email: string, password: string) => {
 
 // Create a new user
 export const register = async (name: string, email: string, phone: number, password: string) => {
-    if (await User.findOne({ email })) return null;
+    if (await User.findOne({ $or: [{ email }, { phone }] })) return null;
 
     const newUser = await User.create({ name, email, phone, password })
     const payload = { userId: newUser._id, email: newUser.email };

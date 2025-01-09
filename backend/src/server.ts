@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'; // For parsing cookies
 import cors from 'cors'; // For enabling CORS
 import connectDB from './config/DB/dbConnection'; // Database connection logic
 import usersRoutes from './routes/userRoutes'; // Importing user-related routes
+import path from 'path';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -28,6 +29,9 @@ app.use(
         credentials: true, // Allow cookies and credentials
     })
 );
+
+// Serve the 'uploads' folder as static
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // User routes (all routes prefixed with /api)
 app.use('/api', usersRoutes);

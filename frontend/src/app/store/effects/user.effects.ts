@@ -16,7 +16,7 @@ export class UserEffects {
     private authService: AuthServices,
     private store: Store,
     private notificationService: NotificationService,
-    private router:Router,
+    private router: Router,
   ) { }
 
   // Get Profile
@@ -34,8 +34,8 @@ export class UserEffects {
             return UserActions.getProfileSuccess({ user });
           }),
           catchError(error => {
-            console.error('Error fetching profile:', error);
-            this.notificationService.showNotification('Failed to load profile.', 'error');
+            const errorMessage = error?.error?.msg || 'Failed to load profile.';
+            this.notificationService.showNotification(errorMessage, 'error');
             return of(UserActions.getProfileFailure({ error: error.message }));
           })
         );
@@ -62,8 +62,8 @@ export class UserEffects {
             return UserActions.editProfileSuccess({ user: updatedUser });
           }),
           catchError(error => {
-            console.error('Error updating profile:', error);
-            this.notificationService.showNotification('Failed to update profile.', 'error');
+            const errorMessage = error?.error?.msg || 'Failed to update profile.';
+            this.notificationService.showNotification(errorMessage, 'error');
             return of(UserActions.editProfileFailure({ error: error.message }));
           })
         );
@@ -86,7 +86,8 @@ export class UserEffects {
             return UserActions.deleteProfileSuccess();
           }),
           catchError(error => {
-            this.notificationService.showNotification('Failed to delete profile.', 'error');
+            const errorMessage = error?.error?.msg || 'Failed to delete profile.';
+            this.notificationService.showNotification(errorMessage, 'error');
             return of(UserActions.deleteProfileFailure({ error: error.message }));
           })
         )
@@ -94,4 +95,28 @@ export class UserEffects {
     ),
     { functional: true }
   );
+
+  // Upload Photo
+  uploadPhoto$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserActions.updateProfileImage),
+      mergeMap(action => {
+        const formData = action.formData;
+        return this.userService.uploadPhoto(formData).pipe(
+          map((response) => {
+            this.notificationService.showNotification('Photo updated successfully.', 'success');
+            this.store.dispatch(UserActions.getProfile());
+            return UserActions.updateProfileImageSuccess({ user: response.user });
+          }),
+          catchError((error) => {
+            const errorMessage = error?.error?.msg || error?.message || 'Failed to update profile photo.';
+            this.notificationService.showNotification(errorMessage, 'error');
+            return of(UserActions.updateProfileImageFailure({ error: errorMessage }));
+          })
+        );
+      })
+    ),
+    { functional: true }
+  );
+
 }

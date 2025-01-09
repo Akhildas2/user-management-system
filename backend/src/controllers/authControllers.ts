@@ -6,14 +6,16 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
-            res.status(400).json({ message: 'Email and password are required.' });
+            res.status(400).json({ status: 'error', message: 'Email and password are required.' });
             return;
         }
+
         const result = await authService.login(email, password);
         if (!result) {
-            res.status(401).json({ message: 'Invalid credentials.' });
+            res.status(401).json({ status: 'error', message: 'Invalid login credentials.' });
             return;
         }
+
         // Store refresh token in HTTP-only cookie
         res.cookie("refreshToken", result.refreshToken, {
             httpOnly: true,
@@ -24,13 +26,14 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
         // Send access token in the response body
         res.json({
+            status: 'success',
             message: 'Login successful',
             accessToken: result.accessToken,
             user: result.user
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Internal Server Error!' });
+        console.error("login error:", error);
+        res.status(500).json({ status: 'error', message: 'Internal Server Error!' });
     }
 };
 
@@ -38,13 +41,13 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     try {
         const { name, email, phone, password } = req.body;
         if (!name || !email || !phone || !password) {
-            res.status(400).json({ message: 'All fields are required.' });
+            res.status(400).json({ status: 'error', message: 'All fields are required.' });
             return;
         }
 
         const newUser = await authService.register(name, email, phone, password);
         if (!newUser) {
-            res.status(409).json({ message: 'User already exists.' });
+            res.status(409).json({ status: 'error', message: 'User already exists.' });
             return;
         }
 
@@ -58,13 +61,14 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
         // Send access token in the response body
         res.status(201).json({
+            status: 'success',
             message: 'User created successfully',
             accessToken: newUser.accessToken,
             user: newUser.user
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Internal Server Error!' });
+        console.error("register error", error);
+        res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
 
@@ -73,7 +77,8 @@ export const refreshAccessToken = async (req: Request, res: Response): Promise<v
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-        res.status(401).json({ message: "Refresh token is missing" });
+        res.status(401).json({ status: 'error', message: "Refresh token is missing" });
+        return;
     }
 
     try {
@@ -88,15 +93,16 @@ export const refreshAccessToken = async (req: Request, res: Response): Promise<v
         );
 
         res.status(200).json({
+            status: 'success',
             message: "Access token refreshed",
             accessToken,
         });
     } catch (error) {
-        console.error(error);
+        console.error("refreshAccessToken error", error);
         if (error instanceof jwt.JsonWebTokenError) {
-            res.status(403).json({ message: "Invalid or expired refresh token" });
+            res.status(403).json({ status: 'error', message: "Invalid or expired refresh token" });
         } else {
-            res.status(500).json({ msg: "Internal Server Error!" });
+            res.status(500).json({ status: 'error', message: "Internal Server Error!" });
         }
     }
 };
@@ -114,9 +120,9 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
         });
 
         // Optionally, send a response to the client to indicate successful logout
-        res.status(200).json({ message: "Logout successful" });
+        res.status(200).json({ status: 'success', message: "Logout successful" });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: 'Internal Server Error!' });
+        console.error("logout error", error);
+        res.status(500).json({ status: 'error', message: 'Internal Server Error!' });
     }
 }

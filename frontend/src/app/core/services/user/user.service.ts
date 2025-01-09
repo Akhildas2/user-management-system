@@ -10,7 +10,6 @@ import { IUser } from '../../../shared/models/userModel';
 export class UserService {
   private baseUrl = `${environment.apiUrl}/api/user`
 
-
   constructor(private http: HttpClient) { }
 
   getUserById(id: string): Observable<IUser> {
@@ -23,6 +22,10 @@ export class UserService {
 
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  uploadPhoto(formData: FormData): Observable<any> {
+    return this.http.post<IUser>(`${this.baseUrl}/upload-photo`, formData);
   }
 
 }

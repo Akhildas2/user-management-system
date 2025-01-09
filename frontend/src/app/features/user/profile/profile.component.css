@@ -186,6 +186,18 @@ mat-panel-description {
   color: red !important;
 }
 
+.upload-photo-container {
+  position: relative;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-photo-btn {
+  position: relative;
+  z-index: 1;
+}
 
 /* Responsive for Small Devices */
 @media (max-width: 480px) {

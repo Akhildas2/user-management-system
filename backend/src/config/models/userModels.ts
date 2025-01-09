@@ -7,7 +7,7 @@ interface IUser extends Document {
     email: string;
     phone: number;
     password: string;
-    photo: string;
+    profileImage: string;
     dob: Date;
     gender: string;
     position: string;
@@ -23,7 +23,7 @@ const UserSchema: Schema = new Schema<IUser>({
     email: { type: String, required: true, unique: true, trim: true },
     phone: { type: Number, required: true },
     password: { type: String, required: true, minlength: 8 },
-    photo: { type: String },
+    profileImage: { type: String },
     dob: { type: Date },
     gender: { type: String },
     position: { type: String },

@@ -15,3 +15,8 @@ export const editProfileFailure = createAction('[User] Edit Profile Failure', pr
 export const deleteProfile = createAction('[User] Delete Profile', props<{ id: string }>());
 export const deleteProfileSuccess = createAction('[User] Delete Profile Success');
 export const deleteProfileFailure = createAction('[User] Delete Profile Failure', props<{ error: string }>());
+
+// Update profile
+export const updateProfileImage = createAction('[User] Upload Photo', props<{ formData: FormData }>());
+export const updateProfileImageSuccess = createAction('[User] Upload Photo Success', props<{ user: IUser }>());
+export const updateProfileImageFailure = createAction('[User] Upload Photo Failure', props<{ error: string }>());

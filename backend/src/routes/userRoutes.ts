@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import * as userControllers from '../controllers/userControllers';
 import * as authControllers from '../controllers/authControllers';
 import { authenticateToken } from '../middlewares/authMiddleware';
+import upload from '../middlewares/uploadMiddleware';
 
 const jsonParser = bodyParser.json();
 const router = express.Router();
@@ -27,5 +28,8 @@ router.post('/logout', authControllers.logout)
 
 // For Refresh Token
 router.post('/refresh-token', authControllers.refreshAccessToken);
+
+// For uploaded photo
+router.post('/user/upload-photo', upload.single('profileImage'), userControllers.photoUpload);
 
 export default router;

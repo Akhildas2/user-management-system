@@ -24,5 +24,10 @@ export const userReducer = createReducer(
   // Delete Profile
   on(UserActions.deleteProfile, state => ({ ...state, loading: true, error: null })),
   on(UserActions.deleteProfileSuccess, () => ({ ...initialState })),
-  on(UserActions.deleteProfileFailure, (state, { error }) => ({ ...state, loading: false, error }))
+  on(UserActions.deleteProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
+
+  // Upload Photo
+  on(UserActions.updateProfileImage, state => ({ ...state, loading: true, error: null })),
+  on(UserActions.updateProfileImageSuccess, (state, { user }) => ({ ...state, profile: { ...state.profile, ...user }, loading: false, error: null })),
+  on(UserActions.updateProfileImageFailure, (state, { error }) => ({ ...state, loading: false, error })),
 );

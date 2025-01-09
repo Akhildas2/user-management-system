@@ -6,18 +6,30 @@
 
   <!-- User Data -->
   <div *ngIf="user$ | async as user; else noUser">
+
     <div class="profile-header">
       <div class="profile-picture">
-        <img [src]="user.profileImage || 'assets/icons/profile-user.png'" alt="Profile Image" class="profile-img" />
+        <img [src]="user?.profileImage || previewImage ||  'assets/icons/profile-user.png'" alt="Profile Image"
+          class="profile-img" />
       </div>
+
       <div class="upload-photo-container">
-        <button mat-button class="upload-photo-btn">
-          <input type="file" class="file-input" />
+        <!-- Button to select file -->
+        <button mat-button class="upload-photo-btn" (click)="fileInput.click()">
+          <input #fileInput type="file" class="file-input" accept="image/*" (change)="onFileSelected($event)" hidden />
           <mat-icon>attach_file</mat-icon>
-          Upload Photo
+          Select Photo
         </button>
       </div>
+      <br>
+      <!-- Button to upload the selected photo -->
+      <button mat-button class="upload-photo-btn" *ngIf="previewImage" (click)="uploadPhoto()">
+        <mat-icon>cloud_upload</mat-icon>
+        Upload
+      </button>
     </div>
+
+
 
     <!-- Personal Information -->
     <div class="user-info">
@@ -109,9 +121,9 @@
                 <mat-icon matPrefix>calendar_today</mat-icon>
                 <input matInput [matDatepicker]="picker" [(ngModel)]="user.dob" name="dob"
                   [disabled]="!editAdditionalDetails" />
-                <mat-hint>MM/DD/YYYY</mat-hint>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
+                <mat-hint>MM/DD/YYYY</mat-hint>
               </mat-form-field>
             </div>
 

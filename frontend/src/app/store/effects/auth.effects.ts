@@ -27,9 +27,10 @@ export class AuthEffects {
             });
           }),
           catchError(error => {
-            this.notificationService.showNotification('Login failed. Please check your credentials.', 'error');
+            const errorMessage = error?.error?.message || 'Login failed. Please check your credentials.';
+            this.notificationService.showNotification(errorMessage, 'error');
             return of(AuthActions.loginFailure({
-              error: error.message || 'Login failed'
+              error: error.message
             }));
           })
         )
@@ -48,13 +49,14 @@ export class AuthEffects {
             this.AuthServices.setUserId('');
             this.notificationService.showNotification('Logout successful. See you soon!', 'success');
             this.router.navigate(['/login']);
-            
+
             return AuthActions.logoutSuccess();
           }),
           catchError((error) => {
-            this.notificationService.showNotification('Logout failed. Please try again.', 'error');
+            const errorMessage = error?.error?.message || 'Logout failed. Please try again.';
+            this.notificationService.showNotification(errorMessage, 'error');
             return of(AuthActions.logoutFailure({
-              error: error.message || 'Logout failed'
+              error: errorMessage
             }));
           })
         )
@@ -80,9 +82,10 @@ export class AuthEffects {
             });
           }),
           catchError((error) => {
-            this.notificationService.showNotification('Registration failed. Please try again.', 'error');
+            const errorMessage = error?.error?.message || 'Registration failed. Please try again.';
+            this.notificationService.showNotification(errorMessage, 'error');
             return of(AuthActions.registerFailure({
-              error: error.message || 'Registration failed'
+              error: errorMessage
             }));
           })
         )
