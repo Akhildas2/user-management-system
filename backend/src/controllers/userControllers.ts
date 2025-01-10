@@ -18,7 +18,6 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
     } catch (error) {
         // Handle errors message
-        console.error(error);
         res.status(500).json({ status: 'error', msg: 'Internal Server Error!' });
     }
 };
@@ -27,6 +26,12 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id, name, email, phone, dob, gender, skills, position } = req.body;
+        const existingUser = await User.findOne({ phone, _id: { $ne: id } })
+
+        if (existingUser) {
+            res.status(400).json({ status: 'error', msg: 'Phone number already in used.' });
+            return;
+        }
 
         const user = await User.findByIdAndUpdate(
             id,
@@ -45,7 +50,6 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
 
         res.status(200).json({ status: 'success', msg: "User Updated Successfully!", user });
     } catch (error) {
-        console.error(error);
         // Handle errors message
         res.status(500).json({ status: 'error', msg: 'Failed to update user' });
     }
@@ -64,7 +68,6 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
         }
 
     } catch (error) {
-        console.error(error);
         // Handle errors message
         res.status(500).json({ status: 'error', msg: 'Failed to delete user' });
     }
@@ -101,19 +104,16 @@ export const photoUpload = async (req: Request, res: Response): Promise<void> =>
                 fs.unlinkSync(oldImagePath);
             }
         }
+
         // Update user's profile image
         user.profileImage = relativePath;
         const updatedUser = await user.save();
-        console.log("updateUser:", updatedUser);
-
         res.status(200).json({
             status: 'success',
             message: 'Photo uploaded successfully',
-            relativePath,
             user: updatedUser,
         });
     } catch (error) {
-        console.error('Error during photo upload:', error);
         res.status(500).json({ status: 'error', msg: 'Failed to upload photo', error });
     }
 };

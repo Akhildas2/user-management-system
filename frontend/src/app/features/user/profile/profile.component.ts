@@ -10,10 +10,10 @@ import { selectUserError, selectUserLoading, selectUserProfile } from '../../../
 import * as UserActions from '../../../store/actions/user.actions'
 import { MatNativeDateModule } from '@angular/material/core';
 import { Router } from '@angular/router';
-import { minimumAgeValidator } from '../../../shared/utilitys/dob.validators';
+import { minimumAgeValidator } from '../../../shared/validators/dob.validators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { UserService } from '../../../core/services/user/user.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -25,6 +25,7 @@ import { UserService } from '../../../core/services/user/user.service';
 export class ProfileComponent implements OnInit, OnDestroy {
   user$: Observable<IUser | null>;
   isLoading$: Observable<boolean>;
+  isLoading: boolean = true;
   error$: Observable<string | null>;
   editMode: boolean = false;
   editAdditionalDetails: boolean = false;
@@ -32,10 +33,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   personalInfoForm: FormGroup;
   editableUser: Partial<IUser> = {};
   additionalDetailsAvailable = false;
-  private destroy$ = new Subject<void>();
   previewImage: string | ArrayBuffer | null | undefined = null;
   selectedFile: File | null = null;
-
+  private destroy$ = new Subject<void>();
 
   positions: { position: string, icon: string }[] = [
     { position: 'Developer', icon: 'code' },
@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     { position: 'QA Tester', icon: 'check_circle' }
   ];
 
-  constructor(private store: Store, private fb: FormBuilder, private router: Router, private dialog: MatDialog,private userService:UserService) {
+  constructor(private store: Store, private fb: FormBuilder, private router: Router, private dialog: MatDialog,) {
     this.user$ = this.store.select(selectUserProfile);
     this.isLoading$ = this.store.select(selectUserLoading);
     this.error$ = this.store.select(selectUserError);
@@ -54,7 +54,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
     });
-
 
     // Form group for additional details
     this.detailsForm = this.fb.group({
@@ -67,90 +66,55 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(UserActions.getProfile());
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
 
     this.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       if (user) {
-        this.personalInfoForm.patchValue({
-          name: user.name,
-          phone: user.phone
-        });
-
-        this.detailsForm.patchValue({
-          dob: user.dob,
-          gender: user.gender || 'Male',
-          skills: user.skills,
-          position: user.position
-        });
-
+        this.personalInfoForm.patchValue({ name: user.name, phone: user.phone });
+        this.detailsForm.patchValue({ dob: user.dob, gender: user.gender || 'Male', skills: user.skills, position: user.position });
         this.editableUser = { ...user };
         this.additionalDetailsAvailable = !!user.dob;
       }
     });
-
-
   }
 
   toggleEditMode(): void {
     this.editMode = !this.editMode;
-    if (!this.editMode) {
-      this.personalInfoForm.patchValue({
-        name: this.editableUser.name,
-        phone: this.editableUser.phone
-      });
-    }
+    if (!this.editMode) this.personalInfoForm.patchValue(this.editableUser);
   }
-
 
   toggleEditAdditionalDetails(): void {
     this.editAdditionalDetails = !this.editAdditionalDetails;
-    if (!this.editAdditionalDetails) {
-      this.detailsForm.patchValue({
-        dob: this.editableUser.dob,
-        gender: this.editableUser.gender,
-        skills: this.editableUser.skills,
-        position: this.editableUser.position
+    if (!this.editAdditionalDetails) this.detailsForm.patchValue(this.editableUser);
+  }
+
+  updateUserDetails(form: FormGroup, action: any): void {
+    if (form.valid) {
+      const updatedData = { ...this.editableUser, ...form.value };
+      this.store.dispatch(action({ user: updatedData }));
+      this.user$.pipe(take(1), takeUntil(this.destroy$)).subscribe(currentUser => {
+        if (currentUser) {
+          this.editableUser = currentUser;
+          this.editMode = false;
+          if (action === UserActions.editProfile) {
+            this.additionalDetailsAvailable = true;
+            this.editAdditionalDetails = false;
+          }
+        }
       });
     }
   }
 
   updatePersonalInfo(): void {
-    if (this.personalInfoForm.valid) {
-      const updatedData = {
-        ...this.editableUser,
-        ...this.personalInfoForm.value
-      };
-      this.store.dispatch(UserActions.editProfile({ user: updatedData }));
-
-      // Subscribe to the store to get updated data
-      this.user$.pipe(take(1), takeUntil(this.destroy$)).subscribe(currentUser => {
-
-        if (currentUser) {
-          this.editableUser = currentUser;
-          this.editMode = false;
-        }
-      });
-    }
+    this.updateUserDetails(this.personalInfoForm, UserActions.editProfile);
   }
 
   addDetails(): void {
-    if (this.detailsForm.valid) {
-      const updatedData = {
-        ...this.editableUser,
-        ...this.detailsForm.value
-      };
-      this.store.dispatch(UserActions.editProfile({ user: updatedData }))
-
-      // Subscribe to the store to get updated data
-      this.user$.pipe(take(1), takeUntil(this.destroy$)).subscribe(currentUser => {
-        if (currentUser) {
-          this.editableUser = currentUser;
-          this.additionalDetailsAvailable = true;
-          this.editAdditionalDetails = false;
-
-        }
-      });
-    }
+    this.updateUserDetails(this.detailsForm, UserActions.editProfile);
   }
+
 
   deleteAccount(): void {
     this.user$.pipe(take(1)).subscribe(user => {
@@ -161,7 +125,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
             title: 'Confirm Delete',
             message: 'Are you sure you want to delete your account? This action cannot be undone.'
           }
-
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
@@ -169,7 +132,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.router.navigate(['/login']);
           }
         })
-
       }
     })
   }
@@ -178,12 +140,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedFile = input.files[0];
-
-      // Preview the selected image
+      if (this.selectedFile.size > 1 * 1024 * 1024) {
+        this.dialog.open(ConfirmDialogComponent, {
+          data: {
+            icon: 'warning',
+            title: 'File Too Large',
+            message: 'The selected file exceeds the maximum allowed size of 2 MB.'
+          }
+        });
+        this.selectedFile = null;
+        return;
+      }
       const reader = new FileReader();
-      reader.onload = (e) => {
-        this.previewImage = e.target?.result || null;
-      };
+      reader.onload = (e) => this.previewImage = e.target?.result;
       reader.readAsDataURL(this.selectedFile);
     }
   }
@@ -192,7 +161,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('profileImage', this.selectedFile);
-
       this.user$.pipe(take(1)).subscribe(user => {
         if (user?._id) {
           formData.append('id', user._id);
@@ -203,11 +171,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
       })
     }
   }
- 
+
+  getProfileImageUrl(profileImage: string | undefined | null): string {
+    return profileImage ? `${environment.apiUrl}/${profileImage}` : 'assets/icons/profile-user.png';
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-    
+
 }

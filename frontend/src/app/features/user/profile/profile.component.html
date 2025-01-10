@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <!-- Profile Container -->
-<div class="profile-container" *ngIf="(isLoading$ | async) === false; else loading">
+<div class="profile-container" *ngIf="!isLoading; else loading">
   <h1 class="profile-title">User Profile</h1>
 
   <!-- User Data -->
@@ -9,8 +9,7 @@
 
     <div class="profile-header">
       <div class="profile-picture">
-        <img [src]="user?.profileImage || previewImage ||  'assets/icons/profile-user.png'" alt="Profile Image"
-          class="profile-img" />
+        <img [src]=" previewImage || getProfileImageUrl(user?.profileImage) " alt="Profile Image" class="profile-img" />
       </div>
 
       <div class="upload-photo-container">
@@ -222,7 +221,8 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <mat-accordion class="example-headers-align" multi *ngIf="!additionalDetailsAvailable">
+
+      <mat-accordion multi *ngIf="!additionalDetailsAvailable">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title class="add-details-title"> Add Details </mat-panel-title>
@@ -306,8 +306,12 @@
 
 <!-- Loading State -->
 <ng-template #loading>
-  <mat-spinner></mat-spinner>
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
 </ng-template>
+
+
 
 <!-- No User Found -->
 <ng-template #noUser>

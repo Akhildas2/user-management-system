@@ -2,9 +2,8 @@
 .profile-container {
   padding: 20px;
   max-width: 1000px;
-  margin: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  border-radius: 25px;
 }
 
 /* Title */
@@ -25,12 +24,13 @@
 }
 
 .profile-img {
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
+  object-fit: fill;
+  object-position: center;
   border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #00adbd;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border: 3px solid #004d63;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Upload Button */
@@ -63,8 +63,8 @@
 
 .info-card {
   margin-top: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .personal-info-header {
@@ -113,6 +113,8 @@ mat-icon {
 /* Add Details Section */
 .add-details {
   margin-top: 30px;
+  border-radius: 25px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .add-details-title {
@@ -125,11 +127,12 @@ mat-panel-description {
   gap: 8px;
 }
 
-.details-card {
-  flex-direction: column;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.info-deatils-card {
+  margin-top: 15px;
+  border-radius: 25px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
+
 
 /* Add Details Button */
 .add-details-button-row {
@@ -186,6 +189,7 @@ mat-panel-description {
   color: red !important;
 }
 
+/* Photo Upload Container */
 .upload-photo-container {
   position: relative;
 }
@@ -199,6 +203,15 @@ mat-panel-description {
   z-index: 1;
 }
 
+/* Spinner Container */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 100px);
+  background-color: #f5f5f5;
+}
+
 /* Responsive for Small Devices */
 @media (max-width: 480px) {
   .profile-container {
@@ -206,12 +219,7 @@ mat-panel-description {
   }
 
   .profile-title {
-    font-size: 18px;
-  }
-
-  .profile-img {
-    width: 100px;
-    height: 100px;
+    font-size: 28px;
   }
 
   .upload-photo-btn {

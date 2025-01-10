@@ -3,7 +3,8 @@ import { MaterialModule } from '../../../../Material.Module';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { Store } from '@ngrx/store';
+import * as AuthActions from '../../../store/actions/auth.actions'
 
 export type MenuItem = {
   icon: string;
@@ -30,12 +31,18 @@ export class HeaderComponent {
     { icon: 'settings', label: 'Settings', route: '/settings' },
   ]);
 
+  constructor(private store: Store) { }
+
   isMobile(): boolean {
     return window.innerWidth < 480;
   }
 
   toggleSidenav(): void {
     this.sidenavOpen.set(!this.sidenavOpen());
+  }
+
+  logout(): void {
+    this.store.dispatch(AuthActions.logout())
   }
 
 }

@@ -32,7 +32,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
             user: result.user
         });
     } catch (error) {
-        console.error("login error:", error);
         res.status(500).json({ status: 'error', message: 'Internal Server Error!' });
     }
 };
@@ -67,7 +66,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
             user: newUser.user
         });
     } catch (error) {
-        console.error("register error", error);
         res.status(500).json({ message: 'Internal Server Error!' });
     }
 };
@@ -98,7 +96,6 @@ export const refreshAccessToken = async (req: Request, res: Response): Promise<v
             accessToken,
         });
     } catch (error) {
-        console.error("refreshAccessToken error", error);
         if (error instanceof jwt.JsonWebTokenError) {
             res.status(403).json({ status: 'error', message: "Invalid or expired refresh token" });
         } else {
@@ -122,7 +119,6 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
         // Optionally, send a response to the client to indicate successful logout
         res.status(200).json({ status: 'success', message: "Logout successful" });
     } catch (error) {
-        console.error("logout error", error);
         res.status(500).json({ status: 'error', message: 'Internal Server Error!' });
     }
 }

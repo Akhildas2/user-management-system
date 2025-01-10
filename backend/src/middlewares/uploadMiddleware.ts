@@ -3,7 +3,7 @@ import path from 'path';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,  path.join(__dirname, '../uploads')); // Save files in the 'uploads' directory
+        cb(null, path.join(__dirname, '../uploads')); // Save files in the 'uploads' directory
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}${path.extname(file.originalname)}`); // Append a timestamp to the original file name

@@ -2,6 +2,8 @@ import { Component, signal } from '@angular/core';
 import { MaterialModule } from '../../../../Material.Module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as AuthActions from '../../../store/actions/auth.actions'
 
 export type MenuItem = {
   icon: string;
@@ -19,6 +21,8 @@ export type MenuItem = {
 export class SidenavComponent {
   sidenavOpen = signal(false);
 
+  constructor(private store: Store) { }
+
   // Static menuItems
   menuItems = signal<MenuItem[]>([
     { icon: 'home', label: 'Home', route: '/home' },
@@ -26,4 +30,9 @@ export class SidenavComponent {
     { icon: 'task', label: 'Task', route: '/task' },
     { icon: 'settings', label: 'Settings', route: '/settings' },
   ]);
+
+  logout(): void {
+    this.store.dispatch(AuthActions.logout())
+  }
+
 }

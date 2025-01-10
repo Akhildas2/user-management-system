@@ -35,13 +35,13 @@
                 <mat-icon>settings</mat-icon>
                 <span>Settings</span>
             </button>
-            <button mat-menu-item routerLink="/logout">
+            <button mat-menu-item (click)="logout()">
                 <mat-icon>logout</mat-icon>
                 <span>Logout</span>
             </button>
         </mat-menu>
         <!-- Logout -->
-        <button mat-button routerLink="/logout" aria-label="Logout">
+        <button mat-button (click)="logout()" aria-label="Logout">
             <mat-icon>logout</mat-icon>
             <span>Logout</span>
         </button>

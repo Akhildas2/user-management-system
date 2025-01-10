@@ -2,65 +2,48 @@
 
 /* Global Styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Body Styles */
 body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
 }
-/* Style for mat-mdc-snack-bar-container */
+
+/* Snackbar Styles */
+.mat-mdc-snack-bar-container {
+  --mat-mdc-snack-bar-button-color: #fff;
+  --mdc-snackbar-supporting-text-color: #004d63 !important;
+
+  .mat-mdc-snack-bar-action {
+    color: #004d63 !important;
+  }
+}
 
 /* Success Notification */
 .mat-mdc-snack-bar-container.success-snackbar {
-    --mdc-snackbar-container-color: #04ff04; /* Green */
-    --mat-mdc-snack-bar-button-color: #fff;
-    --mdc-snackbar-supporting-text-color: #004d63; /* Dark Blue Text */
-  }
-  
-  /* Error Notification */
-  .mat-mdc-snack-bar-container.error-snackbar {
-    --mdc-snackbar-container-color: #f44336; /* Red */
-    --mat-mdc-snack-bar-button-color: #fff;
-    --mdc-snackbar-supporting-text-color: #004d63; /* Dark Blue Text */
-  }
-  
-  /* Warning Notification */
-  .mat-mdc-snack-bar-container.warning-snackbar {
-    --mdc-snackbar-container-color: #ff9800; /* Orange */
-    --mat-mdc-snack-bar-button-color: #fff;
-    --mdc-snackbar-supporting-text-color: #004d63; /* Dark Blue Text */
-  }
-  
-  /* Info Notification */
-  .mat-mdc-snack-bar-container.info-snackbar {
-    --mdc-snackbar-container-color: #2f9df8; /* Blue */
-    --mat-mdc-snack-bar-button-color: #fff;
-    --mdc-snackbar-supporting-text-color: #004d63; /* Dark Blue Text */
-  }
-  
-  /* Style for Close Button in Snackbar */
-  
-  /* Success Snackbar Close Button */
-  .mat-mdc-snack-bar-container.success-snackbar .mat-mdc-snack-bar-action {
-    color: #004d63 !important;  /* Adjusted Close Button Color */
-  }
-  
-  /* Error Snackbar Close Button */
-  .mat-mdc-snack-bar-container.error-snackbar .mat-mdc-snack-bar-action {
-    color: #004d63 !important;  /* Adjusted Close Button Color */
-  }
-  
-  /* Warning Snackbar Close Button */
-  .mat-mdc-snack-bar-container.warning-snackbar .mat-mdc-snack-bar-action {
-    color: #004d63 !important;  /* Adjusted Close Button Color */
-  }
-  
-  /* Info Snackbar Close Button */
-  .mat-mdc-snack-bar-container.info-snackbar .mat-mdc-snack-bar-action {
-    color: #004d63 !important;  /* Adjusted Close Button Color */
-  }
-  
+  --mdc-snackbar-container-color: #04ff04;
+}
+
+/* Error Notification */
+.mat-mdc-snack-bar-container.error-snackbar {
+  --mdc-snackbar-container-color: #f44336;
+}
+
+/* Warning Notification */
+.mat-mdc-snack-bar-container.warning-snackbar {
+  --mdc-snackbar-container-color: #ff9800;
+}
+
+/* Info Notification */
+.mat-mdc-snack-bar-container.info-snackbar {
+  --mdc-snackbar-container-color: #2f9df8;
+}
+
+/* Spinner Styles */
+.mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: #00adbd !important;
+}
