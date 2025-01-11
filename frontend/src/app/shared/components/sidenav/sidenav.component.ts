@@ -1,9 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MaterialModule } from '../../../../Material.Module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as AuthActions from '../../../store/actions/auth.actions'
+import * as UserActions from '../../../store/actions/user.actions'
+import { environment } from '../../../../environments/environment';
+import { Observable } from 'rxjs';
+import { IUser } from '../../models/userModel';
+import { selectUserProfile } from '../../../store/selectors/user.selectors';
 
 export type MenuItem = {
   icon: string;
@@ -18,10 +23,14 @@ export type MenuItem = {
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.css'
 })
-export class SidenavComponent {
-  sidenavOpen = signal(false);
 
-  constructor(private store: Store) { }
+export class SidenavComponent implements OnInit {
+  sidenavOpen = signal(false);
+  user$: Observable<IUser | null>;
+
+  constructor(private store: Store) {
+    this.user$ = this.store.select(selectUserProfile);
+  }
 
   // Static menuItems
   menuItems = signal<MenuItem[]>([
@@ -33,6 +42,14 @@ export class SidenavComponent {
 
   logout(): void {
     this.store.dispatch(AuthActions.logout())
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(UserActions.getProfile())
+  }
+
+  getProfileImageUrl(profileImage: string | undefined | null): string {
+    return profileImage ? `${environment.apiUrl}/${profileImage}` : 'assets/icons/profile-user.png';
   }
 
 }

@@ -1,8 +1,13 @@
 <div class="sidenav">
   <div class="sidenav-header">
-    <img src="assets/icons/profile-user.png" alt="Profile Image" />
+    <img *ngIf="user$ | async as user; else noUser" [src]="getProfileImageUrl(user.profileImage)" alt="User Profile">
     <div class="header-text">
-      <h2>Akhil Das</h2>
+      <div *ngIf="user$ | async as user; else noUser">
+        <span class="user-name">{{ user.name }}</span>
+      </div>
+      <ng-template #noUser>
+        <span>No user data available</span>
+      </ng-template>
     </div>
   </div>
 

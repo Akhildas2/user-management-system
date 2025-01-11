@@ -19,7 +19,7 @@ export class AuthEffects {
             this.AuthServices.setAccessToken(response.accessToken);
             this.AuthServices.setUserId(response.user._id);
             this.notificationService.showNotification('Login successful! Welcome back.', 'success');
-            this.router.navigate(['/home']);
+            this.router.navigate(['/user/home']);
 
             return AuthActions.loginSuccess({
               accessToken: response.accessToken,

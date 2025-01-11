@@ -9,5 +9,6 @@ export interface IUser {
     gender?: string,
     skills?: String,
     position?: string,
-    profileImage?: string
+    profileImage?: string,
+    isAdmin?:boolean,
 }

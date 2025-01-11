@@ -4,33 +4,48 @@
         <img src="assets/icons/logo.png" alt="CURD Logo" class="logo-img" />
     </div>
 
-    <!-- Mobile Menu Toggle Button -->
-    <button mat-icon-button aria-label="Menu" class="mobile-menu-toggle" (click)="toggleSidenav()">
-        <mat-icon>menu</mat-icon>
-    </button>
-
     <!-- Navigation Links (for larger screens) -->
     <div class="center-buttons">
-        <button mat-button *ngFor="let item of menuItems()" [routerLink]="item.route"
-            aria-label="{ item.label } Section" routerLinkActive="selected-menu-item" #rla="routerLinkActive"
-            [class.activated]="rla.isActive">
-            <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">
-                {{ item.icon }}
-            </mat-icon>
-            <span>{{ item.label }}</span>
-        </button>
+        <ng-container *ngFor="let item of (isAdmin ? adminMenuItems(): userMenuItems())">
+            <button mat-button [routerLink]="item.route" aria-label="{ item.label } Section"
+                routerLinkActive="selected-menu-item" #rla="routerLinkActive" [class.activated]="rla.isActive">
+                <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">
+                    {{ item.icon }}
+                </mat-icon>
+                <span>{{ item.label }}</span>
+            </button>
+        </ng-container>
     </div>
 
-    <!-- Right Section (User Avatar Dropdown) -->
+    <!-- Search Input -->
+    <div class="search-container">
+        <mat-form-field appearance="outline">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search here..." [(ngModel)]="searchQuery" />
+            <button mat-icon-button matSuffix (click)="onSearch()" aria-label="Search">
+                <mat-icon>search</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+
+    <!-- Right Section  -->
     <div class="right-section">
+        <!-- User Avatar Dropdown -->
         <button mat-icon-button [matMenuTriggerFor]="avatarMenu" aria-label="User Menu">
-            <img src="assets/icons/profile-user.png" class="profile-pic" alt="User Avatar" />
+            <img *ngIf="user$ | async as user;" [src]="getProfileImageUrl(user.profileImage)"
+                [alt]="user.name + '\'s profile'" class="profile-image" />
         </button>
         <mat-menu #avatarMenu="matMenu">
             <button mat-menu-item routerLink="/profile">
                 <mat-icon>person</mat-icon>
-                <span>My Profile</span>
+                <span>{{ isAdmin ? 'My Profile' : 'Profile' }}</span>
             </button>
+            <ng-container *ngIf="!isAdmin">
+                <button mat-menu-item routerLink="/change-password">
+                    <mat-icon>lock</mat-icon>
+                    <span>Change Password</span>
+                </button>
+            </ng-container>
             <button mat-menu-item routerLink="/settings">
                 <mat-icon>settings</mat-icon>
                 <span>Settings</span>
@@ -40,12 +55,11 @@
                 <span>Logout</span>
             </button>
         </mat-menu>
-        <!-- Logout -->
-        <button mat-button (click)="logout()" aria-label="Logout">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
-        </button>
     </div>
+    <!-- Mobile Menu Toggle Button -->
+    <button mat-icon-button aria-label="Menu" class="mobile-menu-toggle" (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+    </button>
 </mat-toolbar>
 
 <mat-sidenav-container *ngIf="isMobile()">

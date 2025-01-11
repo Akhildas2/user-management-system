@@ -8,13 +8,13 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     {
-        path: 'home',
-        loadComponent: () => import('./features/user/home/home.component').then(m => m.HomeComponent),
+        path: 'user',
+        loadChildren: () => import('./features/user/user.module').then(m => m.UserModule),
         canActivate: [authGuard],
     },
     {
-        path: 'profile',
-        loadComponent: () => import('./features/user/profile/profile.component').then(m => m.ProfileComponent),
+        path: 'admin',
+        loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule),
         canActivate: [authGuard],
     },
     { path: '**', redirectTo: '/login' },

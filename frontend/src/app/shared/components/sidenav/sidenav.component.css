@@ -26,14 +26,15 @@ mat-sidenav {
 }
 
 .sidenav-header img {
-    height: 80px;
-    width: 80px;
+    height: 100px;
+    width: 100px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
+    border: 3px solid #004d63;
 }
 
-.sidenav-header .header-text h2 {
+.user-name {
     color: black;
     margin: 0;
     font-size: 1rem;
@@ -60,8 +61,6 @@ button.menu-item,
     text-align: left;
     transition: color 0.3s ease, background-color 0.3s ease, border-left-color 0.3s ease;
 }
-
-
 
 button.menu-item.selected-menu-item {
     border-left-color: #00adbd;
