@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import * as userControllers from '../controllers/userControllers';
+import * as adminControllers from '../controllers/adminControllers';
 import * as authControllers from '../controllers/authControllers';
 import { authenticateToken } from '../middlewares/authMiddleware';
 import upload from '../middlewares/uploadMiddleware';
@@ -8,28 +9,23 @@ import upload from '../middlewares/uploadMiddleware';
 const jsonParser = bodyParser.json();
 const router = express.Router();
 
-// GET API - READ: Fetch all users
-router.get('/user/:id', userControllers.getUsers);
+// User routes
+router.get('/user/:id', userControllers.getUsers); // Get user by ID
+router.put('/user', jsonParser, userControllers.updateUser); // Update user
+router.delete('/user/:id', userControllers.deleteUser); // Delete user
+router.post('/user/upload-photo', upload.single('profileImage'), userControllers.photoUpload); // Upload photo
 
-// PUT API - UPDATE: Update an existing user by ID
-router.put('/user', jsonParser, userControllers.updateUser);
+// Common routes
+router.post('/register', jsonParser, authControllers.register); // Register
+router.post('/login', authControllers.login); // Login
+router.post('/logout', authControllers.logout); // Logout
+router.post('/refresh-token', authControllers.refreshAccessToken); // Refresh token
 
-// DELETE API - DELETE: Delete a user by ID
-router.delete('/user/:id', userControllers.deleteUser);
-
-// Create User
-router.post('/register', jsonParser, authControllers.register)
-
-// Get User
-router.post('/login', authControllers.login)
-
-// Logut user
-router.post('/logout', authControllers.logout)
-
-// For Refresh Token
-router.post('/refresh-token', authControllers.refreshAccessToken);
-
-// For uploaded photo
-router.post('/user/upload-photo', upload.single('profileImage'), userControllers.photoUpload);
+// Admin routes
+router.get('/admin', adminControllers.getUserList); // Get all users
+router.get('/admin/:id', adminControllers.getUserById); // Get user by ID
+router.post('/admin', adminControllers.createUser); // Create user
+router.put('/admin/:id', adminControllers.updateUser); // Update user
+router.delete('/admin/:id', adminControllers.deleteUser); // Delete user
 
 export default router;

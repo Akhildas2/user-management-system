@@ -17,7 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 20px;
+    padding: 20px;
     height: 100px;
     width: 100%;
     background: #ffffff;
@@ -62,7 +62,6 @@ button:hover,
     display: flex;
     align-items: center;
     gap: 10px;
-    height: 100%;
     padding-right: 20px;
 }
 
@@ -74,9 +73,10 @@ button:hover,
 
 mat-form-field {
     margin: 0;
-    height: 100%;
     display: flex;
     align-items: center;
+    width: auto;
+    height: 100%;
 }
 
 
@@ -111,40 +111,37 @@ mat-toolbar {
 
 /* For screens smaller than 768px */
 @media screen and (max-width: 768px) {
+    .navbar {
+        padding: 10px;
+    }
 
     .logo-img {
+        height: 70px;
+        width: 70px;
+    }
+
+    .search-container {
+        margin-top: 20px;
+        width: 160px;
+    }
+
+    .center-buttons {
+        gap: 8px;
+    }
+
+    .right-section {
+        margin-right: 5px;
+        gap: 8px;
+    }
+
+    .profile-image {
         height: 60px;
         width: 60px;
+        margin: 0 10px;
     }
 
-    /* Hide center buttons, search, and profile container by default */
-    .center-buttons, .search-container, .right-section {
-        display: none;
-    }
-
-    /* Mobile menu toggle visibility */
-    .mobile-menu-toggle {
-        display: inline-block;
-    }
-
-    /* Sidenav behavior */
-    mat-sidenav {
-        transition: transform 0.3s ease-in-out;
-        position: fixed;
-    }
-
-    mat-sidenav-content {
-        transition: margin-left 0.3s ease-in-out;
-        z-index: 1;
-    }
-
-    .sidenav-open .center-buttons, .sidenav-open .search-container {
-        display: flex;
-    }
-
-    /* Logo and Search Bar */
-    .logo {
-        margin-right: auto;
+    button {
+        gap: 3px;
     }
 }
 
@@ -153,8 +150,8 @@ mat-toolbar {
 @media (max-width: 480px) {
 
     .logo-img {
-        height: 60px;
-        width: 60px;
+        height: 70px;
+        width: 70px;
     }
 
     .mobile-menu-toggle {

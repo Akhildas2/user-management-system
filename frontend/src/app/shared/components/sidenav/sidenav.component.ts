@@ -27,29 +27,50 @@ export type MenuItem = {
 export class SidenavComponent implements OnInit {
   sidenavOpen = signal(false);
   user$: Observable<IUser | null>;
+  isAdmin = false;
 
   constructor(private store: Store) {
     this.user$ = this.store.select(selectUserProfile);
   }
 
-  // Static menuItems
-  menuItems = signal<MenuItem[]>([
-    { icon: 'home', label: 'Home', route: '/home' },
-    { icon: 'person', label: 'Profile', route: '/profile' },
-    { icon: 'task', label: 'Task', route: '/task' },
-    { icon: 'settings', label: 'Settings', route: '/settings' },
+  // Admin Menu Items
+  readonly adminMenuItems = signal<MenuItem[]>([
+    { icon: 'dashboard', label: 'Dashboard', route: '/admin/dashboard' },
+    { icon: 'people', label: 'Users List', route: '/admin/user-list' },
+    { icon: 'person', label: 'Profile', route: '/admin/profile' },
+    { icon: 'notifications', label: 'Notifications', route: '/admin/notifications' },
+    { icon: 'settings', label: 'Settings', route: '/admin/settings' },
+  ]);
+
+  // User Menu Items
+  readonly userMenuItems = signal<MenuItem[]>([
+    { icon: 'home', label: 'Home', route: '/user/home' },
+    { icon: 'person', label: 'Profile', route: '/user/profile' },
+    { icon: 'history', label: 'My Activity', route: '/user/my-activity' },
+    { icon: 'settings', label: 'Settings', route: '/user/settings' },
+    { icon: 'help', label: 'Help', route: '/user/help' },
+
   ]);
 
   logout(): void {
-    this.store.dispatch(AuthActions.logout())
+    this.store.dispatch(AuthActions.logout());
   }
 
   ngOnInit(): void {
-    this.store.dispatch(UserActions.getProfile())
+    this.store.dispatch(UserActions.getProfile());
+    this.user$.subscribe(user => {
+      this.isAdmin = user?.isAdmin || false;
+    });
   }
 
-  getProfileImageUrl(profileImage: string | undefined | null): string {
-    return profileImage ? `${environment.apiUrl}/${profileImage}` : 'assets/icons/profile-user.png';
+  getProfileImage(): string {
+    let profileImage ='assets/icons/profile-user.png'; 
+    this.user$.subscribe((user)=>{
+      if(user?.profileImage){
+        profileImage = user.profileImage;
+      }
+    });
+    return profileImage
   }
 
 }

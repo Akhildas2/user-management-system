@@ -10,5 +10,6 @@ export interface IUser {
     skills?: String,
     position?: string,
     profileImage?: string,
-    isAdmin?:boolean,
+    isAdmin?: boolean,
+    [key: string]: any;
 }

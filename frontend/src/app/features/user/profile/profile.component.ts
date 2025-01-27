@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 import { minimumAgeValidator } from '../../../shared/validators/dob.validators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -172,8 +171,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  getProfileImageUrl(profileImage: string | undefined | null): string {
-    return profileImage ? `${environment.apiUrl}/${profileImage}` : 'assets/icons/profile-user.png';
+  getProfileImage(): string {
+    let profileImage = 'assets/icons/profile-user.png';
+    this.user$.pipe(take(1)).subscribe((user) => {
+      if (user?.profileImage) {
+        profileImage = user.profileImage;
+      }
+    });
+    return profileImage;
   }
 
   ngOnDestroy(): void {

@@ -1,24 +1,18 @@
 import multer from 'multer';
-import path from 'path';
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../uploads')); // Save files in the 'uploads' directory
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}${path.extname(file.originalname)}`); // Append a timestamp to the original file name
-    },
-});
+// Use memory storage for storing files in buffer
+const storage = multer.memoryStorage();
 
+// File filter function to allow only image files
 const fileFilter: multer.Options['fileFilter'] = (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) {
         cb(null, true); // Accept the file
     } else {
-        cb(null, false); // Reject non-image files-+
-        console.error('Invalid file type. Only images are allowed.');
+        cb(new Error('Invalid file type. Only images are allowed.')); // Reject non-image files
     }
 };
 
+// Multer configuration
 const upload = multer({
     storage,
     fileFilter,
@@ -26,3 +20,4 @@ const upload = multer({
 });
 
 export default upload;
+

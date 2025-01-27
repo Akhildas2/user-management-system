@@ -11,12 +11,13 @@ export const editProfile = createAction('[User] Edit Profile', props<{ user: Par
 export const editProfileSuccess = createAction('[User] Edit Profile Success', props<{ user: IUser }>());
 export const editProfileFailure = createAction('[User] Edit Profile Failure', props<{ error: string }>());
 
+// Update profile
+export const updateProfileImage = createAction('[User] Upload Photo', props<{ formData: FormData }>());
+export const updateProfileImageSuccess = createAction('[User] Upload Photo Success', props<{ user: IUser }>());
+export const updateProfileImageFailure = createAction('[User] Upload Photo Failure', props<{ error: string }>());
+
 // Delete User
 export const deleteProfile = createAction('[User] Delete Profile', props<{ id: string }>());
 export const deleteProfileSuccess = createAction('[User] Delete Profile Success');
 export const deleteProfileFailure = createAction('[User] Delete Profile Failure', props<{ error: string }>());
 
-// Update profile
-export const updateProfileImage = createAction('[User] Upload Photo', props<{ formData: FormData }>());
-export const updateProfileImageSuccess = createAction('[User] Upload Photo Success', props<{ user: IUser }>());
-export const updateProfileImageFailure = createAction('[User] Upload Photo Failure', props<{ error: string }>());

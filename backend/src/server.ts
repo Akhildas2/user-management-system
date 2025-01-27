@@ -30,8 +30,6 @@ app.use(
     })
 );
 
-// Serve the 'uploads' folder as static
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // User routes (all routes prefixed with /api)
 app.use('/api', usersRoutes);

@@ -4,7 +4,7 @@
         <img src="assets/icons/logo.png" alt="CURD Logo" class="logo-img" />
     </div>
 
-    <!-- Navigation Links (for larger screens) -->
+    <!-- Navigation Links  -->
     <div class="center-buttons">
         <ng-container *ngFor="let item of (isAdmin ? adminMenuItems(): userMenuItems())">
             <button mat-button [routerLink]="item.route" aria-label="{ item.label } Section"
@@ -21,8 +21,9 @@
     <div class="search-container">
         <mat-form-field appearance="outline">
             <mat-label>Search</mat-label>
-            <input matInput placeholder="Search here..." [(ngModel)]="searchQuery" />
-            <button mat-icon-button matSuffix (click)="onSearch()" aria-label="Search">
+            <input matInput placeholder="Search here..." [(ngModel)]="globalSearchQuery" (ngModelChange)="onSearch()"
+                aria-label="Search Input" />
+            <button mat-icon-button matSuffix aria-label="Search">
                 <mat-icon>search</mat-icon>
             </button>
         </mat-form-field>
@@ -32,21 +33,15 @@
     <div class="right-section">
         <!-- User Avatar Dropdown -->
         <button mat-icon-button [matMenuTriggerFor]="avatarMenu" aria-label="User Menu">
-            <img *ngIf="user$ | async as user;" [src]="getProfileImageUrl(user.profileImage)"
-                [alt]="user.name + '\'s profile'" class="profile-image" />
+            <img *ngIf="user$ | async as user;" [src]="getProfileImage()" [alt]="user.name + '\'s profile'"
+                class="profile-image" />
         </button>
         <mat-menu #avatarMenu="matMenu">
-            <button mat-menu-item routerLink="/profile">
+            <button mat-menu-item [routerLink]="isAdmin ? '/admin/profile' : '/user/profile'">
                 <mat-icon>person</mat-icon>
-                <span>{{ isAdmin ? 'My Profile' : 'Profile' }}</span>
+                <span>Profile</span>
             </button>
-            <ng-container *ngIf="!isAdmin">
-                <button mat-menu-item routerLink="/change-password">
-                    <mat-icon>lock</mat-icon>
-                    <span>Change Password</span>
-                </button>
-            </ng-container>
-            <button mat-menu-item routerLink="/settings">
+            <button mat-menu-item [routerLink]="isAdmin ? '/admin/settings' : '/user/settings'">
                 <mat-icon>settings</mat-icon>
                 <span>Settings</span>
             </button>

@@ -1,6 +1,6 @@
 <div class="sidenav">
   <div class="sidenav-header">
-    <img *ngIf="user$ | async as user; else noUser" [src]="getProfileImageUrl(user.profileImage)" alt="User Profile">
+    <img *ngIf="user$ | async as user; else noUser" [src]="getProfileImage()" alt="User Profile">
     <div class="header-text">
       <div *ngIf="user$ | async as user; else noUser">
         <span class="user-name">{{ user.name }}</span>
@@ -12,13 +12,15 @@
   </div>
 
   <div class="center-buttons">
-    <button mat-button class="menu-item" *ngFor="let item of menuItems()" [routerLink]="item.route"
-      routerLinkActive="selected-menu-item" #rla="routerLinkActive" [class.activated]="rla.isActive">
-      <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">
-        {{ item.icon }}
-      </mat-icon>
-      <span>{{ item.label }}</span>
-    </button>
+    <ng-container *ngFor="let item of (isAdmin ? adminMenuItems(): userMenuItems())">
+      <button mat-button class="menu-item" [routerLink]="item.route" routerLinkActive="selected-menu-item"
+        #rla="routerLinkActive" [class.activated]="rla.isActive">
+        <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'">
+          {{ item.icon }}
+        </mat-icon>
+        <span>{{ item.label }}</span>
+      </button>
+    </ng-container>
   </div>
 
   <div class="logout-button">

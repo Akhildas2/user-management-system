@@ -16,10 +16,16 @@ export class AuthEffects {
       mergeMap(action =>
         this.AuthServices.login(action.email, action.password).pipe(
           map(response => {
-            this.AuthServices.setAccessToken(response.accessToken);
-            this.AuthServices.setUserId(response.user._id);
+            const { accessToken, user } = response;
+            this.AuthServices.setAccessToken(accessToken);
+            this.AuthServices.setUserId(user._id);
             this.notificationService.showNotification('Login successful! Welcome back.', 'success');
-            this.router.navigate(['/user/home']);
+            
+            if (user.isAdmin) {
+              this.router.navigate(['/admin/dashboard']);
+            } else {
+              this.router.navigate(['/user/home']);
+            }
 
             return AuthActions.loginSuccess({
               accessToken: response.accessToken,
@@ -71,10 +77,15 @@ export class AuthEffects {
       mergeMap((action) =>
         this.AuthServices.register(action.name, action.email, action.phone, action.password).pipe(
           map((response) => {
-            this.AuthServices.setAccessToken(response.accessToken);
-            this.AuthServices.setUserId(response.user._id)
+            const { accessToken, user } = response;
+            this.AuthServices.setAccessToken(accessToken);
+            this.AuthServices.setUserId(user._id)
             this.notificationService.showNotification('Registration successful! Welcome to our platform!', 'success');
-            this.router.navigate(['/home']);
+            if (user.isAdmin) {
+              this.router.navigate(['/admin/dashboard']);
+            } else {
+              this.router.navigate(['/user/home']);
+            }
 
             return AuthActions.registerSuccess({
               accessToken: response.accessToken,

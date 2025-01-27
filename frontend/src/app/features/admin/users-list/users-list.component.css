@@ -1,0 +1,9 @@
+.user-list {
+    margin: 20px;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}

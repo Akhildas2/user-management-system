@@ -6,11 +6,11 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import * as AuthActions from '../../../store/actions/auth.actions'
 import * as UserActions from '../../../store/actions/user.actions'
-import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { IUser } from '../../models/userModel';
 import { selectUserProfile } from '../../../store/selectors/user.selectors';
 import { FormsModule } from '@angular/forms';
+import { SearchService } from '../../services/search.service';
 
 export type MenuItem = {
   icon: string;
@@ -31,26 +31,24 @@ export class HeaderComponent implements OnInit {
   sidenavOpen = signal(false);
   user$: Observable<IUser | null>;
   isAdmin = false;
-  searchQuery = '';
-  menuOpen = false;
-  
+  globalSearchQuery = '';
+
   // Admin Menu Items
   readonly adminMenuItems = signal<MenuItem[]>([
-    { icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
-    { icon: 'people', label: 'User List', route: '/user-management' },
-    { icon: 'notifications', label: 'Notifications', route: '/notifications' },
-    { icon: 'settings', label: 'Settings', route: '/settings' },
+    { icon: 'dashboard', label: 'Dashboard', route: '/admin/dashboard' },
+    { icon: 'people', label: 'Users List', route: '/admin/user-list' },
+    { icon: 'notifications', label: 'Notifications', route: '/admin/notifications' },
   ]);
 
   // User Menu Items
   readonly userMenuItems = signal<MenuItem[]>([
-    { icon: 'home', label: 'Home', route: '/home' },
-    { icon: 'person', label: 'Profile', route: '/profile' },
-    { icon: 'history', label: 'My Activity', route: '/my-activity' },
-    { icon: 'help', label: 'Help', route: '/help' },
+    { icon: 'home', label: 'Home', route: '/user/home' },
+    { icon: 'person', label: 'Profile', route: '/user/profile' },
+    { icon: 'history', label: 'My Activity', route: '/user/my-activity' },
+    { icon: 'help', label: 'Help', route: '/user/help' },
   ]);
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private SearchService: SearchService) {
     this.user$ = this.store.select(selectUserProfile);
   }
 
@@ -63,11 +61,11 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    this.store.dispatch(AuthActions.logout())
+    this.store.dispatch(AuthActions.logout());
   }
 
   onSearch(): void {
-    console.log('Search query:', this.searchQuery);
+    this.SearchService.updateSearchQuery(this.globalSearchQuery);
   }
 
   ngOnInit(): void {
@@ -77,8 +75,15 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  getProfileImageUrl(profileImage: string | undefined | null): string {
-    return profileImage ? `${environment.apiUrl}/${profileImage}` : 'assets/icons/profile-user.png';
+  getProfileImage(): string {
+    let profileImage = 'assets/icons/profile-user.png';
+    this.user$.subscribe((user) => {
+      if (user?.profileImage) {
+        profileImage = user.profileImage;
+      }
+    });
+    return profileImage
   }
+
 
 }

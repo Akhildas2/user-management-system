@@ -8,7 +8,6 @@ export interface AuthState {
     isLoading: boolean;
 }
 
-
 export interface UserState {
     profile: IUser | null;
     loading: boolean;
