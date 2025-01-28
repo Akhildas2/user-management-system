@@ -73,6 +73,9 @@ export class HeaderComponent implements OnInit {
     this.user$.subscribe(user => {
       this.isAdmin = user?.isAdmin || false;
     });
+    this.SearchService.searchQuery$.subscribe((query)=>{
+      this.globalSearchQuery = query;
+    });
   }
 
   getProfileImage(): string {

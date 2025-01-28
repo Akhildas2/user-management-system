@@ -299,7 +299,8 @@
       </mat-accordion>
     </div>
 
-    <button mat-button class="delete-account-btn" (click)="deleteAccount()"><mat-icon>delete</mat-icon> Delete
+    <button mat-button class="delete-account-btn" *ngIf="!user.isAdmin"
+      (click)="deleteAccount()"><mat-icon>delete</mat-icon> Delete
       Account</button>
   </div>
 </div>

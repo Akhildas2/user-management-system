@@ -5,8 +5,8 @@ import crypto from 'crypto';
 // Get All Users
 export const getUserList = async (req: Request, res: Response): Promise<void> => {
     try {
-        const users = await User.find();
-        
+        const users = await User.find({ isAdmin: false });
+
         if (!users.length) {
             res.status(404).json({ status: 'error', message: 'No users found' });
             return;

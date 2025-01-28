@@ -18,6 +18,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 @NgModule({
     imports: [
@@ -39,7 +40,8 @@ import { MatTableModule } from '@angular/material/table';
         MatDatepickerModule,
         MatSnackBarModule,
         MatDialogModule,
-        MatTableModule
+        MatTableModule,
+        MatPaginatorModule
     ],
     exports: [
         MatCardModule,
@@ -60,7 +62,8 @@ import { MatTableModule } from '@angular/material/table';
         MatDatepickerModule,
         MatSnackBarModule,
         MatDialogModule,
-        MatTableModule
+        MatTableModule,
+        MatPaginatorModule
     ]
 })
 export class MaterialModule { }
