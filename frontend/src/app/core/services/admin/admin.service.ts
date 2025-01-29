@@ -25,10 +25,10 @@ export class AdminService {
     return this.http.post<IUser>(this.baseUrl, user);
   }
 
-  updateUser(user: Partial<IUser>): Observable<IUser> {
-    return this.http.put<IUser>(`${this.baseUrl}/${user._id}`, user)
+  updateUser(id: string, user: Partial<IUser>): Observable<IUser> {
+    return this.http.put<IUser>(`${this.baseUrl}/${id}`, user);
   }
-
+  
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`)
   }

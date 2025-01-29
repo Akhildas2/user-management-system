@@ -57,7 +57,7 @@ export class AdminEffects {
         this.actions$.pipe(
             ofType(AdminActions.updateUser),
             mergeMap(({ id, user }) => {
-                return this.adminService.updateUser({ ...user, _id: id }).pipe(
+                return this.adminService.updateUser(id, user).pipe(
                     map((updatedUser) => AdminActions.updateUserSuccess({ user: updatedUser })),
                     catchError((error) => {
                         const errrorMessage = error?.error?.message || 'Failed to update user.';

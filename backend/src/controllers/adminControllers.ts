@@ -63,7 +63,8 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id, name, phone, email, dob, gender, skills, position } = req.body;
-
+        console.log("req.body",req.body);
+        
         if (!id) {
             res.status(400).json({ status: 'error', message: 'User ID is required.' });
             return;
