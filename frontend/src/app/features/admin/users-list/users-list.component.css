@@ -8,55 +8,102 @@
 }
 
 .user-list-card {
-    flex: 1;
     width: 100%;
     max-width: 1400px;
+    padding: 20px;
     box-shadow: none;
-    padding: 10px;
+    background-color: #fff;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: nowrap;
+    padding-bottom: 10px;
 }
 
 .heading {
     font-weight: 700;
+    padding-left: 15px;
     font-size: 1.8rem;
-    color: #333333;
+    color: #333;
+    flex-grow: 1;
+    text-align: left;
+    margin: 0;
+    white-space: nowrap;
 }
 
+
+.add-user-button {
+    font-size: 14px;
+    color: #00adbd !important;
+    border: 1px solid #00adbd;
+    border-radius: 25px;
+    padding: 6px 15px;
+    margin-right: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.add-user-button mat-icon {
+    margin-right: 5px;
+}
+
+.add-user-button:hover {
+    color: #004d63 !important;
+    border-color: #004d63;
+}
+
+
 .profile-img {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     object-fit: cover;
+    display: flex;
+    justify-content: center;
 }
 
 table.mat-elevation-z8 {
     width: 100%;
-    font-weight: bold;
     border-collapse: collapse;
     margin-top: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 table.mat-elevation-z8 th {
-    color: #333333;
+    color: #333;
     text-align: left;
-    border-bottom: 1px solid #000000;
+    font-size: 1rem;
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
 }
 
 table.mat-elevation-z8 td {
-    border-bottom: 1px solid #bfbfbf;
+    font-size: 0.9rem;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
     vertical-align: middle;
-    text-align: left;
-    padding-top: 10px;
-    padding-bottom: 5px;
-
 }
 
 table.mat-elevation-z8 tr:hover {
-    background-color: #fafafa;
+    background-color: #f5f5f5;
+    transition: background-color 0.2s ease;
 }
 
-
+/* Icons and Buttons */
 button.mat-icon-button {
     margin: 0 5px;
+    transition: all 0.2s ease;
+}
+
+button.mat-icon-button:hover {
+    transform: scale(1.1);
 }
 
 .mat-cell,
@@ -64,59 +111,142 @@ button.mat-icon-button {
     padding: 10px 15px;
 }
 
-
-@media screen and (max-width: 480px) {
+/* Responsive Adjustments */
+@media screen and (max-width: 1024px) {
     .user-list-container {
-        padding: 2px;
+        padding: 10px;
     }
 
-    .user-list-card {
-        flex-direction: column;
-        margin: 0 auto;
-        padding: 2px;
+    .header-container {
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
     .heading {
-        font-size: 1.2rem;
-        padding: 5px;
+        font-size: 1.5rem;
+        text-align: left;
+    }
+
+    .add-user-button {
+        font-size: 12px;
+        padding: 5px 12px;
+    }
+
+    .profile-img {
+        width: 45px;
+        height: 45px;
     }
 
     table.mat-elevation-z8 th,
     table.mat-elevation-z8 td {
-        font-size: 0.5rem;
-        padding: 2px;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .user-list-container {
+        padding: 5px;
     }
 
-    button.mat-icon-button,
-    .mat-icon {
-        width: 25px;
-        height: 25px;
-        display: flex;
-        justify-content: center;
+    .header-container {
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
-        padding: 0;
+        width: 100%;
     }
 
-    .mat-icon {
-        font-size: 18px;
-        line-height: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .heading {
+        font-size: 1.2rem;
+    }
+
+    .add-user-button {
+        font-size: 10px;
+        padding: 4px 8px;
+        min-width: unset;
+        margin-right: 5px;
     }
 
     .profile-img {
-        margin-top: 5px;
         width: 40px;
         height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .user-list-container {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        overflow-x: hidden;
     }
 
     .user-list-card {
-        flex-direction: column;
-        margin: 0 auto;
+        padding: 5px;
+        margin: 0;
+        width: 100%;
     }
 
+    .heading {
+        font-size: 1.2rem;
+        margin-top: 20px;
 
+    }
+
+    .add-user-button {
+        margin-top: 20px;
+        font-size: 10px;
+        padding: 4px 8px;
+        margin-right: 15px;
+    }
+
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table.mat-elevation-z8 {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        border-collapse: collapse;
+    }
+
+    table.mat-elevation-z8 th,
+    table.mat-elevation-z8 td {
+        font-size: 0.8rem;
+        padding: 3px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .action-buttons {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    button.mat-icon-button {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mat-icon {
+        font-size: 16px;
+        height: 25px;
+        width: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Profile Image */
+    .profile-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin: 2px;
+    }
 }

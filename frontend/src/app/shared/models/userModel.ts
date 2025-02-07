@@ -11,5 +11,7 @@ export interface IUser {
     position?: string,
     profileImage?: string,
     isAdmin?: boolean,
+    isBlocked?: boolean;
+    isVerified?: boolean;
     [key: string]: any;
 }

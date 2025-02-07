@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import path from 'path';
 import fs from 'fs';
 import cloudinary from '../config/cloudinaryConfig';
+import { uploadToCloudinary } from '../helpers/uploadToCloudinary';
+import { deleteFromCloudinary } from '../helpers/deleteFromCloudinary';
 
 // For getting the user
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
@@ -124,32 +126,10 @@ export const photoUpload = async (req: Request, res: Response): Promise<void> =>
 
         // Delete old photo from Cloudinary if it exists
         if (user.profileImage) {
-            const publicIdMatch = user.profileImage.match(/\/([^/]+)\.[a-z]+$/i);
-            const publicId = publicIdMatch ? publicIdMatch[1] : null;
-            if (publicId) {
-                await cloudinary.uploader.destroy(`profile-images/${publicId}`);
-            }
+            await deleteFromCloudinary(user.profileImage);
         }
 
-        // Upload new photo to Cloudinary
-        const uploadToCloudinary = (): Promise<any> => {
-            return new Promise((resolve, reject) => {
-                const stream = cloudinary.uploader.upload_stream(
-                    { folder: 'profile-images', resource_type: 'image' },
-                    (error, result) => {
-                        if (error) {
-                            reject(error);
-                        } else {
-                            resolve(result);
-                        }
-                    }
-                );
-                stream.end(req.file?.buffer);
-            });
-        };
-
-        const uploadResponse = await uploadToCloudinary();
-
+        const uploadResponse = await uploadToCloudinary(req.file.buffer);
         user.profileImage = uploadResponse.secure_url;
         const updatedUser = await user.save();
 

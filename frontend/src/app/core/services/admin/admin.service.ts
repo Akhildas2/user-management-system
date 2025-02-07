@@ -8,28 +8,29 @@ import { IUser } from '../../../shared/models/userModel';
   providedIn: 'root'
 })
 export class AdminService {
-  private baseUrl = `${environment.apiUrl}/api/admin`
+  private baseUrl = `${environment.adminApiUrl}`
+  
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<IUser[]> {
-    return this.http.get<{ status: string; data: IUser[] }>(this.baseUrl).pipe(
-      map(response=>response.data)
+    return this.http.get<{ status: string; data: IUser[] }>(`${this.baseUrl}/users`).pipe(
+      map(response => response.data)
     )
   }
 
   getUserById(id: string): Observable<IUser> {
-    return this.http.get<IUser>(`${this.baseUrl}/${id}`)
+    return this.http.get<IUser>(`${this.baseUrl}/user/${id}`)
   }
 
-  createUser(user: Partial<IUser>): Observable<IUser> {
-    return this.http.post<IUser>(this.baseUrl, user);
+  createUser(user: FormData): Observable<IUser> {
+    return this.http.post<IUser>(`${this.baseUrl}/user`, user);
   }
 
-  updateUser(id: string, user: Partial<IUser>): Observable<IUser> {
-    return this.http.put<IUser>(`${this.baseUrl}/${id}`, user);
+  updateUser( user: FormData): Observable<IUser> {
+    return this.http.put<IUser>(`${this.baseUrl}/user`, user);
   }
-  
+
   deleteUser(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`)
+    return this.http.delete<void>(`${this.baseUrl}/user/${id}`)
   }
 }

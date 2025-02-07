@@ -8,7 +8,7 @@ import { IUser } from '../../../shared/models/userModel';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = `${environment.apiUrl}/api/user`
+  private baseUrl = `${environment.userApiUrl}`
 
   constructor(private http: HttpClient) { }
 

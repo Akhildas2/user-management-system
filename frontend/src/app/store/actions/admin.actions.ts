@@ -7,12 +7,12 @@ export const fetchUsersSuccess = createAction('[Admin] Fetch Users Success', pro
 export const fetchUsersFailure = createAction('[Admin] Fetch Users Failure', props<{ error: string }>());
 
 // Add New User
-export const addUser = createAction('[Admin] Add User', props<{ user: Partial<IUser> }>());
+export const addUser = createAction('[Admin] Add User', props<{ user: FormData }>());
 export const addUserSuccess = createAction('[Admin] Add User Success', props<{ user: IUser }>());
 export const addUserFailure = createAction('[Admin] Add User Failure', props<{ error: string }>());
 
 // Update User
-export const updateUser = createAction('[Admin] Update User', props<{ id: string; user: Partial<IUser> }>());
+export const updateUser = createAction('[Admin] Update User', props<{ user: FormData }>());
 export const updateUserSuccess = createAction('[Admin] Update User Success', props<{ user: IUser }>());
 export const updateUserFailure = createAction('[Admin] Update User Failure', props<{ error: string }>());
 

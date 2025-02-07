@@ -8,9 +8,9 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { selectUserError, selectUserLoading, selectUserProfile } from '../../../store/selectors/user.selectors';
 import * as UserActions from '../../../store/actions/user.actions'
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { Router } from '@angular/router';
-import { minimumAgeValidator } from '../../../shared/validators/dob.validators';
+import { minimumAgeValidator } from '../../../shared/validators/dob.validator';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
@@ -43,7 +43,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     { position: 'QA Tester', icon: 'check_circle' }
   ];
 
-  constructor(private store: Store, private fb: FormBuilder, private router: Router, private dialog: MatDialog,) {
+  constructor(private store: Store, private fb: FormBuilder, private router: Router, private dialog: MatDialog,private dateAdapter: DateAdapter<Date>,) {
+    this.dateAdapter.setLocale('en-GB');
     this.user$ = this.store.select(selectUserProfile);
     this.isLoading$ = this.store.select(selectUserLoading);
     this.error$ = this.store.select(selectUserError);
@@ -58,7 +59,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.detailsForm = this.fb.group({
       dob: ['', [Validators.required, minimumAgeValidator(18)]],
       gender: ['Male', [Validators.required]],
-      skills: ['', [Validators.required]],
+      skills: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       position: ['', [Validators.required]],
     });
   }
@@ -139,7 +140,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedFile = input.files[0];
-      if (this.selectedFile.size > 1 * 1024 * 1024) {
+
+      if (this.selectedFile.size > 2 * 1024 * 1024) {
         this.dialog.open(ConfirmDialogComponent, {
           data: {
             icon: 'warning',

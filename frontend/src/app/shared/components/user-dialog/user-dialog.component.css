@@ -1,0 +1,131 @@
+.dialog-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heading {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: -20px;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #004d63;
+}
+
+.upload-photo-btn {
+    color: #00adbd !important;
+    border-radius: 25px;
+    padding: 6px 12px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    border: 1px solid #00adbd;
+    transition: background-color 0.3s ease;
+}
+
+.upload-photo-btn:hover {
+    color: #004d63;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 30px;
+    width: 100%;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+mat-dialog-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cancel-button, .save-button {
+    font-size: 14px;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.cancel-button {
+    background-color: #f2f2f2;
+    color: #666;
+    border: 1px solid #ccc;
+}
+
+.save-button {
+    color: #00adbd !important;
+    border: 1px solid #00adbd;
+}
+
+.cancel-button:hover {
+    background-color: #e0e0e0;
+}
+
+.save-button:hover {
+    color: #004d63 !important;
+}
+
+button[disabled] {
+    background-color: #cccccc;
+    color: #666 !important;
+}
+
+@media (max-width: 768px) {
+    .dialog-container {
+        padding: 20px;
+    }
+    
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .profile-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .heading {
+        font-size: 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .profile-img {
+        width: 100px;
+        height: 100px;
+    }
+}

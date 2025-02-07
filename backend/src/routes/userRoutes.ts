@@ -22,10 +22,9 @@ router.post('/logout', authControllers.logout); // Logout
 router.post('/refresh-token', authControllers.refreshAccessToken); // Refresh token
 
 // Admin routes
-router.get('/admin', adminControllers.getUserList); // Get all users
-router.get('/admin/:id', adminControllers.getUserById); // Get user by ID
-router.post('/admin', adminControllers.createUser); // Create user
-router.put('/admin/:id', adminControllers.updateUser); // Update user
-router.delete('/admin/:id', adminControllers.deleteUser); // Delete user
-
+router.get('/admin/users', adminControllers.getUserList); // Get all users
+router.get('/admin/user/:id', adminControllers.getUserById); // Get user by ID
+router.post('/admin/user', upload.single('profileImage'), adminControllers.createUser); // Create user
+router.put('/admin/user', upload.single('profileImage'), adminControllers.updateUser); // Update user
+router.delete('/admin/user/:id', adminControllers.deleteUser); // Delete user
 export default router;

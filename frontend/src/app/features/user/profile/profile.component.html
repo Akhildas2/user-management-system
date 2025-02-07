@@ -75,10 +75,10 @@
                 <mat-icon matPrefix>account_circle</mat-icon>
                 <input matInput formControlName="name" placeholder="Your Name" />
                 <mat-error *ngIf="personalInfoForm.get('name')?.hasError('required')">Name is required.</mat-error>
-                <mat-error *ngIf="personalInfoForm.get('name')?.hasError('minlength')">Name must be at least 2
-                  characters long.</mat-error>
-                <mat-error *ngIf="personalInfoForm.get('name')?.hasError('maxlength')">Name cannot be longer than 20
-                  characters.</mat-error>
+                <mat-error *ngIf="personalInfoForm.get('name')?.hasError('minlength')"> Name
+                  must be at least 2 characters long.</mat-error>
+                <mat-error *ngIf="personalInfoForm.get('name')?.hasError('maxlength')"> Name
+                  cannot be longer than 20 characters.</mat-error>
               </mat-form-field>
 
               <!-- Phone -->
@@ -88,7 +88,7 @@
                 <input matInput formControlName="phone" placeholder="1234567890" />
                 <mat-error *ngIf="personalInfoForm.get('phone')?.hasError('required')">Phone number is
                   required.</mat-error>
-                <mat-error *ngIf="personalInfoForm.get('phone')?.hasError('pattern')">Please enter a valid 10-digit
+                <mat-error *ngIf="personalInfoForm.get('phone')?.hasError('pattern') ">Please enter a valid 10-digit
                   phone number.</mat-error>
               </mat-form-field>
               <div class="update-profile-button-row">
@@ -116,13 +116,13 @@
             <!-- dob -->
             <div class="field-container">
               <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Choose a date</mat-label>
+                <mat-label>Date of birth</mat-label>
                 <mat-icon matPrefix>calendar_today</mat-icon>
                 <input matInput [matDatepicker]="picker" [(ngModel)]="user.dob" name="dob"
                   [disabled]="!editAdditionalDetails" />
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-hint>DD/MM/YYYY</mat-hint>
               </mat-form-field>
             </div>
 
@@ -165,7 +165,7 @@
                     placeholder="Enter your Date of Birth" />
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker touchUi #picker></mat-datepicker>
-                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-hint>DD/MM/YYYY</mat-hint>
                   <mat-error *ngIf="detailsForm.get('dob')?.hasError('required')">
                     Date of birth is required.
                   </mat-error>
@@ -182,7 +182,8 @@
                   <mat-radio-button value="Male">Male</mat-radio-button>
                   <mat-radio-button value="Female">Female</mat-radio-button>
                   <mat-radio-button value="Other">Other</mat-radio-button>
-                  <mat-error *ngIf="detailsForm.get('gender')?.invalid">Please select your gender.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('gender')?.hasError('required')">Please select your
+                    gender.</mat-error>
                 </mat-radio-group>
               </div>
 
@@ -192,7 +193,11 @@
                   <mat-label>Skills</mat-label>
                   <mat-icon matPrefix>build</mat-icon>
                   <input matInput formControlName="skills" placeholder="Enter your skills" />
-                  <mat-error *ngIf="detailsForm.get('skills')?.invalid">Skills are required.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('skills')?.hasError('required')">Skills are required.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('skills')?.hasError('minlength')">
+                    Skills must be at least 2 characters long.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('skills')?.hasError('maxlength')">
+                    Skills cannot be longer than 20 characters.</mat-error>
                 </mat-form-field>
               </div>
 
@@ -206,7 +211,7 @@
                       <mat-icon>{{ option.icon }}</mat-icon> {{ option.position }}
                     </mat-option>
                   </mat-select>
-                  <mat-error *ngIf="detailsForm.get('position')?.invalid">Position is required.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('position')?.hasError('required')">Position is required.</mat-error>
                 </mat-form-field>
               </div>
 
@@ -236,13 +241,13 @@
               <!-- DOB -->
               <div class="field-container">
                 <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Choose a date</mat-label>
+                  <mat-label>Date of birth</mat-label>
                   <mat-icon matPrefix>calendar_today</mat-icon>
                   <input matInput [matDatepicker]="picker" formControlName="dob"
                     placeholder="Enter your Date of Birth" />
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                   <mat-datepicker touchUi #picker></mat-datepicker>
-                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-hint>DD/MM/YYYY</mat-hint>
                   <mat-error *ngIf="detailsForm.get('dob')?.hasError('required')">
                     Date of birth is required.
                   </mat-error>
@@ -260,7 +265,8 @@
                   <mat-radio-button value="Female">Female</mat-radio-button>
                   <mat-radio-button value="Other">Other</mat-radio-button>
                 </mat-radio-group>
-                <mat-error *ngIf="detailsForm.get('gender')?.invalid">Please select your gender.</mat-error>
+                <mat-error *ngIf="detailsForm.get('gender')?.hasError('required')">Please select your
+                  gender.</mat-error>
               </div>
 
               <!-- Skills -->
@@ -269,7 +275,11 @@
                   <mat-label>Skills</mat-label>
                   <mat-icon matPrefix>build</mat-icon>
                   <input matInput formControlName="skills" placeholder="Enter your skills" />
-                  <mat-error *ngIf="detailsForm.get('skills')?.invalid">Skills are required.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('skills')?.hasError('required')">Skills are required.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('skills')?.hasError('minlength') ">
+                    Skills must be at least 2 characters long.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('skills')?.hasError('maxlength')">
+                    Skills cannot be longer than 20 characters.</mat-error>
                 </mat-form-field>
               </div>
 
@@ -283,7 +293,7 @@
                       <mat-icon>{{ option.icon }}</mat-icon> {{ option.position }}
                     </mat-option>
                   </mat-select>
-                  <mat-error *ngIf="detailsForm.get('position')?.invalid">Position is required.</mat-error>
+                  <mat-error *ngIf="detailsForm.get('position')?.hasError('required')">Position is required.</mat-error>
                 </mat-form-field>
               </div>
 

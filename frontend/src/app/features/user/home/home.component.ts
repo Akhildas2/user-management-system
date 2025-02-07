@@ -20,9 +20,9 @@ export interface Card {
 })
 export class HomeComponent {
   cards: Card[] = [
-    { icon: 'task', title: 'Tasks', content: 'Manage your tasks here.', route: '/task' },
-    { icon: 'person', title: 'Profile', content: 'View and update your profile.', route: '/profile' },
-    { icon: 'settings', title: 'Settings', content: 'Adjust your preferences here.', route: '/settings' }
+    { icon: 'task', title: 'Tasks', content: 'Manage your tasks here.', route: '/user/task' },
+    { icon: 'person', title: 'Profile', content: 'View and update your profile.', route: '/user/profile' },
+    { icon: 'settings', title: 'Settings', content: 'Adjust your preferences here.', route: '/user/settings' }
   ];
 
 }

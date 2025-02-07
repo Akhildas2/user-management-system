@@ -15,8 +15,8 @@
     background-color: #ffffff;
     border-radius: 25px;
     overflow: hidden;
-    width: 100%;
-    max-width: 90%;
+    width: 90%;
+    max-width: 100%;
     position: relative;
 }
 
@@ -175,13 +175,17 @@ mat-icon img {
     padding: 0 10px;
 }
 
+button[disabled] {
+    background-color: #ffffff !important;
+    color: #000;
+}
+
 /* For mobile devices */
 @media (max-width: 480px) {
     .register-container {
         display: flex;
         flex-direction: column;
         height: 100%;
-        padding: 10px;
     }
 
     .register-card-wrapper {
@@ -189,14 +193,13 @@ mat-icon img {
         flex-direction: column;
         width: 100%;
         height: auto;
-        border: 2px solid #ffffff;
-
+        border-radius: 0;
     }
 
     /* Left side with image */
     .left-side {
         width: 100%;
-        height: 300px;
+        height: 100%;
         padding: 0;
     }
 

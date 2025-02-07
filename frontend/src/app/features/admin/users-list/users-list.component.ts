@@ -12,6 +12,8 @@ import { SearchService } from '../../../shared/services/search.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from '../../../shared/components/user-dialog/user-dialog.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-users-list',
@@ -21,7 +23,7 @@ import { UserDialogComponent } from '../../../shared/components/user-dialog/user
   styleUrl: './users-list.component.css'
 })
 export class UsersListComponent implements OnInit {
-  displayedColumns: string[] = ['profileImage', 'name', 'email', 'phone', 'isAdmin', 'actions'];
+  displayedColumns: string[] = ['profileImage', 'name', 'email', 'phone', 'blockedStatus', 'actions'];
   dataSource = new MatTableDataSource<IUser>([]);
   isLoading$!: Observable<boolean>;
   error$!: Observable<string | null>;
@@ -34,11 +36,11 @@ export class UsersListComponent implements OnInit {
   showFirstLastButtons = true; // Whether to show First/Last buttons on paginator
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private store: Store, private searchService: SearchService, private dialog: MatDialog) { }
   ngOnInit(): void {
     this.fetchUsers();
-
     // Listen for search query updates
     this.searchService.searchQuery$.subscribe((query) => {
       this.applyGlobalFilter(query);
@@ -62,6 +64,7 @@ export class UsersListComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   fetchUsers(): void {
@@ -82,47 +85,56 @@ export class UsersListComponent implements OnInit {
     }
   }
 
-  openUserDialog(user: IUser | null = null): void {
+  openUserDialog(user: IUser | null = null, mode: string): void {
+    if (this.dialog.openDialogs.length > 0) {
+      return;
+    }
+
+
     const dialogRef = this.dialog.open(UserDialogComponent, {
-      width: '400px',
-      data: { user }
+      width: '1000px',
+      data: { user, mode }
     });
 
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if (user && user._id) {
-          this.updateUser({ ...result, id: user._id }); 
-        }else {
-          this.addUser(result)
+        if (mode === 'edit') {
+          this.updateUser(result);
+        } else if (mode === 'add') {
+          this.addUser(result);
         }
       }
     });
   }
 
-  addUser(user: Partial<IUser>): void {
+  addUser(user: FormData): void {
     this.store.dispatch(AdminActions.addUser({ user }));
   }
 
-  updateUser(user: Partial<IUser>): void {
-    console.log('Received user object:', user);
-    if (!user || !user._id) { 
-      console.error('Error: User ID is undefined or missing in object:', user);
-      return;
-    }
-  
-    console.log('Updating user:', user);
-    this.store.dispatch(AdminActions.updateUser({ id:user._id , user }));
+  updateUser(user: FormData): void {
+    this.store.dispatch(AdminActions.updateUser({ user }));
   }
-  
-
 
   deleteUser(user: IUser): void {
-    if (!user._id) {
-      console.error('Error: Cannot delete user without ID');
-      return;
-    }
-    this.store.dispatch(AdminActions.deleteUser({ id: user._id }))
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        icon: 'warning',
+        title: 'Confirm Delete',
+        message: `Are you sure you want to delete ${user.name}'s account? This action cannot be undone.`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (!user._id) {
+          console.error('Error: Cannot delete user without ID');
+          return;
+        }
+        this.store.dispatch(AdminActions.deleteUser({ id: user._id }));
+      }
+    })
   }
 
 }
