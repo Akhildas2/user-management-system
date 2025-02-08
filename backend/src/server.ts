@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(
     cors({
         origin: process.env.CLIENT_URL, // Allow only the URL specified in the .env file
-        methods: 'GET,POST,PUT,DELETE,OPTIONS', // Specify allowed HTTP methods
+        methods: 'GET,POST,PUT,DELETE,OPTIONS,PATCH', // Specify allowed HTTP methods
         credentials: true, // Allow cookies and credentials
     })
 );

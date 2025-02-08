@@ -87,8 +87,6 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
     try {
         const { name, phone, email, dob, gender, skills, position, _id } = req.body;
 
-        console.log("req.body",req.body);
-        
         if (!_id) {
             res.status(400).json({ status: 'error', message: 'User ID is required.' });
             return;
@@ -157,7 +155,6 @@ export const toggleBlockUser = async (req: Request, res: Response): Promise<void
             return;
         }
         user.isBlocked = !user.isBlocked;
-
         await user.save();
 
         res.status(200).json({
@@ -171,3 +168,34 @@ export const toggleBlockUser = async (req: Request, res: Response): Promise<void
         res.status(500).json({ status: 'error', message: 'Failed to block/unblock user', error });
     }
 }
+
+// User verification
+export const userVerification = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id: userId } = req.params;
+
+        if (!userId) {
+            res.status(400).json({ status: "error", message: "User ID is required." });
+            return;
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            res.status(404).json({ status: "error", message: "User not found." });
+            return;
+        }
+
+        if (user.isVerified) {
+            res.status(400).json({ status: "error", message: "User is already verified." });
+            return;
+        }
+
+        user.isVerified = true;
+        await user.save();
+
+        res.status(200).json({ status: "success", message: "User verified successfully.", user });
+
+    } catch (error) {
+        res.status(500).json({ status: "error", message: "Failed to verify user", error: error });
+    }
+};

@@ -1,20 +1,20 @@
 <app-header></app-header>
 
 <div class="home-container">
-    <h1>Welcome to the Home Page</h1>
-    <p>
+    <h1 class="center-content">Welcome to the Home Page</h1>
+    <p class="center-content">
         This is the main dashboard where users can access their tasks, profile,
         and settings.
     </p>
     <div class="cards-container">
-        <mat-card class="card" *ngFor="let card of cards" routerLink={{card.route}}>
+        <mat-card class="card" *ngFor="let card of cards" routerLink="{{card.route}}">
             <mat-card-title>
                 <div class="card-title">
-                    <mat-icon [fontSet]="'material-icons-outlined'"> {{card.icon}}</mat-icon>
+                    <mat-icon [fontSet]="'material-icons-outlined'">{{card.icon}}</mat-icon>
                     <span>{{card.title}}</span>
                 </div>
             </mat-card-title>
-            <mat-card-content>{{card.content}}</mat-card-content>
+            <mat-card-content class="center-content">{{card.content}}</mat-card-content>
         </mat-card>
     </div>
 </div>

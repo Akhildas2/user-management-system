@@ -15,10 +15,10 @@ body {
 /* Snackbar Styles */
 .mat-mdc-snack-bar-container {
   --mat-mdc-snack-bar-button-color: #fff;
-  --mdc-snackbar-supporting-text-color: #004d63 !important;
+  --mdc-snackbar-supporting-text-color: #000000 !important;
 
   .mat-mdc-snack-bar-action {
-    color: #004d63 !important;
+    color: #000000 !important;
   }
 }
 

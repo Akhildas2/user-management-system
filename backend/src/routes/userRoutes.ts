@@ -27,4 +27,7 @@ router.get('/admin/user/:id', adminControllers.getUserById); // Get user by ID
 router.post('/admin/user', upload.single('profileImage'), adminControllers.createUser); // Create user
 router.put('/admin/user', upload.single('profileImage'), adminControllers.updateUser); // Update user
 router.delete('/admin/user/:id', adminControllers.deleteUser); // Delete user
+router.patch('/admin/user/:id', adminControllers.toggleBlockUser) // Toggle user status
+router.patch('/admin/user/verify/:id', adminControllers.userVerification) // User verification
+
 export default router;

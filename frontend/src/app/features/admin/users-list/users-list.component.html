@@ -39,33 +39,36 @@
         <ng-container matColumnDef="blockedStatus">
           <th mat-header-cell *matHeaderCellDef>Status </th>
           <td mat-cell *matCellDef="let user">
-           <span *ngIf="user.isBlocked">Blocked</span>
+            <span *ngIf="user.isBlocked" [style.color]="'#FF0000'">Blocked</span>
+            <span *ngIf="!user.isBlocked" [style.color]="'#004d63'">Active</span>
           </td>
         </ng-container>
 
 
-            <!-- Actions Column -->
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef> Actions </th>
-              <td mat-cell *matCellDef="let user">
-                <button mat-icon-button  [style.color]="'#004d63'" (click)="openUserDialog(user, 'edit')" matTooltip="Edit User">
-                  <mat-icon>edit</mat-icon>
-                </button>
-    
-                <button mat-icon-button color="warn" (click)="deleteUser(user)" matTooltip="Delete User">
-                  <mat-icon>delete</mat-icon>
-                </button>
-    
-                <button mat-icon-button [style.color]="'#00adbd'" matTooltip="Verify User">
-                  <mat-icon>check_circle</mat-icon>
-                </button>
-    
-                <button mat-icon-button [color]="user.isBlocked ? 'warn' : 'accent'" 
-                  matTooltip="{{ user.isBlocked ? 'Unblock User' : 'Block User' }}">
-                  <mat-icon>{{ user.isBlocked ? 'lock_open' : 'block' }}</mat-icon>
-                </button>
-              </td>
-            </ng-container>
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let user">
+            <button mat-icon-button [style.color]="'#004d63'" (click)="openUserDialog(user, 'edit')"
+              matTooltip="Edit User">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button color="warn" (click)="deleteUser(user)" matTooltip="Delete User">
+              <mat-icon>delete</mat-icon>
+            </button>
+
+            <button mat-icon-button [style.color]="'#00adbd'" (click)="verifyUser(user,$event)" matTooltip="Verify User"
+              [disabled]="user.isVerified">
+              <mat-icon>{{ user.isVerified ? 'verified' : 'check_circle' }}</mat-icon>
+            </button>
+
+            <button mat-icon-button [color]="user.isBlocked ? 'warn' : 'accent'" (click)="toggleBlockUser(user,$event)"
+              matTooltip="{{ user.isBlocked ? 'Unblock User' : 'Block User' }}">
+              <mat-icon>{{ user.isBlocked ? 'lock_open' : 'block' }}</mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
 
 

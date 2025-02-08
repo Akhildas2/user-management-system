@@ -36,7 +36,7 @@ export class SidenavComponent implements OnInit {
   // Admin Menu Items
   readonly adminMenuItems = signal<MenuItem[]>([
     { icon: 'dashboard', label: 'Dashboard', route: '/admin/dashboard' },
-    { icon: 'people', label: 'Users List', route: '/admin/user-list' },
+    { icon: 'people', label: 'Users List', route: '/admin/users-list' },
     { icon: 'person', label: 'Profile', route: '/admin/profile' },
     { icon: 'notifications', label: 'Notifications', route: '/admin/notifications' },
     { icon: 'settings', label: 'Settings', route: '/admin/settings' },
@@ -64,9 +64,9 @@ export class SidenavComponent implements OnInit {
   }
 
   getProfileImage(): string {
-    let profileImage ='assets/icons/profile-user.png'; 
-    this.user$.subscribe((user)=>{
-      if(user?.profileImage){
+    let profileImage = 'assets/icons/profile-user.png';
+    this.user$.subscribe((user) => {
+      if (user?.profileImage) {
         profileImage = user.profileImage;
       }
     });

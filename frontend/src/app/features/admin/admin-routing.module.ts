@@ -7,7 +7,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'user-list', component: UsersListComponent },
+  { path: 'users-list', component: UsersListComponent },
   { path: 'profile', component: ProfileComponent },
 
 ];

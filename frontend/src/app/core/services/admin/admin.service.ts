@@ -9,7 +9,7 @@ import { IUser } from '../../../shared/models/userModel';
 })
 export class AdminService {
   private baseUrl = `${environment.adminApiUrl}`
-  
+
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<IUser[]> {
@@ -26,11 +26,20 @@ export class AdminService {
     return this.http.post<IUser>(`${this.baseUrl}/user`, user);
   }
 
-  updateUser( user: FormData): Observable<IUser> {
+  updateUser(user: FormData): Observable<IUser> {
     return this.http.put<IUser>(`${this.baseUrl}/user`, user);
   }
 
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/user/${id}`)
   }
+
+  toggleBlockUser(id: string): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/user/${id}`, {})
+  }
+
+  verifyUser(id: string): Observable<{ message: string, user: IUser }> {
+    return this.http.patch<{ message: string, user: IUser }>(`${this.baseUrl}/user/verify/${id}`, {})
+  }
+
 }

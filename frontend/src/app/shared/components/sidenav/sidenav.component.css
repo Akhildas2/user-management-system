@@ -8,7 +8,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 80px);
     padding: 16px;
     box-sizing: border-box;
 }
@@ -30,7 +30,7 @@ mat-sidenav {
     width: 100px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
+    margin-top: 30px;
     border: 3px solid #004d63;
 }
 

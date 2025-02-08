@@ -14,6 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from '../../../shared/components/user-dialog/user-dialog.component';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { MatSort } from '@angular/material/sort';
+import { AdminService } from '../../../core/services/admin/admin.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-users-list',
@@ -38,7 +40,7 @@ export class UsersListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private store: Store, private searchService: SearchService, private dialog: MatDialog) { }
+  constructor(private store: Store, private searchService: SearchService, private dialog: MatDialog, private adminService: AdminService, private notificationService: NotificationService) { }
   ngOnInit(): void {
     this.fetchUsers();
     // Listen for search query updates
@@ -93,7 +95,8 @@ export class UsersListComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UserDialogComponent, {
       width: '1000px',
-      data: { user, mode }
+      data: { user, mode },
+      disableClose: true,
     });
 
 
@@ -129,12 +132,65 @@ export class UsersListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (!user._id) {
-          console.error('Error: Cannot delete user without ID');
+          this.notificationService.showNotification('User session expired. Please login again.');
           return;
         }
         this.store.dispatch(AdminActions.deleteUser({ id: user._id }));
       }
     })
   }
+
+
+  toggleBlockUser(user: IUser, event: Event): void {
+    event.stopPropagation();
+
+    if (!user._id) {
+      this.notificationService.showNotification('User session expired. Please login again.');
+      return;
+    }
+
+    this.adminService.toggleBlockUser(user._id).subscribe(
+      (response: any) => {
+        const updatedUser = { ...user, isBlocked: response.isBlocked };
+
+        this.dataSource.data = this.dataSource.data.map(u =>
+          u._id === updatedUser._id ? updatedUser : u
+        );
+        this.notificationService.showNotification(response.message)
+      },
+      () => {
+        this.notificationService.showNotification('Failed to update user status');
+      }
+    );
+  }
+
+
+  verifyUser(user: IUser, event: Event): void {
+    event.stopPropagation(); // Prevents row click event from opening the dialog
+
+    if (!user._id) {
+      this.notificationService.showNotification('User session expired. Please login again.');
+      return;
+    }
+
+    this.adminService.verifyUser(user._id).subscribe(
+      (response: { message: string, user: IUser }) => {
+        // Ensure response contains updated user data
+        if (response.user) {
+          this.dataSource.data = this.dataSource.data.map(u =>
+            u._id === user._id ? { ...u, isVerified: response.user.isVerified } : u
+          );
+          this.notificationService.showNotification(response.message);
+        } else {
+          this.notificationService.showNotification('Unexpected response from server.');
+        }
+      },
+      (error) => {
+        console.error('Error verifying user:', error);
+        this.notificationService.showNotification('Failed to verify user');
+      }
+    );
+  }
+
 
 }

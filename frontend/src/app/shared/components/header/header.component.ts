@@ -36,24 +36,39 @@ export class HeaderComponent implements OnInit {
   // Admin Menu Items
   readonly adminMenuItems = signal<MenuItem[]>([
     { icon: 'dashboard', label: 'Dashboard', route: '/admin/dashboard' },
-    { icon: 'people', label: 'Users List', route: '/admin/user-list' },
-    { icon: 'notifications', label: 'Notifications', route: '/admin/notifications' },
+    { icon: 'people', label: 'User Management', route: '/admin/users-list' },
+    { icon: 'assignment', label: 'Task Management', route: '/admin/tasks' },
+    { icon: 'settings', label: 'Settings', route: '/admin/settings' },
+  ]);
+
+  // Settings Submenu (Admin)
+  readonly settingsMenuItems = signal<MenuItem[]>([
+    { icon: 'bar_chart', label: 'Reports', route: '/admin/reports' },
+    { icon: 'analytics', label: 'Analytics', route: '/admin/analytics' },
+    { icon: 'history', label: 'User History', route: '/admin/user-history' },
   ]);
 
   // User Menu Items
   readonly userMenuItems = signal<MenuItem[]>([
     { icon: 'home', label: 'Home', route: '/user/home' },
     { icon: 'person', label: 'Profile', route: '/user/profile' },
-    { icon: 'history', label: 'My Activity', route: '/user/my-activity' },
-    { icon: 'help', label: 'Help', route: '/user/help' },
+    { icon: 'check_circle', label: 'Task Management', route: '/user/tasks' },
+    { icon: 'settings', label: 'Settings', route: '/user/settings' },
   ]);
+
+  // Settings Submenu (User)
+  readonly userSettingsMenuItems = signal<MenuItem[]>([
+    { icon: 'person', label: 'Profile', route: '/user/profile' },
+    { icon: 'history', label: 'User History', route: '/user/history' },
+  ]);
+
 
   constructor(private store: Store, private SearchService: SearchService) {
     this.user$ = this.store.select(selectUserProfile);
   }
 
   isMobile(): boolean {
-    return window.innerWidth < 480;
+    return window.innerWidth < 770;
   }
 
   toggleSidenav(): void {
@@ -73,7 +88,7 @@ export class HeaderComponent implements OnInit {
     this.user$.subscribe(user => {
       this.isAdmin = user?.isAdmin || false;
     });
-    this.SearchService.searchQuery$.subscribe((query)=>{
+    this.SearchService.searchQuery$.subscribe((query) => {
       this.globalSearchQuery = query;
     });
   }

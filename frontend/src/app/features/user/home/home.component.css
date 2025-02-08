@@ -1,25 +1,36 @@
+/* Header styles */
+app-header {
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+
+/* Main container styles */
 .home-container {
+    min-height: calc(100vh - 80px);
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    height: calc(100vh - 120px);
-    box-sizing: border-box;
-
-}
-
-.cards-container {
-    display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-top: 24px;
-
 }
 
+/* Cards container with grid layout */
+.cards-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+/* Card styles */
 .card {
-    width: 300px;
+    width: 100%;
+    max-width: 350px;
+    border-radius: 15px;
     border: 2px solid #00adbd;
     padding: 20px;
     cursor: pointer;
@@ -31,11 +42,11 @@
     transform: scale(1.05);
 }
 
-
+/* Card content styling */
 .card-title {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     justify-content: center;
     font-size: 1.2rem;
     font-weight: bold;
@@ -48,4 +59,20 @@
     vertical-align: middle;
     width: auto;
     height: auto;
+}
+
+/* Center alignment utilities */
+.center-content {
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .home-container {
+        padding: 10px;
+    }
+
+    .cards-container {
+        gap: 15px;
+    }
 }

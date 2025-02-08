@@ -2,10 +2,11 @@
 
 <!-- Profile Container -->
 <div class="profile-container" *ngIf="!isLoading; else loading">
-  <h1 class="profile-title">User Profile</h1>
 
   <!-- User Data -->
   <div *ngIf="user$ | async as user; else noUser">
+    <h1 class="profile-title"> <mat-icon *ngIf="user.isVerified" class="verified-icon">verified</mat-icon> User Profile
+    </h1>
 
     <div class="profile-header">
       <div class="profile-picture">
